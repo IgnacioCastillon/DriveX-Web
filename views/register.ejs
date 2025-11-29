@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveX · Registro</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body class="auth-body">
+
+  <div class="auth-container">
+
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="/images/logo.png" alt="DriveX logo" class="auth-logo">
+        <h2>Crear cuenta</h2>
+        <p>Únete a DriveX para explorar nuestro catálogo</p>
+      </div>
+
+      <form class="auth-form" method="post" action="/register">
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="tuemail@ejemplo.com" required>
+
+        <label>Nombre de usuario</label>
+        <input type="text" name="username" placeholder="Username" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="password_hash" placeholder="••••••••" required>
+
+        <label>Nombre</label>
+        <input type="text" name="first_name" placeholder="Name" required>
+
+        <label>Apellidos</label>
+        <input type="text" name="last_name" placeholder="Last name" required>
+
+        <label>Teléfono</label>
+        <input type="text" name="phone_number" placeholder="+34 600 000 000">
+
+        <button type="submit" class="btn btn-primary auth-btn">
+          Crear cuenta
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

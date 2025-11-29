@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveX · Contact Form</title>
+    <link rel="stylesheet" href="/stylesheets/login.css">
+  </head>
+  <body class="auth-body">
+    <div class="auth-wrapper">
+      <header class="auth-header">
+        <div class="home-logo">
+          <img src="/images/logo.png" alt="DriveX logo">
+          <span>DriveX</span>©
+        </div>
+      </header>
+
+      <main class="auth-main">
+        <section class="auth-card">
+          <h1 class="auth-title">Contact Form</h1>
+
+          
+
+          <form class="auth-form" method="post" action="/contact">
+            <div class="auth-field">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your name"
+                required
+              >
+            </div>
+          
+            <div class="auth-field">
+              <label for="reason">Reason</label>
+              <input
+                type="text"
+                id="reason"
+                name="reason"
+                placeholder="Reason"
+                required
+              >
+            </div>
+          
+            <div class="auth-field">
+              <label for="body">Body</label>
+              <textarea
+                id="body"
+                name="body"
+                placeholder="Body"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+            
+                <input type="hidden" id="email" name="email" value="<%= user.email %>">
+          
+            <button type="submit" class="btn btn-primary auth-button">
+              Enviar
+            </button>
+          
+            <% if (success) { %>
+              <p class="auth-success"><%= success %></p>
+            <% } %>
+          
+            <% if (error) { %>
+              <p class="auth-error"><%= error %></p>
+            <% } %>
+          </form>
+        </section>
+      </main>
+
+      <footer class="auth-footer">
+        <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
+      </footer>
+    </div>
+  </body>
+</html>

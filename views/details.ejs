@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>DriveX · <%= vehicle.brand %> <%= vehicle.model %></title>
+    <link rel="stylesheet" href="/stylesheets/details.css">
+  </head>
+
+  <body class="details-body">
+    <header class="details-header">
+      <a href="/" class="back-btn">← Back</a>
+      <h1><%= vehicle.brand %> <%= vehicle.model %></h1>
+          <div class="home-logo">
+            <a href="/">
+              <img src="/images/logo.png" alt="DriveX logo">
+            </a>
+          </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="details-main">
+      <!-- GALERÍA -->
+      <section class="details-gallery">
+        <% 
+          const images = vehicle.images || [];
+          const mainImage = images.find(img => img.isMain) || images[0];
+          const mainSrc = mainImage ? mainImage.imageUrl : "/images/logo.png";
+        %>
+
+        <img
+          src="<%= mainSrc %>"
+          alt="<%= vehicle.brand %> <%= vehicle.model %>"
+          class="details-main-image"
+          id="details-main-image"
+        >
+
+        <div class="details-thumbs">
+          <% images.forEach(img => { %>
+            <img
+              src="<%= img.imageUrl %>"
+              alt="<%= vehicle.brand %> <%= vehicle.model %>"
+              data-src="<%= img.imageUrl %>"
+              onclick="document.getElementById('details-main-image').src = this.dataset.src"
+            >
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="details-info">
+        <h2><%= vehicle.brand %> <%= vehicle.model %></h2>
+
+        <p>
+          <%= vehicle.price %> €
+          <% if (vehicle.year) { %> · <strong><%= vehicle.year %></strong><% } %>
+          <% if (vehicle.fuelType || vehicle.fuelType) { %>
+            · <strong><%= vehicle.fuelType || vehicle.fuelType %></strong>
+          <% } %>
+        </p>
+
+        <% if (vehicle.reference) { %>
+          <p><strong>Reference:</strong> <%= vehicle.reference %></p>
+        <% } %>
+
+        <% if (vehicle.doors > 0) { %>
+          <p><strong>Doors:</strong> <%= vehicle.doors %></p>
+        <% } %>
+        <% if (vehicle.hp) { %>
+            <p><strong>Hp:</strong> <%= vehicle.hp %> hp </p>
+
+        <% } %>
+
+        <% if (vehicle.autonomy) { %>
+            <p><strong>Autonomy:</strong> <%= vehicle.autonomy %> miles </p>
+
+        <% } %>
+
+        <% if (vehicle.average_consumption) { %>
+            <p><strong>Average consumption:</strong> <%= vehicle.average_consumption %> L/100Miles </p>
+
+        <% } %>
+
+        <% if (vehicle.description) { %>
+          <p><strong>Description:</strong> <%= vehicle.description %></p>
+        <% } %>
+
+        <% if (vehicle.mileage) { %>
+            <p><strong>Mileage:</strong> <%= vehicle.mileage %> miles</p>
+          <% } %>
+
+        <% if (vehicle.extras) { 
+            const partes = vehicle.extras.split(",").map(p => p.trim()).sort();
+       %>
+         <p><strong>Extras:</strong></p>
+         <ul class="vehicle-extras">
+           <% partes.forEach(parte => { %>
+             <li><%= parte %></li>
+           <% }) %>
+         </ul>
+       <% } %>
+      </section>
+      <% if (user) {%>
+        <div class="ficha" id="fichaTenica">
+        <h2>Ficha Tecnica</h2>
+    </div>
+
+        <% }else {%>
+            <div class="ficha" id="fichaTenica">
+                <h2>Ficha Tecnica</h2>
+
+            </div>
+            <% } %>
+    </main>
+    <% if (user && user.role == "Admin") { %>
+    <button id="editButton" class="btn-esquina" style="right: 200px; background: linear-gradient(135deg, #001a84, #718eff);"">Editar</button>
+    <button id="deleteButton" class="btn-esquina" style="right: 50px; background: linear-gradient(135deg, #a10000, #ff5151);">Eliminar</button>
+    <% } %>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveX · Catálogo</title>
+    <link rel="stylesheet" href="/stylesheets/main.css">
+  </head>
+
+  <body class="home-body">
+    <div class="home-wrapper">
+
+      <!-- HEADER -->
+      <header class="home-header">
+        <div class="super">
+        <div class="home-logo">
+          <a href="/">
+            <img src="/images/logo.png" alt="DriveX logo">
+          </a>
+        </div>
+
+        <div class="home-search">
+          <form method="get" action="/">
+            <input 
+              type="search" 
+              name="search" 
+              placeholder="Buscar vehículo, marca o modelo"
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+            >
+          </form>
+          <a href="/?favourite" class="favourite">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" 
+                 fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
+            </svg>
+            Favourite
+          </a>        </div>
+        </div>
+        <div class="infer">
+
+          <div id="menu" class="menu">
+            <a href="/" id="home">Home</a>
+            <a href="/aboutUs" id="aboutUs">About Us</a>
+            <a href="/contact" id="contact">Contact</a>
+          </div>
+        </div>
+
+
+        
+      </header>
+
+      <!-- MAIN -->
+      <main class="home-main">
+        <div id="backgroundImageContainer">
+          <img id="backgroundImage" src="/images/concesionario.jpg" alt="Background image">
+        </div>
+
+        <nav class="home-nav">
+          <a href="/?vehicleType=Sedan,Suv,Hatchback,Off-road / 4x4,Van,MPV,Pickup,Sport Car,Hyper Car  " class="active">Cars</a>
+          <a href="/?vehicleType=Sport Bike,Custom,Naked,Enduro,Trial,MotoCross,Trail,Touring" class="active">Bikes</a>
+          <a href="#" class="active">Trucks</a>
+          <a href="#" class="offers">Offers</a>
+
+        </nav>
+
+          <% if (!user) { %>
+            <a href="/login" class="btn-login" style="background: linear-gradient(135deg, #000082, #4646ff); right: 150px; color: white;"">Log in</a>
+          <% } else { %>
+            <a class="btn-login" href="/logout" style="background: linear-gradient(135deg, #6e0000, #ff3d3d); right: 300px; color: white;"">Sign out</a>
+          <% } %>
+
+          <% if (user && user.role == "Admin"){ %>
+            <a class="btn" href="/users">Users</a>
+          <% } %>
+
+          <% if (user) { %>
+            <a href="/contact" class="btn-login" style="background: linear-gradient(135deg, #005401, #77ff79); right: 300px;"">Contact</a>
+          <% } else { %>
+            <button class="btn-login" id="contactButton" style="background: linear-gradient(135deg, #005401, #77ff79); right: 300px;">Contact</button>
+          <% } %>
+
+
+        <!-- VEHICLE GRID -->
+
+        <h1>Vehicle List</h1>
+        <section class="vehicle-grid" id="vehicle-grid">
+
+          <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
+
+            <% vehicles.forEach(v => { %>
+              <article class="vehicle-card">
+                <a href="/vehicles/<%= v.id %>" class="vehicle-link">
+                  <% 
+                    const images = v.images || [];
+                    const mainImage = images.find(img => img.isMain) || images[0];
+                    const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/BMW-320d-103/BMW-320d-103-692899b0d733a.avif";
+                  %>
+              
+                  <div class="vehicle-main-image">
+                    <img src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
+                  </div>
+              
+                  <div class="vehicle-info">
+                    <h3><%= v.brand %> <%= v.model %></h3>
+                    <p><%= v.vehicleType %></p>
+                    <br>
+                    <p>
+                      <%= v.price %> € ·
+                      <%= v.mileage  %> miles
+                      <% if (v.year) { %> · <%= v.year %><% } %>
+                      <% if (v.fuelType || v.fuel_type) { %>
+                        · <%= v.fuelType || v.fuel_type %>
+                      <% } %>
+                    </p>
+                  </div>
+                </a>
+              </article>
+            <% }) %>
+
+          <% } else { %>
+            <p class="empty-message">No hay vehículos disponibles.</p>
+          <% } %>
+
+        </section>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a class="arrow page-link"
+               href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
+          <% } else { %>
+            <span class="arrow disabled">←</span>
+          <% } %>
+
+          <span class="current-page"><%= currentPage %></span>
+
+          <% if (currentPage < totalPages) { %>
+            <a class="arrow page-link"
+               href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
+          <% } else { %>
+            <span class="arrow disabled">→</span>
+          <% } %>
+        </div>
+
+        <% if (user && user.role == "Admin") { %>
+          <a class="btn btn-add-vehicle" href="/addVehicle">Add Vehicle</a>
+        <% } %>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="home-footer">
+        <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
+      </footer>
+
+    </div>
+
+    <!-- Overlay + cuadro chulo de login -->
+    <div id="overlay"></div>
+
+    <div id="contactMessage">
+      <h2>Welcome to DriveX</h2>
+      <p>Please, log in to access all the functions.</p>
+      <a href="/login" class="btn-login-oculto">Log in</a>
+      <button id="closeMessage">Close</button>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

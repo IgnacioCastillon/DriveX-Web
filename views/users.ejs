@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveX · Users</title>
+    <link rel="stylesheet" href="/stylesheets/users.css">
+  </head>
+
+  <body class="home-body">
+    <div class="home-wrapper">
+
+      <header class="home-header">
+        <div class="home-logo">
+          <a href="/">
+            <img src="/images/logo.png" alt="DriveX logo">
+          </a>
+        </div>
+
+        <div class="home-search">
+          <form method="get" action="/users">
+            <input 
+              type="search" 
+              name="search" 
+              placeholder="Buscar usuario"
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+            >
+          </form>
+        </div>
+
+        <nav class="home-nav">
+          <a href="/" class="active">Home</a>
+          <a href="/contacto.html" class="info">Contact</a>
+        </nav>
+      </header>
+
+      <main class="home-main">
+
+        <!-- Barra superior de acciones -->
+        <div class="users-header-bar">
+          <h1 class="users-title">Users</h1>
+
+          <% if (user && user.role === "Admin") { %>
+            <button class="btn btn-add-user" id="toggleUserForm">
+              + New user
+            </button>
+          <% } %>
+        </div>
+
+        <% if (user && user.role === "Admin") { %>
+          <form 
+            id="userForm" 
+            class="user-form hidden" 
+            method="post" 
+            action="/users"
+            enctype="multipart/form-data" 
+          >
+            <div class="auth-field">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Username"
+                required
+              >
+            </div>
+
+            <div class="auth-field">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="user@example.com"
+                required
+              >
+            </div>
+
+            <div class="auth-field">
+              <label for="password_hash">Password</label>
+              <input
+                type="password"
+                id="password_hash"
+                name="password_hash"
+                placeholder="••••••••"
+                required
+              >
+            </div>
+
+            <div class="auth-field">
+              <label for="role">Role</label>
+              <select id="role" name="role" required>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+
+            <div class="auth-field">
+              <label for="photo">Photo</label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+              >
+              <small>You can upload up to 1 image.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              Create user
+            </button>
+          </form>
+        <% } %>
+
+        <section class="vehicle-grid" id="user-grid">
+
+          <% if (Array.isArray(users) && users.length > 0) { %>
+
+            <% users.forEach(u => { %>
+              <article class="vehicle-card user-card">
+                <a href="/users/<%= u.id %>" class="vehicle-link">
+
+                  <div class="vehicle-main-image">
+                    <img 
+                      src="<%= u.profileImage || '/images/default-user.png' %>" 
+                      alt="<%= u.username %>"
+                    >
+                  </div>
+
+                  <div class="vehicle-info">
+                    <h3><%= u.username %></h3>
+
+                    <% if (u.email) { %>
+                      <p><strong>Email:</strong> <%= u.email %></p>
+                    <% } %>
+
+                    <% if (u.role) { %>
+                      <p class="user-role">
+                        <strong>Role:</strong> <%= u.role %>
+                      </p>
+                    <% } %>
+
+                    <% if (u.first_name || u.last_name) { %>
+                      <p>
+                        <strong>Name:</strong> 
+                        <%= (u.first_name || '') + ' ' + (u.last_name || '') %>
+                      </p>
+                    <% } %>
+                  </div>
+                </a>
+              </article>
+            <% }) %>
+
+          <% } else { %>
+
+            <p class="empty-message">No hay usuarios disponibles.</p>
+
+          <% } %>
+
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="home-footer">
+        <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
+      </footer>
+
+    </div>
+    <script>
+      const toggleBtn = document.getElementById("toggleUserForm");
+      const userForm = document.getElementById("userForm");
+
+      if (toggleBtn && userForm) {
+        toggleBtn.addEventListener("click", () => {
+          userForm.classList.toggle("hidden");
+        });
+      }
+    </script>
+  </body>
+</html>
