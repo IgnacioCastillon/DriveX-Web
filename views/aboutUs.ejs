@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveX · Add Vehicle</title>
+    <title>DriveX · About Us</title>
     <link rel="stylesheet" href="/stylesheets/login.css">
   </head>
+
   <body class="auth-body">
     <div class="auth-wrapper">
       <header class="auth-header">
@@ -17,248 +18,77 @@
 
       <main class="auth-main">
         <section class="auth-card">
-          <h1 class="auth-title">Add Vehicle</h1>
+          <h1 class="auth-title">About Us</h1>
+
           <p class="auth-subtitle">
-            Complete all the fields to add a new vehicle.
+            DriveX is a modern land-vehicle dealership platform designed to make buying and selling vehicles easier than ever.
           </p>
 
-          <form
-            class="auth-form"
-            method="post"
-            action="/addVehicle"
-            enctype="multipart/form-data"
-          >
-            
+          <div class="auth-form" style="gap: 14px;">
 
             <div class="auth-field">
-              <label for="brand">Brand</label>
-              <select id="brand" name="brand" required class="form-select">
-                <option value="" selected disabled>- Select a brand -</option>
-              </select>
+              <label>Who We Are</label>
+              <p style="margin: 0; line-height: 1.6;">
+                DriveX was created with the idea of building a simple, intuitive, and reliable platform for vehicle enthusiasts and everyday drivers. 
+                We focus on offering a clear and professional space where users can explore, compare, and discover cars and motorcycles in a fast and comfortable way.
+              </p>
             </div>
 
             <div class="auth-field">
-              <label for="model">Model</label>
-              <input
-                type="text"
-                id="model"
-                name="model"
-                placeholder="Model"
-                required
-              >
+              <label>What We Do</label>
+              <p style="margin: 0; line-height: 1.6;">
+                Our platform allows users to browse detailed vehicle listings with complete technical information, high-quality images, 
+                and transparent pricing. Whether you are looking for a family car, a sports vehicle, or a powerful bike, DriveX helps you find the perfect match.
+              </p>
             </div>
 
             <div class="auth-field">
-              <label for="year">Year</label>
-              <input
-                type="number"
-                id="year"
-                name="year"
-                min="1900"
-                max="2025"
-                placeholder="Year"
-                required
-              >
-            </div>
-
-
-            <div class="auth-field">
-              <label for="description">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                placeholder="Description"
-                required
-              ></textarea>
+              <label>Our Mission</label>
+              <p style="margin: 0; line-height: 1.6;">
+                We aim to modernize the traditional dealership experience by combining technology and simplicity. 
+                Our mission is to create a trusted environment where buying and selling vehicles becomes a smooth and enjoyable process for everyone.
+              </p>
             </div>
 
             <div class="auth-field">
-              <label for="price">Price</label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                min="0"
-                max="10000000"
-                step="1"
-                placeholder="Price"
-                required
-              >
-            </div>
-
-
-            <div class="auth-field">
-              <label for="doors">Doors</label>
-              <input
-                type="number"
-                id="doors"
-                name="doors"
-                min="0"
-                max="5"
-                step="1"
-                placeholder="Doors"
-                value="0"
-                required
-              >
+              <label>Our Values</label>
+              <ul style="margin: 0; padding-left: 18px; line-height: 1.8;">
+                <li><strong>Transparency:</strong> Honest and detailed information for every vehicle.</li>
+                <li><strong>Quality:</strong> Professional listings with accurate specifications.</li>
+                <li><strong>Trust:</strong> A secure and reliable platform for all users.</li>
+                <li><strong>Simplicity:</strong> Easy-to-use design focused on user experience.</li>
+                <li><strong>Innovation:</strong> Constant improvement and new features.</li>
+              </ul>
             </div>
 
             <div class="auth-field">
-              <label for="vehicle_type">Vehicle Type</label>
-              <select id="vehicle_type" name="vehicle_type" required class="form-select">
-                <option value="" disabled selected> - Vehicle Type - </option>
-                <option value="" disabled> - Cars - </option>
-                <option value="Sedan">Sedan</option>
-                <option value="Suv">Suv</option>
-                <option value="Hatchback">Hatchback</option>
-                <option value="Off-road / 4x4">Off-road / 4x4</option>
-                <option value="Van">Van</option>
-                <option value="MPV / Minivan">MPV / Minivan</option>
-                <option value="Pickup">Pickup</option>
-                <option value="Sport Car">Sport Car</option>
-                <option value="Hyper car">Hyper car</option>
-                <option value="" disabled> - Bikes - </option>
-                <option value="Sport Bike">Sport Bike</option>
-                <option value="Custom">Custom</option>
-                <option value="Naked">Naked</option>
-                <option value="Enduro">Enduro</option>
-                <option value="Trial">Trial</option>
-                <option value="MotoCross">MotoCross</option>
-                <option value="Trail">Trail</option>
-                <option value="Touring">Touring</option>
-              </select>
-            </div>
+              <label>The Team</label>
+              <p style="margin: 0; line-height: 1.6;">
+                DriveX has been developed as a collaborative project by a passionate team of developers:
+              </p>
 
+              <ul style="margin-top: 10px; padding-left: 18px; line-height: 1.8;">
+                <li><strong>Marcos Solano</strong></li>
+                <li><strong>Pablo Craven</strong></li>
+                <li><strong>Rodrigo Faure</strong></li>
+                <li><strong>Ignacio Castillon</strong></li>
+              </ul>
 
-            <div class="auth-field">
-              <label for="mileage">Mileage</label>
-              <input
-                type="number"
-                id="mileage"
-                name="mileage"
-                min="0"
-                step="1"
-                placeholder="Mileage"
-                required
-              >
-            </div>
-
-            
-
-            <div class="auth-field">
-              <label for="hp">Hp</label>
-              <input
-                type="number"
-                id="hp"
-                name="hp"
-                min="1"
-                max="2000"
-                placeholder="HorsePower"
-                required
-              >
+              <p style="margin-top: 10px; line-height: 1.6;">
+                Together we have combined our knowledge and creativity to build a platform that reflects our passion for technology and vehicles.
+              </p>
             </div>
 
             <div class="auth-field">
-              <label for="autonomy">Autonomy</label>
-              <input
-                type="number"
-                id="autonomy"
-                name="autonomy"
-                min="1"
-                placeholder="Autonomy"
-                required
-              >
+              <label>Contact Us</label>
+              <p style="margin: 0; line-height: 1.6;">
+                If you have any questions, suggestions, or need assistance, feel free to contact our team. 
+                We are always happy to help and improve your experience with DriveX.
+              </p>
             </div>
 
-            <div class="auth-field">
-              <label for="average_consumption">Average Consumption</label>
-              <input
-                type="number"
-                id="average_consumption"
-                name="average_consumption"
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="Average Consumption"
-                required
-              >
-            </div>
+          </div>
 
-            <div class="auth-field">
-              <label for="fuel_type">Fuel Type</label>
-              <select id="fuel_type" name="fuel_type" required class="form-select">
-                <option value="" disabled selected> - Fuel Type - </option>
-                <option value="Gasoline">Gasoline</option>
-                <option value="Diesel">Diesel</option>
-                <option value="Electric">Electric</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Plug-in Hybrid">Plug-in Hybrid</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            
-
-            <div class="auth-field">
-              <label for="extras">Extras</label>
-              <select id="extras" name="extras" multiple size="10" class="form-select">
-                <option value="ABS">ABS</option>
-                <option value="Airbags">Airbags</option>
-                <option value="Automatic Climate Control">Automatic Climate Control</option>
-                <option value="Bluetooth">Bluetooth</option>
-                <option value="Cruise Control">Cruise Control</option>
-                <option value="Navigation System">Navigation System</option>
-                <option value="Parking Sensors">Parking Sensors</option>
-                <option value="Rear Camera">Rear Camera</option>
-                <option value="360 Camera">360 Camera</option>
-                <option value="Sunroof">Sunroof</option>
-                <option value="Panoramic Roof">Panoramic Roof</option>
-                <option value="Leather Seats">Leather Seats</option>
-                <option value="Heated Seats">Heated Seats</option>
-                <option value="Ventilated Seats">Ventilated Seats</option>
-                <option value="Sport Seats">Sport Seats</option>
-                <option value="Electric Seats">Electric Seats</option>
-                <option value="Keyless Entry">Keyless Entry</option>
-                <option value="Keyless Start">Keyless Start</option>
-                <option value="LED Headlights">LED Headlights</option>
-                <option value="Xenon Headlights">Xenon Headlights</option>
-                <option value="Fog Lights">Fog Lights</option>
-                <option value="Alloy Wheels">Alloy Wheels</option>
-                <option value="Sport Exhaust">Sport Exhaust</option>
-                <option value="Adaptive Cruise Control">Adaptive Cruise Control</option>
-                <option value="Lane Assist">Lane Assist</option>
-                <option value="Blind Spot Assist">Blind Spot Assist</option>
-                <option value="Traffic Sign Recognition">Traffic Sign Recognition</option>
-                <option value="Automatic Emergency Braking">Automatic Emergency Braking</option>
-                <option value="Android Auto">Android Auto</option>
-                <option value="Apple CarPlay">Apple CarPlay</option>
-                <option value="Premium Sound System">Premium Sound System</option>
-                <option value="Wireless Charger">Wireless Charger</option>
-                <option value="Tow Hitch">Tow Hitch</option>
-                <option value="Roof Rack">Roof Rack</option>
-                <option value="Tinted Windows">Tinted Windows</option>
-                <option value="Air Suspension">Air Suspension</option>
-                <option value="Sport Suspension">Sport Suspension</option>
-              </select>
-            
-              <small>Hold CTRL (Windows) o CMD (Mac) para seleccionar múltiples extras.</small>
-            </div>
-
-            <div class="auth-field">
-              <label for="photos">Photos (max 15)</label>
-              <input
-                type="file"
-                id="photos"
-                name="photos"
-                multiple
-                accept="image/*"
-              >
-              <small>You can upload up to 15 images.</small>
-            </div>
-
-            <button type="submit" class="btn btn-primary auth-button">
-              Add vehicle
-            </button>
-          </form>
         </section>
       </main>
 
@@ -266,10 +96,5 @@
         <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
       </footer>
     </div>
-
-    <script>
-      window.BACKEND_URL = "<%= process.env.BACKEND_URL || 'http://localhost:8080/api' %>";
-    </script>
-    <script src="/js/add.js"></script>
   </body>
 </html>
