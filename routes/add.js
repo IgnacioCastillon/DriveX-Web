@@ -5,7 +5,7 @@ const path = require("path");
 const FormData = require("form-data");
 
 
-router.get("/addVehicle", (req, res) => {
+router.get("/add", (req, res) => {
     if (!req.session.user) {
       return res.redirect("/login");
     }
