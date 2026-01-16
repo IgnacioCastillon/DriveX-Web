@@ -11,13 +11,13 @@ const BACKEND_URL =
 const PHP_UPLOAD_URL =
   "https://darkorchid-chicken-425842.hostingersite.com/upload-image-users.php";
 
-// Multer para recibir archivo en memoria
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { files: 1 }
 });
 
-// Middleware admin
+
 function requireAdmin(req, res, next) {
   if (!req.session.user || req.session.user.role !== "Admin") {
     return res.status(403).send("Forbidden");
@@ -25,9 +25,9 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-/* ============================================================
-   LISTAR USERS
-============================================================ */
+
+
+
 router.get("/users", async (req, res) => {
   const search = req.query.search || "";
   const page = parseInt(req.query.page || "1", 10);
@@ -85,9 +85,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
-/* ============================================================
-   CREAR USER + SUBIR FOTO
-============================================================ */
+
 router.post("/users", requireAdmin, upload.single("photo"), async (req, res) => {
   const { username, email, password_hash, role } = req.body;
   const file = req.file;
@@ -95,7 +93,7 @@ router.post("/users", requireAdmin, upload.single("photo"), async (req, res) => 
   try {
     let profileImageName = null;
 
-    /* 1️⃣ Subir foto al servidor PHP (Hostinger) */
+
     if (file) {
       const formData = new FormData();
 
@@ -111,14 +109,14 @@ router.post("/users", requireAdmin, upload.single("photo"), async (req, res) => 
         headers: formData.getHeaders(),
       });
 
-      // Nombre de archivo que devuelve tu PHP
+
       profileImageName =
         phpResponse.data.url ||
         phpResponse.data.url ||
         null;
     }
 
-    /* 2️⃣ Crear usuario en tu backend Spring */
+
     await axios.post(`${BACKEND_URL}/users`, {
       username,
       email,

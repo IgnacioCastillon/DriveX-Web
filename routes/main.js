@@ -33,12 +33,12 @@ router.get("/", async (req, res) => {
 
     const response = await axios.get(apiUrl);
 
-    // 🔍 Aseguramos que sea SIEMPRE un array
+
     let allVehicles;
     if (Array.isArray(response.data)) {
       allVehicles = response.data;
     } else if (Array.isArray(response.data.content)) {
-      // Por si tu backend devuelve Page<Vehicle>
+
       allVehicles = response.data.content;
     } else {
       console.log("Respuesta rara de /api/vehicles:", response.data);
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
     const vehicles = allVehicles.slice(start, end);
 
     if (partial) {
-      // respuesta para AJAX (fetch en main.js del front)
+
       return res.json({
         vehicles,
         search,
@@ -64,7 +64,7 @@ router.get("/", async (req, res) => {
       });
     }
 
-    // respuesta normal (primera carga)
+
     res.render("main", {
       vehicles,
       search,

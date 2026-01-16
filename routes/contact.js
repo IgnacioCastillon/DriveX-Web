@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const nodemailer = require("nodemailer");  // 👈 faltaba esto
+const nodemailer = require("nodemailer"); 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
 function requireAuth(req, res, next) {
@@ -52,7 +52,7 @@ ${body}
   } catch (err) {
     console.error("Error enviando correo:", err);
     res.render("contact", {
-      error: "❌ Hubo un problema enviando tu mensaje. Inténtalo más tarde.",
+      error: "Hubo un problema enviando tu mensaje. Inténtalo más tarde.",
       success: null,
     });
   }

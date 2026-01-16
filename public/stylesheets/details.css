@@ -42,7 +42,7 @@
     color: #0f172a;
   }
   
-  /* HEADER DETALLES */
+
   .details-header {
     padding: 20px 24px;
     display: flex;
@@ -75,7 +75,7 @@
     color: #0f172a;
   }
   
-  /* MAIN LAYOUT */
+
   .details-main {
     max-width: 1200px;
     margin: 40px auto;
@@ -85,7 +85,7 @@
     gap: 40px;
   }
   
-  /* GALLERY */
+
   .details-gallery {
     display: flex;
     flex-direction: column;
@@ -130,7 +130,7 @@
     border-color: #93c5fd;
   }
   
-  /* INFO SECTION */
+
   .details-info {
     background: #ffffff;
     padding: 25px;
@@ -156,14 +156,14 @@
     color: #111827;
   }
   
-  /* PRICE */
+
   .details-info p:first-of-type {
     font-size: 22px;
     font-weight: 700;
     color: #2563eb;
   }
   
-  /* LISTA EXTRAS */
+
   .vehicle-extras {
     list-style: none;
     padding-left: 0;

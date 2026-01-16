@@ -65,7 +65,7 @@ router.get("/addVehicle", (req, res) => {
   
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
-          if (!file || !file.buffer) continue; // por si acaso
+          if (!file || !file.buffer) continue; 
   
           const cleanBrand = (brand || "car").replace(/\s+/g, "_");
           const cleanModel = (model || "model").replace(/\s+/g, "_");
@@ -84,7 +84,7 @@ router.get("/addVehicle", (req, res) => {
           form.append("model", model || "");
           form.append("vehicle_id", String(vehicle.id));
   
-          // Subir a Hostinger
+
           const uploadRes = await axios.post(
             "https://darkorchid-chicken-425842.hostingersite.com/upload-image.php",
             form,
@@ -101,7 +101,7 @@ router.get("/addVehicle", (req, res) => {
   
         res.redirect("/");
       } catch (err) {
-        console.error("❌ ERROR:", err.response?.data || err.message || err);
+        console.error("ERROR:", err.response?.data || err.message || err);
         res.status(400).send("Error creando vehículo");
       }
     }
