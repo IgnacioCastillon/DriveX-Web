@@ -5,8 +5,9 @@ require("dotenv").config();
 
 const app = express();
 
+
 app.use(session({
-  secret: process.env.SESSION_SECRET || "drivex-dev-secret", 
+  secret: process.env.SESSION_SECRET || "drivex-dev-secret",
   resave: false,
   saveUninitialized: false
 }));
@@ -46,10 +47,7 @@ const aboutUsRouter = require("./routes/aboutUs");
 app.use("/", aboutUsRouter)
 
 const addRouter = require("./routes/add");
-app.use("/", addRouter);   
-
-
-
+app.use("/", addRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
