@@ -5,35 +5,34 @@ require("dotenv").config();
 
 const app = express();
 
-// 🔐 Sesiones
 app.use(session({
-  secret: process.env.SESSION_SECRET || "drivex-dev-secret", // por si no tienes .env aún
+  secret: process.env.SESSION_SECRET || "drivex-dev-secret", 
   resave: false,
   saveUninitialized: false
 }));
 
-// 👤 Hacer disponible el usuario en TODAS las vistas EJS
+
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
 
-// 🎨 Motor de vistas
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// 📂 Archivos estáticos (CSS, imágenes, JS del front)
+
 app.use(express.static(path.join(__dirname, "public")));
 
-// 📨 Para leer req.body en POST
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// 🛻 Rutas catálogo
+
 const vehiclesRoutes = require("./routes/main");
 app.use("/", vehiclesRoutes);
 
-// 🔐 Rutas login / register
+
 const loginRoutes = require("./routes/login");
 app.use("/", loginRoutes);
 
@@ -46,9 +45,12 @@ app.use("/", contactRouter);
 const aboutUsRouter = require("./routes/aboutUs");
 app.use("/", aboutUsRouter)
 
+const addRouter = require("./routes/add");
+app.use("/", addRouter);   
 
 
-// 🚀 Arrancar servidor
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Servidor Node UI en http://localhost:" + PORT);
