@@ -34,6 +34,13 @@
     align-items: center;
     gap: 8px;
   }
+
+  .about-logo img {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
   
 
   
