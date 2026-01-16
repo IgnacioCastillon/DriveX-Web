@@ -32,15 +32,7 @@
   .about-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-  }
-  
-  .about-logo img {
-    width: 40px;
-    height: 40px;
+    gap: 8px;
   }
   
 
