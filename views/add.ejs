@@ -1,206 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveX · Add Vehicle</title>
-    <link rel="stylesheet" href="/stylesheets/login.css">
-  </head>
-  <body class="auth-body">
-    <div class="auth-wrapper">
-      <header class="auth-header">
-        <div class="home-logo">
-          <img src="/images/logo.png" alt="DriveX logo">
-          <span>DriveX</span>
-        </div>
-      </header>
 
-      <main class="auth-main">
-        <section class="auth-card">
-          <h1 class="auth-title">Add Vehicle</h1>
-          <p class="auth-subtitle">
-            Complete all the fields to add a new vehicle.
-          </p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveX · Add Vehicle</title>
+  <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/login.css">
+</head>
 
-          <form
-            class="auth-form"
-            method="post"
-            action="/addVehicle"
-            enctype="multipart/form-data"
-          >
-            
+<body class="auth-body">
+  <div class="auth-wrapper" style="max-width: 800px;">
+    <header class="auth-header">
+      <a href="/" class="logo">
+        <img src="/images/logo.png" alt="DriveX logo">
+        <span>DriveX</span>
+      </a>
+    </header>
 
+    <main class="auth-main">
+      <section class="auth-card">
+        <h1 class="auth-title">Add New Vehicle</h1>
+        <p class="auth-subtitle">
+          Provide the details for the new listing in our premium catalog.
+        </p>
+
+        <form class="auth-form" method="post" action="/addVehicle" enctype="multipart/form-data"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <!-- Column 1 -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
             <div class="auth-field">
               <label for="brand">Brand</label>
-              <select id="brand" name="brand" required class="form-select">
+              <select id="brand" name="brand" required>
                 <option value="" selected disabled>- Select a brand -</option>
               </select>
             </div>
 
             <div class="auth-field">
               <label for="model">Model</label>
-              <input
-                type="text"
-                id="model"
-                name="model"
-                placeholder="Model"
-                required
-              >
-            </div>
-
-            <div class="auth-field">
-              <label for="year">Year</label>
-              <input
-                type="number"
-                id="year"
-                name="year"
-                min="1900"
-                max="2025"
-                placeholder="Year"
-                required
-              >
-            </div>
-
-
-            <div class="auth-field">
-              <label for="description">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                placeholder="Description"
-                required
-              ></textarea>
-            </div>
-
-            <div class="auth-field">
-              <label for="price">Price</label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                min="0"
-                max="10000000"
-                step="1"
-                placeholder="Price"
-                required
-              >
-            </div>
-
-
-            <div class="auth-field">
-              <label for="doors">Doors</label>
-              <input
-                type="number"
-                id="doors"
-                name="doors"
-                min="0"
-                max="5"
-                step="1"
-                placeholder="Doors"
-                value="0"
-                required
-              >
+              <input type="text" id="model" name="model" placeholder="e.g. Model S" required>
             </div>
 
             <div class="auth-field">
               <label for="vehicle_type">Vehicle Type</label>
-              <select id="vehicle_type" name="vehicle_type" required class="form-select">
-                <option value="" disabled selected> - Vehicle Type - </option>
-                <option value="" disabled> - Cars - </option>
-                <option value="Sedan">Sedan</option>
-                <option value="Suv">Suv</option>
-                <option value="Hatchback">Hatchback</option>
-                <option value="Off-road / 4x4">Off-road / 4x4</option>
-                <option value="Van">Van</option>
-                <option value="MPV / Minivan">MPV / Minivan</option>
-                <option value="Pickup">Pickup</option>
-                <option value="Sport Car">Sport Car</option>
-                <option value="Hyper car">Hyper car</option>
-                <option value="" disabled> - Bikes - </option>
-                <option value="Sport Bike">Sport Bike</option>
-                <option value="Custom">Custom</option>
-                <option value="Naked">Naked</option>
-                <option value="Enduro">Enduro</option>
-                <option value="Trial">Trial</option>
-                <option value="MotoCross">MotoCross</option>
-                <option value="Trail">Trail</option>
-                <option value="Touring">Touring</option>
+              <select id="vehicle_type" name="vehicle_type" required>
+                <option value="" disabled selected> - Select Type - </option>
+                <optgroup label="Cars">
+                  <option value="Sedan">Sedan</option>
+                  <option value="Suv">Suv</option>
+                  <option value="Hatchback">Hatchback</option>
+                  <option value="Off-road / 4x4">Off-road / 4x4</option>
+                  <option value="Van">Van</option>
+                  <option value="MPV / Minivan">MPV / Minivan</option>
+                  <option value="Pickup">Pickup</option>
+                  <option value="Sport Car">Sport Car</option>
+                  <option value="Hyper car">Hyper car</option>
+                </optgroup>
+                <optgroup label="Bikes">
+                  <option value="Sport Bike">Sport Bike</option>
+                  <option value="Custom">Custom</option>
+                  <option value="Naked">Naked</option>
+                  <option value="Enduro">Enduro</option>
+                  <option value="Trial">Trial</option>
+                  <option value="MotoCross">MotoCross</option>
+                  <option value="Trail">Trail</option>
+                  <option value="Touring">Touring</option>
+                </optgroup>
               </select>
             </div>
 
-
-            <div class="auth-field">
-              <label for="mileage">Mileage</label>
-              <input
-                type="number"
-                id="mileage"
-                name="mileage"
-                min="0"
-                step="1"
-                placeholder="Mileage"
-                required
-              >
-            </div>
-
-            
-
-            <div class="auth-field">
-              <label for="hp">Hp</label>
-              <input
-                type="number"
-                id="hp"
-                name="hp"
-                min="1"
-                max="2000"
-                placeholder="HorsePower"
-                required
-              >
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="auth-field">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" min="1900" max="2026" placeholder="2024" required>
+              </div>
+              <div class="auth-field">
+                <label for="price">Price (€)</label>
+                <input type="number" id="price" name="price" min="0" placeholder="50000" required>
+              </div>
             </div>
 
             <div class="auth-field">
-              <label for="autonomy">Autonomy</label>
-              <input
-                type="number"
-                id="autonomy"
-                name="autonomy"
-                min="1"
-                placeholder="Autonomy"
-                required
-              >
+              <label for="description">Description</label>
+              <textarea id="description" name="description" placeholder="Describe the vehicle..." rows="5"
+                required></textarea>
             </div>
 
             <div class="auth-field">
-              <label for="average_consumption">Average Consumption</label>
-              <input
-                type="number"
-                id="average_consumption"
-                name="average_consumption"
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="Average Consumption"
-                required
-              >
+              <label for="photos">Vehicle Photos</label>
+              <input type="file" id="photos" name="photos" multiple accept="image/*">
+              <small>Select up to 15 high-quality images.</small>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="auth-field">
+                <label for="mileage">Mileage (miles)</label>
+                <input type="number" id="mileage" name="mileage" min="0" placeholder="0" required>
+              </div>
+              <div class="auth-field">
+                <label for="doors">Doors</label>
+                <input type="number" id="doors" name="doors" min="0" max="5" value="4" required>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="auth-field">
+                <label for="hp">Horsepower (HP)</label>
+                <input type="number" id="hp" name="hp" min="1" placeholder="150" required>
+              </div>
+              <div class="auth-field">
+                <label for="fuel_type">Fuel Type</label>
+                <select id="fuel_type" name="fuel_type" required>
+                  <option value="" disabled selected> - Fuel - </option>
+                  <option value="Gasoline">Gasoline</option>
+                  <option value="Diesel">Diesel</option>
+                  <option value="Electric">Electric</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Plug-in Hybrid">Plug-in Hybrid</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="auth-field">
+                <label for="autonomy">Range (miles)</label>
+                <input type="number" id="autonomy" name="autonomy" min="1" placeholder="400" required>
+              </div>
+              <div class="auth-field">
+                <label for="average_consumption">Consumption (L/100m)</label>
+                <input type="number" id="average_consumption" name="average_consumption" min="0" step="0.1"
+                  placeholder="6.5" required>
+              </div>
             </div>
 
             <div class="auth-field">
-              <label for="fuel_type">Fuel Type</label>
-              <select id="fuel_type" name="fuel_type" required class="form-select">
-                <option value="" disabled selected> - Fuel Type - </option>
-                <option value="Gasoline">Gasoline</option>
-                <option value="Diesel">Diesel</option>
-                <option value="Electric">Electric</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Plug-in Hybrid">Plug-in Hybrid</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            
-
-            <div class="auth-field">
-              <label for="extras">Extras</label>
-              <select id="extras" name="extras" multiple size="10" class="form-select">
+              <label for="extras">Extras & Features</label>
+              <select id="extras" name="extras" multiple>
                 <option value="ABS">ABS</option>
                 <option value="Airbags">Airbags</option>
                 <option value="Automatic Climate Control">Automatic Climate Control</option>
@@ -239,37 +178,28 @@
                 <option value="Air Suspension">Air Suspension</option>
                 <option value="Sport Suspension">Sport Suspension</option>
               </select>
-            
-              <small>Hold CTRL (Windows) o CMD (Mac) para seleccionar múltiples extras.</small>
+              <small>Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
             </div>
 
-            <div class="auth-field">
-              <label for="photos">Photos (max 15)</label>
-              <input
-                type="file"
-                id="photos"
-                name="photos"
-                multiple
-                accept="image/*"
-              >
-              <small>You can upload up to 15 images.</small>
-            </div>
-
-            <button type="submit" class="btn btn-primary auth-button">
-              Add vehicle
+            <button type="submit" class="btn-premium primary auth-button">
+              Publish Vehicle
             </button>
-          </form>
-        </section>
-      </main>
 
-      <footer class="auth-footer">
-        <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
-      </footer>
-    </div>
+            <a href="/" class="btn-premium secondary">Cancel</a>
+          </div>
+        </form>
+      </section>
+    </main>
 
-    <script>
-      window.BACKEND_URL = "<%= process.env.BACKEND_URL || 'http://localhost:8080/api' %>";
-    </script>
-    <script src="/js/add.js"></script>
-  </body>
+    <footer class="auth-footer">
+      <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
+    </footer>
+  </div>
+
+  <script>
+    window.BACKEND_URL = "<%= typeof process !== 'undefined' ? (process.env.BACKEND_URL || 'http://localhost:8080/api') : 'http://localhost:8080/api' %>";
+  </script>
+  <script src="/js/add.js"></script>
+</body>
+
 </html>

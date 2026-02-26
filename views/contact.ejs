@@ -1,81 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveX · Contact Form</title>
-    <link rel="stylesheet" href="/stylesheets/login.css">
-  </head>
-  <body class="auth-body">
-    <div class="auth-wrapper">
-      <header class="auth-header">
-        <div class="home-logo">
-          <img src="/images/logo.png" alt="DriveX logo">
-          <span>DriveX</span>©
-        </div>
-      </header>
 
-      <main class="auth-main">
-        <section class="auth-card">
-          <h1 class="auth-title">Contact Form</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveX · Contact Form</title>
+  <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/login.css">
+  <style>
+    textarea {
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      background: white;
+      transition: var(--transition-base);
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+    }
 
-          
+    textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
 
-          <form class="auth-form" method="post" action="/contact">
-            <div class="auth-field">
-              <label for="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Your name"
-                required
-              >
-            </div>
-          
-            <div class="auth-field">
-              <label for="reason">Reason</label>
-              <input
-                type="text"
-                id="reason"
-                name="reason"
-                placeholder="Reason"
-                required
-              >
-            </div>
-          
-            <div class="auth-field">
-              <label for="body">Body</label>
-              <textarea
-                id="body"
-                name="body"
-                placeholder="Body"
-                rows="4"
-                required
-              ></textarea>
-            </div>
+    .auth-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1rem;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+  </style>
+</head>
 
-            
-                <input type="hidden" id="email" name="email" value="<%= user.email %>">
-          
-            <button type="submit" class="btn btn-primary auth-button">
-              Enviar
-            </button>
-          
-            <% if (success) { %>
-              <p class="auth-success"><%= success %></p>
-            <% } %>
-          
-            <% if (error) { %>
-              <p class="auth-error"><%= error %></p>
-            <% } %>
-          </form>
-        </section>
-      </main>
+<body class="auth-body">
+  <div class="auth-wrapper">
+    <header class="auth-header">
+      <a href="/" class="logo">
+        <img src="/images/logo.png" alt="DriveX logo">
+        <span>DriveX</span>
+      </a>
+    </header>
 
-      <footer class="auth-footer">
-        <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
-      </footer>
-    </div>
-  </body>
+    <main class="auth-main">
+      <section class="auth-card">
+        <h1 class="auth-title">Contact Us</h1>
+        <p class="auth-subtitle">Send us a message and we'll get back to you shortly</p>
+
+        <form class="auth-form" method="post" action="/contact">
+          <div class="auth-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
+          </div>
+
+          <div class="auth-field">
+            <label for="reason">Subject</label>
+            <input type="text" id="reason" name="reason" placeholder="What is this about?" required>
+          </div>
+
+          <div class="auth-field">
+            <label for="body">Message</label>
+            <textarea id="body" name="body" placeholder="Write your message here..." rows="4" required></textarea>
+          </div>
+
+          <% if (typeof user !=='undefined' && user) { %>
+            <input type="hidden" id="email" name="email" value="<%= user.email %>">
+            <% } else { %>
+              <div class="auth-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+              </div>
+              <% } %>
+
+                <button type="submit" class="btn-premium primary auth-button">
+                  Send Message
+                </button>
+
+                <% if (typeof success !=='undefined' && success) { %>
+                  <p class="auth-success">
+                    <%= success %>
+                  </p>
+                  <% } %>
+
+                    <% if (typeof error !=='undefined' && error) { %>
+                      <p class="auth-error">
+                        <%= error %>
+                      </p>
+                      <% } %>
+
+                        <p class="auth-extra">
+                          <a href="/">← Return to Catalog</a>
+                        </p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="auth-footer">
+      <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
+    </footer>
+  </div>
+</body>
+
 </html>

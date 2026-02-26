@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DriveX · About Us</title>
+  <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/aboutUs.css">
 </head>
 
 <body class="about-body">
 
-  <div class="about-container">
+  <div class="home-wrapper">
 
-    <header class="about-header">
-      <div class="about-logo">
-        <a href="/">
-          <img src="/images/logo.png" alt="DriveX logo">
-        </a>
+    <header class="main-header glass-panel">
+      <div class="header-container">
+        <div class="header-left">
+          <a href="/" class="logo">
+            <img src="/images/logo.png" alt="DriveX logo">
+            <span>DriveX</span>
+          </a>
+        </div>
+
+        <div class="header-center">
+          <nav class="main-nav">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/aboutUs" class="nav-link active">About Us</a>
+            <a href="/contact" class="nav-link">Contact</a>
+          </nav>
+        </div>
+
+        <div class="header-right">
+          <div class="auth-buttons">
+            <% if (!user) { %>
+              <a href="/login" class="btn-premium primary">Log in</a>
+              <% } else { %>
+                <div class="user-profile">
+                  <span class="user-name">
+                    <%= user.name %>
+                  </span>
+                  <a href="/logout" class="btn-premium secondary">Sign out</a>
+                </div>
+                <% } %>
+          </div>
+        </div>
       </div>
-
-      
-      
-      
-
-
-      
     </header>
 
     <main class="about-main">
@@ -33,7 +54,8 @@
         <h1 class="about-title">About Us</h1>
 
         <p class="about-subtitle">
-          DriveX is a modern land-vehicle dealership platform designed to make buying and selling vehicles easier than ever.
+          DriveX is a modern land-vehicle dealership platform designed to make buying and selling vehicles easier than
+          ever.
         </p>
 
         <div class="about-content">
@@ -41,35 +63,40 @@
           <div class="about-section">
             <h2>Who We Are</h2>
             <p>
-              DriveX was created with the idea of building a simple, intuitive, and reliable platform for vehicle enthusiasts and everyday drivers. 
-              We focus on offering a clear and professional space where users can explore, compare, and discover cars and motorcycles in a fast and comfortable way.
+              DriveX was created with the idea of building a simple, intuitive, and reliable platform for vehicle
+              enthusiasts and everyday drivers.
+              We focus on offering a clear and professional space where users can explore, compare, and discover cars
+              and motorcycles in a fast and comfortable way.
             </p>
           </div>
 
           <div class="about-section">
             <h2>What We Do</h2>
             <p>
-              Our platform allows users to browse detailed vehicle listings with complete technical information, high-quality images, 
-              and transparent pricing. Whether you are looking for a family car, a sports vehicle, or a powerful bike, DriveX helps you find the perfect match.
+              Our platform allows users to browse detailed vehicle listings with complete technical information,
+              high-quality images,
+              and transparent pricing. Whether you are looking for a family car, a sports vehicle, or a powerful bike,
+              DriveX helps you find the perfect match.
             </p>
           </div>
 
           <div class="about-section">
             <h2>Our Mission</h2>
             <p>
-              We aim to modernize the traditional dealership experience by combining technology and simplicity. 
-              Our mission is to create a trusted environment where buying and selling vehicles becomes a smooth and enjoyable process for everyone.
+              We aim to modernize the traditional dealership experience by combining technology and simplicity.
+              Our mission is to create a trusted environment where buying and selling vehicles becomes a smooth and
+              enjoyable process for everyone.
             </p>
           </div>
 
           <div class="about-section">
             <h2>Our Values</h2>
             <ul class="about-list">
-              <li><strong>Transparency:</strong> Honest and detailed information for every vehicle.</li>
-              <li><strong>Quality:</strong> Professional listings with accurate specifications.</li>
-              <li><strong>Trust:</strong> A secure and reliable platform for all users.</li>
-              <li><strong>Simplicity:</strong> Easy-to-use design focused on user experience.</li>
-              <li><strong>Innovation:</strong> Constant improvement and new features.</li>
+              <li><strong>Transparency</strong> Honest and detailed information for every vehicle.</li>
+              <li><strong>Quality</strong> Professional listings with accurate specifications.</li>
+              <li><strong>Trust</strong> A secure and reliable platform for all users.</li>
+              <li><strong>Simplicity</strong> Easy-to-use design focused on user experience.</li>
+              <li><strong>Innovation</strong> Constant improvement and new features.</li>
             </ul>
           </div>
 
@@ -87,14 +114,15 @@
             </ul>
 
             <p>
-              Together we have combined our knowledge and creativity to build a platform that reflects our passion for technology and vehicles.
+              Together we have combined our knowledge and creativity to build a platform that reflects our passion for
+              technology and vehicles.
             </p>
           </div>
 
           <div class="about-section">
             <h2>Contact Us</h2>
             <p>
-              If you have any questions, suggestions, or need assistance, feel free to contact our team. 
+              If you have any questions, suggestions, or need assistance, feel free to contact our team.
               We are always happy to help and improve your experience with DriveX.
             </p>
           </div>
@@ -112,4 +140,5 @@
   </div>
 
 </body>
+
 </html>
