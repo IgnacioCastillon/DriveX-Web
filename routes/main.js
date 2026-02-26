@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
       allVehicles = [];
     }
 
-    // ✅ Cargar favoritos del usuario (para pintar ❤️/🤍)
+    // ✅ Cargar favoritos del usuario (para pintar estrella)
     let favoriteIds = [];
     if (req.session.user && req.session.user.id) {
       try {
@@ -67,7 +67,7 @@ router.get("/", async (req, res) => {
         currentPage,
         totalPages,
         totalVehicles,
-        favoriteIds, // ✅ por si haces render parcial con JS
+        favoriteIds,
       });
     }
 
@@ -78,7 +78,7 @@ router.get("/", async (req, res) => {
       totalPages,
       totalVehicles,
       user: req.session.user || null,
-      favoriteIds, // ✅ IMPORTANTE
+      favoriteIds,
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
@@ -126,7 +126,7 @@ router.get("/", async (req, res) => {
       totalPages: 1,
       totalVehicles: 3,
       user: req.session.user || null,
-      favoriteIds: [], // ✅ para que no falle el EJS
+      favoriteIds: [],
     });
   }
 });
@@ -159,6 +159,35 @@ router.get("/vehicles/:id", async (req, res) => {
       ]
     };
     res.render("details", { vehicle: mockVehicle, user: req.session.user || null });
+  }
+});
+
+function requireLogin(req, res, next) {
+  if (!req.session.user || !req.session.user.id) {
+    return res.status(401).json({ ok: false, error: "Not logged in" });
+  }
+  next();
+}
+
+router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
+  const userId = req.session.user.id;
+  const vehicleId = req.params.vehicleId;
+
+  try {
+    const favRes = await axios.get(`${BACKEND_URL}/users/${userId}/favorites`, { timeout: 2500 });
+    const favs = Array.isArray(favRes.data) ? favRes.data : [];
+    const isFav = favs.some(v => String(v.id) === String(vehicleId));
+
+    if (isFav) {
+      await axios.delete(`${BACKEND_URL}/users/${userId}/favorites/${vehicleId}`, { timeout: 2500 });
+      return res.json({ ok: true, favorite: false });
+    } else {
+      await axios.post(`${BACKEND_URL}/users/${userId}/favorites/${vehicleId}`, null, { timeout: 2500 });
+      return res.json({ ok: true, favorite: true });
+    }
+  } catch (error) {
+    console.error("Toggle favorite error:", error.message);
+    return res.status(500).json({ ok: false, error: "Toggle failed" });
   }
 });
 
