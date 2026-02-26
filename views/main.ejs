@@ -12,7 +12,6 @@
 <body class="home-body">
   <div class="home-wrapper">
 
-
     <header class="main-header glass-panel">
       <div class="header-container">
         <div class="header-left">
@@ -29,7 +28,7 @@
             <a href="/contact" id="contact" class="nav-link">Contact</a>
             <% if (user && user.role=="Admin" ){ %>
               <a href="/users" class="nav-link admin-link">Admin</a>
-              <% } %>
+            <% } %>
           </nav>
         </div>
 
@@ -51,19 +50,16 @@
           <div class="auth-buttons">
             <% if (!user) { %>
               <a href="/login" class="btn-premium primary">Log in</a>
-              <% } else { %>
-                <div class="user-profile">
-                  <span class="user-name">
-                    <%= user.name %>
-                  </span>
-                  <a href="/logout" class="btn-premium secondary">Sign out</a>
-                </div>
-                <% } %>
+            <% } else { %>
+              <div class="user-profile">
+                <span class="user-name"><%= user.name %></span>
+                <a href="/logout" class="btn-premium secondary">Sign out</a>
+              </div>
+            <% } %>
           </div>
         </div>
       </div>
     </header>
-
 
     <main class="home-main">
       <section class="hero-section">
@@ -89,92 +85,97 @@
           <h2>Latest Arrivals</h2>
           <% if (user && user.role=="Admin" ) { %>
             <a class="btn-premium primary" href="/add">Add Vehicle</a>
-            <% } %>
+          <% } %>
         </div>
+
         <section class="vehicle-grid" id="vehicle-grid">
 
-          <% if (Array.isArray(vehicles) && vehicles.length> 0) { %>
+          <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
 
-            <% vehicles.forEach(v=> { %>
+            <% vehicles.forEach(v => { %>
               <article class="vehicle-card">
 
                 <% if (user) { %>
-                  <% const isFavorite = favoriteIds && favoriteIds.includes(v.id); %>
-<button class="fav-btn <%= isFavorite ? 'active' : '' %>" type="button" data-vehicle-id="<%= v.id %>">
-  <%= isFavorite ? '❤️' : '🤍' %>
-</button>
+                  <% const favIds = Array.isArray(favoriteIds) ? favoriteIds : []; %>
+                  <% const isFavorite = favIds.some(id => String(id) === String(v.id)); %>
+
+                  <button
+                    class="fav-btn <%= isFavorite ? 'active' : '' %>"
+                    type="button"
+                    data-vehicle-id="<%= v.id %>"
+                    aria-label="Toggle favourite"
+                    title="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
+                  >
+                    <% if (isFavorite) { %>
+                      <!-- Filled star -->
+                      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
+                      </svg>
+                    <% } else { %>
+                      <!-- Outline star -->
+                      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
+                              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      </svg>
+                    <% } %>
+                  </button>
                 <% } %>
 
                 <a href="/vehicles/<%= v.id %>" class="vehicle-link">
-                  <% const images=v.images || []; const mainImage=images.find(img=> img.isMain) || images[0];
-                    const mainSrc = mainImage ? mainImage.imageUrl :
-                    "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
-                    %>
+                  <% const images = v.images || []; %>
+                  <% const mainImage = images.find(img => img.isMain) || images[0]; %>
+                  <% const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png"; %>
 
-                    <div class="vehicle-main-image">
-                      <img src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
-                    </div>
+                  <div class="vehicle-main-image">
+                    <img src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
+                  </div>
 
-                    <div class="vehicle-info">
-                      <h3>
-                        <%= v.brand %>
-                          <%= v.model %>
-                      </h3>
-                      <p>
-                        <%= v.vehicleType %>
-                      </p>
-                      <br>
-                      <p>
-                        <%= v.price %> € ·
-                          <%= v.mileage %> miles
-                            <% if (v.year) { %> · <%= v.year %>
-                                <% } %>
-                                  <% if (v.fuelType || v.fuel_type) { %>
-                                    · <%= v.fuelType || v.fuel_type %>
-                                      <% } %>
-                      </p>
-                    </div>
+                  <div class="vehicle-info">
+                    <h3><%= v.brand %> <%= v.model %></h3>
+                    <p><%= v.vehicleType %></p>
+                    <br>
+                    <p>
+                      <%= v.price %> € · <%= v.mileage %> miles
+                      <% if (v.year) { %> · <%= v.year %><% } %>
+                      <% if (v.fuelType || v.fuel_type) { %> · <%= v.fuelType || v.fuel_type %><% } %>
+                    </p>
+                  </div>
                 </a>
-              </article>
-              <% }) %>
 
-                <% } else { %>
-                  <p class="empty-message">No hay vehículos disponibles.</p>
-                  <% } %>
+              </article>
+            <% }) %>
+
+          <% } else { %>
+            <p class="empty-message">No hay vehículos disponibles.</p>
+          <% } %>
 
         </section>
 
-
         <div class="pagination">
-          <% if (currentPage> 1) { %>
+          <% if (currentPage > 1) { %>
             <a class="arrow page-link"
               href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
-            <% } else { %>
-              <span class="arrow disabled">←</span>
-              <% } %>
+          <% } else { %>
+            <span class="arrow disabled">←</span>
+          <% } %>
 
-                <span class="current-page">
-                  <%= currentPage %>
-                </span>
+          <span class="current-page"><%= currentPage %></span>
 
-                <% if (currentPage < totalPages) { %>
-                  <a class="arrow page-link"
-                    href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
-                  <% } else { %>
-                    <span class="arrow disabled">→</span>
-                    <% } %>
+          <% if (currentPage < totalPages) { %>
+            <a class="arrow page-link"
+              href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
+          <% } else { %>
+            <span class="arrow disabled">→</span>
+          <% } %>
         </div>
 
-
       </main>
-
 
       <footer class="home-footer">
         <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
       </footer>
 
   </div>
-
 
   <div id="overlay"></div>
 
@@ -186,6 +187,63 @@
   </div>
 
   <script src="/js/main.js"></script>
+
+  <script>
+    const filledStar = `
+      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
+      </svg>
+    `;
+
+    const outlineStar = `
+      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".fav-btn");
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const vehicleId = btn.dataset.vehicleId;
+
+      if (btn.dataset.loading === "1") return;
+      btn.dataset.loading = "1";
+      btn.style.opacity = "0.75";
+
+      try {
+        const res = await fetch(`/favorites/${vehicleId}/toggle`, { method: "POST" });
+
+        if (res.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "Toggle failed");
+
+        if (data.favorite) {
+          btn.classList.add("active");
+          btn.innerHTML = filledStar;
+          btn.title = "Remove from favourites";
+        } else {
+          btn.classList.remove("active");
+          btn.innerHTML = outlineStar;
+          btn.title = "Add to favourites";
+        }
+      } catch (err) {
+        console.error(err);
+        alert("No se pudo actualizar favorito");
+      } finally {
+        btn.dataset.loading = "0";
+        btn.style.opacity = "1";
+      }
+    });
+  </script>
 </body>
 
 </html>
