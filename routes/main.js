@@ -4,11 +4,6 @@ const axios = require("axios");
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
-
-
-
-
-
 router.get("/", async (req, res) => {
   const search = req.query.search || "";
   const vehicleType = req.query.vehicleType || "";
@@ -20,29 +15,41 @@ router.get("/", async (req, res) => {
     let apiUrl = `${BACKEND_URL}/vehicles`;
 
     if (vehicleType.trim() !== "") {
-      apiUrl = `${BACKEND_URL}/vehicles/vehicleType?q=${encodeURIComponent(
-        vehicleType
-      )}`;
+      apiUrl = `${BACKEND_URL}/vehicles/vehicleType?q=${encodeURIComponent(vehicleType)}`;
     }
 
     if (search.trim() !== "") {
-      apiUrl = `${BACKEND_URL}/vehicles/search?q=${encodeURIComponent(
-        search
-      )}`;
+      apiUrl = `${BACKEND_URL}/vehicles/search?q=${encodeURIComponent(search)}`;
     }
 
     const response = await axios.get(apiUrl, { timeout: 2500 });
-
 
     let allVehicles;
     if (Array.isArray(response.data)) {
       allVehicles = response.data;
     } else if (Array.isArray(response.data.content)) {
-
       allVehicles = response.data.content;
     } else {
       console.log("Respuesta rara de /api/vehicles:", response.data);
       allVehicles = [];
+    }
+
+    // ✅ Cargar favoritos del usuario (para pintar ❤️/🤍)
+    let favoriteIds = [];
+    if (req.session.user && req.session.user.id) {
+      try {
+        const userId = req.session.user.id;
+        const favRes = await axios.get(`${BACKEND_URL}/users/${userId}/favorites`, { timeout: 2500 });
+
+        if (Array.isArray(favRes.data)) {
+          favoriteIds = favRes.data.map(v => v.id);
+        } else {
+          favoriteIds = [];
+        }
+      } catch (e) {
+        console.log("No se pudieron cargar favoritos:", e.message);
+        favoriteIds = [];
+      }
     }
 
     const totalVehicles = allVehicles.length;
@@ -54,16 +61,15 @@ router.get("/", async (req, res) => {
     const vehicles = allVehicles.slice(start, end);
 
     if (partial) {
-
       return res.json({
         vehicles,
         search,
         currentPage,
         totalPages,
         totalVehicles,
+        favoriteIds, // ✅ por si haces render parcial con JS
       });
     }
-
 
     res.render("main", {
       vehicles,
@@ -72,9 +78,11 @@ router.get("/", async (req, res) => {
       totalPages,
       totalVehicles,
       user: req.session.user || null,
+      favoriteIds, // ✅ IMPORTANTE
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
+
     const mockVehicles = [
       {
         id: 1,
@@ -118,6 +126,7 @@ router.get("/", async (req, res) => {
       totalPages: 1,
       totalVehicles: 3,
       user: req.session.user || null,
+      favoriteIds: [], // ✅ para que no falle el EJS
     });
   }
 });
@@ -152,7 +161,5 @@ router.get("/vehicles/:id", async (req, res) => {
     res.render("details", { vehicle: mockVehicle, user: req.session.user || null });
   }
 });
-
-
 
 module.exports = router;
