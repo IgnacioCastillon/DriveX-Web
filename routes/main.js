@@ -186,7 +186,10 @@ router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
       return res.json({ ok: true, favorite: true });
     }
   } catch (error) {
-    console.error("Toggle favorite error:", error.message);
+    console.error("Toggle favorite error:");
+    console.error("Status:", error.response?.status);
+    console.error("Data:", error.response?.data);
+    console.error("URL:", error.config?.url);
     return res.status(500).json({ ok: false, error: "Toggle failed" });
   }
 });
