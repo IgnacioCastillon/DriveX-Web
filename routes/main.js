@@ -39,7 +39,9 @@ router.get("/", async (req, res) => {
     if (req.session.user && req.session.user.id) {
       try {
         const userId = req.session.user.id;
-        const favRes = await axios.get(`${BACKEND_URL}/users/${userId}/favorites`, { timeout: 2500 });
+
+        // ✅ NUEVO ENDPOINT: /api/favorites/{userId}
+        const favRes = await axios.get(`${BACKEND_URL}/favorites/${userId}`, { timeout: 2500 });
 
         if (Array.isArray(favRes.data)) {
           favoriteIds = favRes.data.map(v => v.id);
@@ -174,15 +176,18 @@ router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
   const vehicleId = req.params.vehicleId;
 
   try {
-    const favRes = await axios.get(`${BACKEND_URL}/users/${userId}/favorites`, { timeout: 2500 });
+    // ✅ NUEVO ENDPOINT: /api/favorites/{userId}
+    const favRes = await axios.get(`${BACKEND_URL}/favorites/${userId}`, { timeout: 2500 });
     const favs = Array.isArray(favRes.data) ? favRes.data : [];
     const isFav = favs.some(v => String(v.id) === String(vehicleId));
 
     if (isFav) {
-      await axios.delete(`${BACKEND_URL}/users/${userId}/favorites/${vehicleId}`, { timeout: 2500 });
+      // ✅ NUEVO ENDPOINT: DELETE /api/favorites/{userId}/{vehicleId}
+      await axios.delete(`${BACKEND_URL}/favorites/${userId}/${vehicleId}`, { timeout: 2500 });
       return res.json({ ok: true, favorite: false });
     } else {
-      await axios.post(`${BACKEND_URL}/users/${userId}/favorites/${vehicleId}`, null, { timeout: 2500 });
+      // ✅ NUEVO ENDPOINT: POST /api/favorites/{userId}/{vehicleId}
+      await axios.post(`${BACKEND_URL}/favorites/${userId}/${vehicleId}`, null, { timeout: 2500 });
       return res.json({ ok: true, favorite: true });
     }
   } catch (error) {
@@ -190,7 +195,7 @@ router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
     const upstreamData = error.response?.data || null;
     const upstreamUrl = error.config?.url || null;
     const code = error.code || null;
-  
+
     console.error("Toggle favorite error:", {
       code,
       upstreamStatus,
@@ -198,8 +203,7 @@ router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
       upstreamData,
       message: error.message
     });
-  
-    // 👇 Esto es lo importante: devolver el error REAL al navegador
+
     return res.status(500).json({
       ok: false,
       error: "Toggle failed",
