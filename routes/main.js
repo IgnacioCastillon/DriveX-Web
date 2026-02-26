@@ -186,11 +186,28 @@ router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
       return res.json({ ok: true, favorite: true });
     }
   } catch (error) {
-    console.error("Toggle favorite error:");
-    console.error("Status:", error.response?.status);
-    console.error("Data:", error.response?.data);
-    console.error("URL:", error.config?.url);
-    return res.status(500).json({ ok: false, error: "Toggle failed" });
+    const upstreamStatus = error.response?.status || 0;
+    const upstreamData = error.response?.data || null;
+    const upstreamUrl = error.config?.url || null;
+    const code = error.code || null;
+  
+    console.error("Toggle favorite error:", {
+      code,
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      message: error.message
+    });
+  
+    // 👇 Esto es lo importante: devolver el error REAL al navegador
+    return res.status(500).json({
+      ok: false,
+      error: "Toggle failed",
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      code
+    });
   }
 });
 
