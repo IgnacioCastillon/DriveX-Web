@@ -4,6 +4,20 @@ const axios = require("axios");
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
+function requireLoginPage(req, res, next) {
+  if (!req.session.user || !req.session.user.id) {
+    return res.redirect("/login");
+  }
+  next();
+}
+
+function requireLogin(req, res, next) {
+  if (!req.session.user || !req.session.user.id) {
+    return res.status(401).json({ ok: false, error: "Not logged in" });
+  }
+  next();
+}
+
 router.get("/", async (req, res) => {
   const search = req.query.search || "";
   const vehicleType = req.query.vehicleType || "";
@@ -40,8 +54,8 @@ router.get("/", async (req, res) => {
       try {
         const userId = req.session.user.id;
 
-        // ✅ NUEVO ENDPOINT: /api/favorites/{userId}
-        const favRes = await axios.get(`${BACKEND_URL}/favorites/${userId}`, { timeout: 2500 });
+        // ✅ API REAL (tu backend): /api/favorites/{userId}
+        const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
 
         if (Array.isArray(favRes.data)) {
           favoriteIds = favRes.data.map(v => v.id);
@@ -81,6 +95,7 @@ router.get("/", async (req, res) => {
       totalVehicles,
       user: req.session.user || null,
       favoriteIds,
+      isFavoritesPage: false,
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
@@ -129,6 +144,42 @@ router.get("/", async (req, res) => {
       totalVehicles: 3,
       user: req.session.user || null,
       favoriteIds: [],
+      isFavoritesPage: false,
+    });
+  }
+});
+
+// ✅ Página "Mis favoritos" (estrella del header → /favorites)
+router.get("/favourites", requireLoginPage, async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+
+    // ✅ API REAL (tu backend): /api/favorites/{userId}
+    const response = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
+    const vehicles = Array.isArray(response.data) ? response.data : [];
+
+    res.render("main", {
+      vehicles,
+      search: "",
+      currentPage: 1,
+      totalPages: 1,
+      totalVehicles: vehicles.length,
+      user: req.session.user,
+      favoriteIds: vehicles.map(v => v.id),
+      isFavoritesPage: true,
+    });
+  } catch (error) {
+    console.error("Error loading favorites:", error.message);
+
+    res.render("main", {
+      vehicles: [],
+      search: "",
+      currentPage: 1,
+      totalPages: 1,
+      totalVehicles: 0,
+      user: req.session.user,
+      favoriteIds: [],
+      isFavoritesPage: true,
     });
   }
 });
@@ -164,30 +215,24 @@ router.get("/vehicles/:id", async (req, res) => {
   }
 });
 
-function requireLogin(req, res, next) {
-  if (!req.session.user || !req.session.user.id) {
-    return res.status(401).json({ ok: false, error: "Not logged in" });
-  }
-  next();
-}
-
-router.post("/favorites/:vehicleId/toggle", requireLogin, async (req, res) => {
+// ✅ Toggle favorito (botón estrella de cada card)
+router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   const userId = req.session.user.id;
   const vehicleId = req.params.vehicleId;
 
   try {
-    // ✅ NUEVO ENDPOINT: /api/favorites/{userId}
-    const favRes = await axios.get(`${BACKEND_URL}/favorites/${userId}`, { timeout: 2500 });
+    // ✅ API REAL (tu backend): /api/favorites/{userId}
+    const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const favs = Array.isArray(favRes.data) ? favRes.data : [];
     const isFav = favs.some(v => String(v.id) === String(vehicleId));
 
     if (isFav) {
-      // ✅ NUEVO ENDPOINT: DELETE /api/favorites/{userId}/{vehicleId}
-      await axios.delete(`${BACKEND_URL}/favorites/${userId}/${vehicleId}`, { timeout: 2500 });
+      // ✅ DELETE /api/favorites/{userId}/{vehicleId}
+      await axios.delete(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, { timeout: 2500 });
       return res.json({ ok: true, favorite: false });
     } else {
-      // ✅ NUEVO ENDPOINT: POST /api/favorites/{userId}/{vehicleId}
-      await axios.post(`${BACKEND_URL}/favorites/${userId}/${vehicleId}`, null, { timeout: 2500 });
+      // ✅ POST /api/favorites/{userId}/{vehicleId}
+      await axios.post(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, null, { timeout: 2500 });
       return res.json({ ok: true, favorite: true });
     }
   } catch (error) {
