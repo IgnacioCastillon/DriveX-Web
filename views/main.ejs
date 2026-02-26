@@ -97,6 +97,13 @@
 
             <% vehicles.forEach(v=> { %>
               <article class="vehicle-card">
+
+                <% if (user) { %>
+                  <button class="fav-btn" type="button" data-vehicle-id="<%= v.id %>" title="Add to favourites">
+                    ♥
+                  </button>
+                <% } %>
+
                 <a href="/vehicles/<%= v.id %>" class="vehicle-link">
                   <% const images=v.images || []; const mainImage=images.find(img=> img.isMain) || images[0];
                     const mainSrc = mainImage ? mainImage.imageUrl :
