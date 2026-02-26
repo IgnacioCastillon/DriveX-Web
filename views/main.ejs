@@ -99,9 +99,10 @@
               <article class="vehicle-card">
 
                 <% if (user) { %>
-                  <button class="fav-btn" type="button" data-vehicle-id="<%= v.id %>" title="Add to favourites">
-                    ♥
-                  </button>
+                  <% const isFavorite = favoriteIds && favoriteIds.includes(v.id); %>
+<button class="fav-btn <%= isFavorite ? 'active' : '' %>" type="button" data-vehicle-id="<%= v.id %>">
+  <%= isFavorite ? '❤️' : '🤍' %>
+</button>
                 <% } %>
 
                 <a href="/vehicles/<%= v.id %>" class="vehicle-link">
