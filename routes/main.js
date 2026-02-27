@@ -4,7 +4,6 @@ const axios = require("axios");
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
-// --------- Guards ----------
 function requireLoginPage(req, res, next) {
   if (!req.session.user || !req.session.user.id) {
     return res.redirect("/login");
@@ -19,7 +18,6 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// --------- Home ----------
 router.get("/", async (req, res) => {
   const search = req.query.search || "";
   const vehicleType = req.query.vehicleType || "";
@@ -50,7 +48,6 @@ router.get("/", async (req, res) => {
       allVehicles = [];
     }
 
-    // ✅ Cargar favoritos del usuario (para pintar estrella)
     let favoriteIds = [];
     if (req.session.user && req.session.user.id) {
       try {
@@ -97,7 +94,7 @@ router.get("/", async (req, res) => {
       totalVehicles,
       user: req.session.user || null,
       favoriteIds,
-      isFavouritesPage: false, // ✅ MISMO NOMBRE QUE EN EL EJS
+      isFavouritesPage: false,
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
@@ -146,17 +143,15 @@ router.get("/", async (req, res) => {
       totalVehicles: mockVehicles.length,
       user: req.session.user || null,
       favoriteIds: [],
-      isFavouritesPage: false, // ✅ MISMO NOMBRE QUE EN EL EJS
+      isFavouritesPage: false,
     });
   }
 });
 
-// --------- Page: My favourites ----------
 router.get("/favourites", requireLoginPage, async (req, res) => {
   try {
     const userId = req.session.user.id;
 
-    // ✅ Backend: GET /api/favourites/{userId}
     const response = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const vehicles = Array.isArray(response.data) ? response.data : [];
 
@@ -168,7 +163,7 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       totalVehicles: vehicles.length,
       user: req.session.user,
       favoriteIds: vehicles.map(v => v.id),
-      isFavouritesPage: true, // ✅ MISMO NOMBRE QUE EN EL EJS
+      isFavouritesPage: true,
     });
   } catch (error) {
     console.error("Error loading favourites:", error.message);
@@ -181,12 +176,11 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       totalVehicles: 0,
       user: req.session.user,
       favoriteIds: [],
-      isFavouritesPage: true, // ✅ MISMO NOMBRE QUE EN EL EJS
+      isFavouritesPage: true,
     });
   }
 });
 
-// --------- Details ----------
 router.get("/vehicles/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -226,17 +220,14 @@ router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   const vehicleId = req.params.vehicleId;
 
   try {
-    // ✅ Backend: GET /api/favourites/{userId}
     const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const favs = Array.isArray(favRes.data) ? favRes.data : [];
     const isFav = favs.some(v => String(v.id) === String(vehicleId));
 
     if (isFav) {
-      // ✅ Backend: DELETE /api/favourites/{userId}/{vehicleId}
       await axios.delete(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, { timeout: 2500 });
       return res.json({ ok: true, favorite: false });
     } else {
-      // ✅ Backend: POST /api/favourites/{userId}/{vehicleId}
       await axios.post(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, null, { timeout: 2500 });
       return res.json({ ok: true, favorite: true });
     }

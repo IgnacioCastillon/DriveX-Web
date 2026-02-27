@@ -93,11 +93,15 @@
         <section class="vehicle-grid" id="vehicle-grid">
           <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
 
+            <% 
+              // ✅ ROBUSTO: compara SIEMPRE como string
+              const favIds = Array.isArray(favoriteIds) ? favoriteIds.map(String) : [];
+            %>
+
             <% vehicles.forEach(v => { %>
               <article class="vehicle-card">
                 <% if (user) { %>
-                  <% const favIds = Array.isArray(favoriteIds) ? favoriteIds : []; %>
-                  <% const isFavorite = favIds.some(id => String(id) === String(v.id)); %>
+                  <% const isFavorite = favIds.includes(String(v.id)); %>
 
                   <button
                     class="fav-btn <%= isFavorite ? 'active' : '' %>"
@@ -187,10 +191,13 @@
 
   <script src="/js/main.js"></script>
 
+  <!-- ✅ Estado global de favoritos (para que NO "desaparezca" al repintar/paginar por AJAX) -->
   <script>
-    // ✅ Flag real desde servidor (no dependas de la URL)
     const IS_FAV_PAGE = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
+    window.__FAV_IDS__ = <%- JSON.stringify(Array.isArray(favoriteIds) ? favoriteIds.map(String) : []) %>;
+  </script>
 
+  <script>
     const filledStar = `
       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
@@ -218,6 +225,16 @@
       }
     }
 
+    function addFavId(id) {
+      const sid = String(id);
+      if (!window.__FAV_IDS__.includes(sid)) window.__FAV_IDS__.push(sid);
+    }
+
+    function removeFavId(id) {
+      const sid = String(id);
+      window.__FAV_IDS__ = window.__FAV_IDS__.filter(x => x !== sid);
+    }
+
     document.addEventListener("click", async (e) => {
       const btn = e.target.closest(".fav-btn");
       if (!btn) return;
@@ -230,21 +247,27 @@
 
       const vehicleId = btn.dataset.vehicleId;
 
-      // ✅ Cambio optimista (sin recargar)
       const wasFav = btn.classList.contains("active");
+
+      // ✅ Optimista
       setFavUI(btn, !wasFav);
+      if (!wasFav) addFavId(vehicleId);
+      else removeFavId(vehicleId);
 
       try {
         const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
         const text = await res.text();
-
         if (!res.ok) throw new Error(text || "Request failed");
 
-        const data = JSON.parse(text); // { ok:true, favorite:true/false }
-        setFavUI(btn, !!data.favorite);
+        const data = JSON.parse(text);
+        const nowFav = !!data.favorite;
 
-        // ✅ SOLO si estás viendo la página de favoritos, quitamos la card del grid
-        if (IS_FAV_PAGE && data.favorite === false) {
+        setFavUI(btn, nowFav);
+        if (nowFav) addFavId(vehicleId);
+        else removeFavId(vehicleId);
+
+        // ✅ Solo si estás en /favourites y lo quitas, quita la card
+        if (IS_FAV_PAGE && nowFav === false) {
           const card = btn.closest(".vehicle-card");
           if (card) card.remove();
 
@@ -256,8 +279,12 @@
         }
       } catch (err) {
         console.error("FAV ERROR:", err);
-        // rollback
+
+        // ❌ rollback
         setFavUI(btn, wasFav);
+        if (wasFav) addFavId(vehicleId);
+        else removeFavId(vehicleId);
+
         alert("No se pudo actualizar fav (mira consola F12)");
       } finally {
         btn.dataset.loading = "0";
