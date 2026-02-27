@@ -258,109 +258,66 @@ router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
 
 
 const multer = require("multer");
-const FormData = require("form-data");
-
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { files: 15, fileSize: 10 * 1024 * 1024 }
-});
-
-function toInt(v) {
-  const n = parseInt(String(v ?? ""), 10);
-  return Number.isFinite(n) ? n : null;
-}
-
-function toFloat(v) {
-  const n = parseFloat(String(v ?? ""));
-  return Number.isFinite(n) ? n : null;
-}
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post("/addVehicle", requireLogin, upload.array("photos", 15), async (req, res) => {
-  const b = req.body || {};
-
-  const payloadJson = {
-    brand: b.brand ?? null,
-    model: b.model ?? null,
-    vehicleType: b.vehicle_type ?? b.vehicleType ?? null,
-    year: toInt(b.year),
-    price: toFloat(b.price),
-    description: b.description ?? null,
-    mileage: toInt(b.mileage),
-    doors: toInt(b.doors),
-    hp: toInt(b.hp),
-    fuelType: b.fuel_type ?? b.fuelType ?? null,
-    autonomy: toInt(b.autonomy),
-    averageConsumption: toFloat(b.average_consumption ?? b.averageConsumption),
-    extras: b.extras ? ([]).concat(b.extras) : []
-  };
-
-  // 1) Intento MULTIPART
   try {
-    const fd = new FormData();
+    const b = req.body || {};
 
-    Object.entries(payloadJson).forEach(([k, v]) => {
-      if (v === null || v === undefined) return;
-      if (Array.isArray(v)) {
-        v.forEach(x => fd.append(k, String(x)));
-      } else {
-        fd.append(k, String(v));
-      }
-    });
+    const extrasArr = b.extras ? ([]).concat(b.extras) : [];
+    const extrasStr = extrasArr.join(", ");
 
-    (req.files || []).forEach((f) => {
-      fd.append("photos", f.buffer, {
-        filename: f.originalname || "photo.jpg",
-        contentType: f.mimetype
-      });
-    });
+    const payload = {
+      id: 0,
+      reference: b.reference || "",
+      brand: b.brand || "",
+      model: b.model || "",
+      hp: Number(b.hp || 0),
+      autonomy: Number(b.autonomy || 0),
+      averageconsumption: Number(b.average_consumption || 0),
+      description: b.description || "",
+      price: Number(b.price || 0),
+      year: Number(b.year || 0),
+      fuelType: b.fuel_type || "",
+      mileage: Number(b.mileage || 0),
+      extras: extrasStr,
+      doors: Number(b.doors || 0),
+      vehicleType: b.vehicle_type || "",
+      images: [] // de momento vacío (tu backend espera JSON, no archivos)
+    };
 
-    const upstream = await axios.post(`${BACKEND_URL}/vehicles`, fd, {
-      headers: fd.getHeaders(),
-      maxBodyLength: Infinity,
-      maxContentLength: Infinity,
+    const upstream = await axios.post(`${BACKEND_URL}/vehicles`, payload, {
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
       timeout: 20000
     });
 
-    return res.status(201).json({ ok: true, message: "Vehicle published ✅", data: upstream.data });
+    return res.status(201).json({
+      ok: true,
+      message: "Vehicle published successfully ✅",
+      data: upstream.data
+    });
   } catch (error) {
     const upstreamStatus = error.response?.status || 0;
+    const upstreamData = error.response?.data || null;
+    const upstreamUrl = error.config?.url || null;
+    const code = error.code || null;
 
-    // 2) Fallback JSON (sin fotos) si falla
-    try {
-      const upstream2 = await axios.post(`${BACKEND_URL}/vehicles`, payloadJson, {
-        headers: { "Content-Type": "application/json" },
-        timeout: 20000
-      });
+    console.error("ADD VEHICLE error:", {
+      code,
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      message: error.message
+    });
 
-      return res.status(201).json({
-        ok: true,
-        message: "Vehicle published ✅ (without photos)",
-        data: upstream2.data
-      });
-    } catch (error2) {
-      const upstreamStatus2 = error2.response?.status || 0;
-      const upstreamData2 = error2.response?.data || null;
-      const upstreamUrl2 = error2.config?.url || null;
-      const code2 = error2.code || null;
-
-      console.error("ADD VEHICLE failed (multipart and json):", {
-        multipartStatus: upstreamStatus,
-        jsonStatus: upstreamStatus2,
-        jsonUpstreamUrl: upstreamUrl2,
-        jsonUpstreamData: upstreamData2,
-        code: code2,
-        message: error2.message
-      });
-
-      return res.status(500).json({
-        ok: false,
-        message: "Add vehicle failed",
-        upstreamStatus: upstreamStatus2,
-        upstreamUrl: upstreamUrl2,
-        upstreamData: upstreamData2,
-        code: code2
-      });
-    }
+    return res.status(400).json({
+      ok: false,
+      message: "Add vehicle failed",
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      code
+    });
   }
 });
 
