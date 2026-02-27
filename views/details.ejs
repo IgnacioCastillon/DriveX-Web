@@ -58,6 +58,23 @@
                 onclick="document.getElementById('details-main-image').src = this.dataset.src; document.querySelectorAll('.details-thumbs img').forEach(i => i.classList.remove('active')); this.classList.add('active');">
               <% }) %>
           </div>
+
+          <% if (user && user.role === "Admin") { %>
+            <div class="offer-switch-wrapper">
+              <label class="offer-switch">
+                <input 
+                  type="checkbox"
+                  class="offer-toggle"
+                  data-vehicle-id="<%= vehicle.id %>"
+                  <%= vehicle.offers === "Yes" ? "checked" : "" %>
+                >
+                <span class="slider"></span>
+              </label>
+              <span class="offer-label">
+                <%= vehicle.offers === "Yes" ? "Offers Enabled" : "Offers Disabled" %>
+              </span>
+            </div>
+          <% } %>
       </section>
 
       <section class="details-info">
