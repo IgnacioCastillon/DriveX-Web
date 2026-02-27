@@ -425,3 +425,72 @@
   box-shadow: 0 0 16px rgba(245,158,11,0.18);
   color: rgba(245,158,11,0.95);
 }
+
+
+.admin-add-wrap {
+  margin: 1.5rem 0 2.5rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(255, 255, 255, .04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.admin-add-wrap summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.2rem;
+  list-style: none;
+  user-select: none;
+}
+
+.admin-add-wrap summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-add-title {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+
+.admin-add-title b {
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.admin-add-title span {
+  opacity: .75;
+  font-size: .95rem;
+}
+
+.admin-add-body {
+  padding: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* ✅ Encajar el auth-card dentro del home */
+.admin-add-body .auth-card {
+  background: rgba(0, 0, 0, .18);
+  border: 1px solid rgba(255, 255, 255, .10);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+  padding: 1.25rem;
+}
+
+.admin-add-body .auth-title {
+  margin-top: 0;
+}
+
+/* ✅ Que el formulario no se haga gigante en pantallas pequeñas */
+@media (max-width: 900px) {
+  .admin-add-body form[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
