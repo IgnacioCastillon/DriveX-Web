@@ -40,6 +40,7 @@
             </form>
           </div>
 
+          <!-- ✅ Ir a la página de favoritos -->
           <a href="/favourites" class="nav-icon-link" title="Favourites">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
               <path
@@ -82,19 +83,19 @@
 
       <main class="home-main">
         <div class="section-header">
-          <h2>Latest Arrivals</h2>
+          <h2>
+            <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'Your Favourites' : 'Latest Arrivals' %>
+          </h2>
           <% if (user && user.role=="Admin" ) { %>
             <a class="btn-premium primary" href="/add">Add Vehicle</a>
           <% } %>
         </div>
 
         <section class="vehicle-grid" id="vehicle-grid">
-
           <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
 
             <% vehicles.forEach(v => { %>
               <article class="vehicle-card">
-
                 <% if (user) { %>
                   <% const favIds = Array.isArray(favoriteIds) ? favoriteIds : []; %>
                   <% const isFavorite = favIds.some(id => String(id) === String(v.id)); %>
@@ -103,7 +104,7 @@
                     class="fav-btn <%= isFavorite ? 'active' : '' %>"
                     type="button"
                     data-vehicle-id="<%= v.id %>"
-                    aria-label="Toggle favourite"
+                    aria-label="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
                     title="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
                   >
                     <% if (isFavorite) { %>
@@ -141,14 +142,16 @@
                     </p>
                   </div>
                 </a>
-
               </article>
             <% }) %>
 
           <% } else { %>
-            <p class="empty-message">No hay vehículos disponibles.</p>
+            <p class="empty-message">
+              <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage)
+                  ? 'No tienes vehículos en favoritos.'
+                  : 'No hay vehículos disponibles.' %>
+            </p>
           <% } %>
-
         </section>
 
         <div class="pagination">
@@ -168,7 +171,6 @@
             <span class="arrow disabled">→</span>
           <% } %>
         </div>
-
       </main>
 
       <footer class="home-footer">
@@ -188,6 +190,7 @@
 
   <script src="/js/main.js"></script>
 
+  <!-- ✅ Toggle fav sin recargar (optimista + rollback si falla) -->
   <script>
     const filledStar = `
       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -202,29 +205,72 @@
       </svg>
     `;
 
-    document.addEventListener("click", async (e) => {
-    const btn = e.target.closest(".fav-btn");
-    if (!btn) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const vehicleId = btn.dataset.vehicleId;
-
-    try {
-      const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
-
-      const text = await res.text();
-      console.log("STATUS:", res.status, "BODY:", text);
-
-      if (!res.ok) throw new Error(text || "Request failed");
-
-      const data = JSON.parse(text);
-    } catch (err) {
-      console.error("FAV ERROR:", err);
-      alert("No se pudo actualizar fav (mira consola F12)");
+    function setFavUI(btn, isFav) {
+      if (isFav) {
+        btn.classList.add("active");
+        btn.innerHTML = filledStar;
+        btn.title = "Remove from favourites";
+        btn.setAttribute("aria-label", "Remove from favourites");
+      } else {
+        btn.classList.remove("active");
+        btn.innerHTML = outlineStar;
+        btn.title = "Add to favourites";
+        btn.setAttribute("aria-label", "Add to favourites");
+      }
     }
-  });
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".fav-btn");
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (btn.dataset.loading === "1") return;
+      btn.dataset.loading = "1";
+
+      const vehicleId = btn.dataset.vehicleId;
+
+      // ✅ Cambio optimista (sin recargar)
+      const wasFav = btn.classList.contains("active");
+      const optimisticFav = !wasFav;
+      setFavUI(btn, optimisticFav);
+
+      try {
+        const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
+        const text = await res.text();
+        console.log("STATUS:", res.status, "BODY:", text);
+
+        if (!res.ok) throw new Error(text || "Request failed");
+
+        const data = JSON.parse(text); // { ok:true, favorite:true/false }
+
+        // ✅ Ajuste a estado real
+        setFavUI(btn, !!data.favorite);
+
+        // ✅ Si estás en /favourites y lo quitaste, quita la card sin recargar
+        if (window.location.pathname === "/favourites" && data.favorite === false) {
+          const card = btn.closest(".vehicle-card");
+          if (card) card.remove();
+
+          // Si te quedas sin cards, pon mensaje
+          const grid = document.getElementById("vehicle-grid");
+          const remainingCards = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
+          if (grid && remainingCards === 0) {
+            grid.innerHTML = `<p class="empty-message">No tienes vehículos en favoritos.</p>`;
+          }
+        }
+      } catch (err) {
+        console.error("FAV ERROR:", err);
+
+        // ❌ rollback
+        setFavUI(btn, wasFav);
+
+        alert("No se pudo actualizar fav (mira consola F12)");
+      } finally {
+        btn.dataset.loading = "0";
+      }
+    });
   </script>
 </body>
 
