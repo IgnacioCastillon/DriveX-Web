@@ -83,12 +83,15 @@
       </section>
 
       <div class="section-header">
-        <h2>
-          <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'Your Favourites' : 'Latest Arrivals' %>
-        </h2>
-      </div>
+  <h2>
+    <% if (search && search.trim() !== "") { %>
+      Results for "<%= search %>"
+    <% } else { %>
+      Latest Arrivals
+    <% } %>
+  </h2>
+</div>
 
-      <!-- ✅ DESPLEGABLE SOLO ADMIN: Add Vehicle -->
       <% if (user && user.role === "Admin") { %>
         <details class="glass-panel" style="
           margin: 1.5rem 0 2.5rem;
@@ -189,7 +192,6 @@
               </div>
             </div>
 
-            <!-- Column 2 -->
             <div style="display: flex; flex-direction: column; gap: 1.25rem;">
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="auth-field">
@@ -289,6 +291,9 @@
 
           <% vehicles.forEach(v => { %>
             <article class="vehicle-card">
+              <% if (v.offers === "Yes") { %>
+                <div class="offer-badge">OFFER</div>
+              <% } %>
               <% if (user) { %>
                 <button
                   class="fav-btn <%= (Array.isArray(favoriteIds) && favoriteIds.map(String).includes(String(v.id))) ? 'active' : '' %>"
