@@ -256,4 +256,90 @@ router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   }
 });
 
+
+const multer = require("multer");
+const FormData = require("form-data");
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    files: 15,
+    fileSize: 10 * 1024 * 1024 // 10MB por foto (ajusta si quieres)
+  }
+});
+
+router.post("/addVehicle", requireLogin, upload.array("photos", 15), async (req, res) => {
+  try {
+    const fd = new FormData();
+
+    const fields = [
+      "brand",
+      "model",
+      "vehicle_type",
+      "year",
+      "price",
+      "description",
+      "mileage",
+      "doors",
+      "hp",
+      "fuel_type",
+      "autonomy",
+      "average_consumption"
+    ];
+
+    fields.forEach((k) => {
+      if (req.body[k] !== undefined && req.body[k] !== null) {
+        fd.append(k, String(req.body[k]));
+      }
+    });
+
+    // extras puede venir string o array
+    const extras = req.body.extras ? ([]).concat(req.body.extras) : [];
+    extras.forEach((ex) => fd.append("extras", ex));
+
+    (req.files || []).forEach((f) => {
+      fd.append("photos", f.buffer, {
+        filename: f.originalname || "photo.jpg",
+        contentType: f.mimetype
+      });
+    });
+
+    // ⚠️ CAMBIA ESTE ENDPOINT SI TU SPRING USA OTRO
+    const upstream = await axios.post(`${BACKEND_URL}/vehicles`, fd, {
+      headers: fd.getHeaders(),
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+      timeout: 15000
+    });
+
+    return res.status(201).json({
+      ok: true,
+      message: "Vehicle published successfully ✅",
+      data: upstream.data
+    });
+  } catch (error) {
+    const upstreamStatus = error.response?.status || 0;
+    const upstreamData = error.response?.data || null;
+    const upstreamUrl = error.config?.url || null;
+    const code = error.code || null;
+
+    console.error("ADD VEHICLE error:", {
+      code,
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      message: error.message
+    });
+
+    return res.status(500).json({
+      ok: false,
+      message: "Add vehicle failed",
+      upstreamStatus,
+      upstreamUrl,
+      upstreamData,
+      code
+    });
+  }
+});
+
 module.exports = router;
