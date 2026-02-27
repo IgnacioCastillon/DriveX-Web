@@ -256,4 +256,68 @@ router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   }
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector('form[action="/addVehicle"]');
+  if (!form) return;
+
+  const msg = document.createElement("div");
+  msg.style.marginTop = "12px";
+  msg.style.fontSize = "0.95rem";
+  form.appendChild(msg);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // <- evita cambio de página
+
+    msg.textContent = "";
+    msg.style.color = "inherit";
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : null;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publishing...";
+    }
+
+    try {
+      const formData = new FormData(form);
+
+      const photosInput = form.querySelector("#photos");
+      if (photosInput?.files?.length > 15) {
+        throw new Error("You can upload up to 15 images.");
+      }
+
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        const errMsg = data?.message || "Error publishing vehicle.";
+        throw new Error(errMsg);
+      }
+
+      msg.style.color = "green";
+      msg.textContent = data?.message || "Vehicle published successfully ✅";
+
+      form.reset();
+
+
+    } catch (err) {
+      msg.style.color = "crimson";
+      msg.textContent = err.message || "Unexpected error.";
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+  });
+});
+
 module.exports = router;
