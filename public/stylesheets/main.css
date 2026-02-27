@@ -517,20 +517,17 @@
   color: #111;
 }
 
-/* File input */
 .auth-field input[type="file"] {
   padding: 0.75rem 0.85rem;
   cursor: pointer;
 }
 
-/* Pequeños textos debajo */
 .auth-field small {
   font-size: 0.85rem;
   opacity: 0.75;
   line-height: 1.2;
 }
 
-/* Botón submit (ya usas btn-premium, esto lo “afina”) */
 .admin-add-body .btn-premium.primary,
 .admin-add-wrap .btn-premium.primary {
   border-radius: 14px;
@@ -545,7 +542,6 @@
   transform: translateY(1px);
 }
 
-/* Ajustes responsive: el grid inline de 2 columnas lo rompes a 1 */
 @media (max-width: 900px) {
   .admin-add-body form[style*="grid-template-columns"],
   .admin-add-wrap form[style*="grid-template-columns"] {
@@ -553,4 +549,21 @@
     grid-template-columns: 1fr !important;
     gap: 1.25rem !important;
   }
+}
+
+
+.auth-field select[multiple] {
+  background: #ffffff;
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.auth-field select[multiple] option {
+  background: #ffffff;
+  color: #111;
+}
+
+.auth-field select[multiple] option:checked {
+  background: #111;
+  color: #ffffff;
 }
