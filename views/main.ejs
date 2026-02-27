@@ -93,7 +93,7 @@
         <section class="vehicle-grid" id="vehicle-grid">
           <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
 
-            <% 
+            <%
               // ✅ ROBUSTO: compara SIEMPRE como string
               const favIds = Array.isArray(favoriteIds) ? favoriteIds.map(String) : [];
             %>
@@ -189,14 +189,17 @@
     <button id="closeMessage">Close</button>
   </div>
 
+  <!-- ✅ JS principal -->
   <script src="/js/main.js"></script>
 
-  <!-- ✅ Estado global de favoritos (para que NO "desaparezca" al repintar/paginar por AJAX) -->
+  <!-- ✅ Variables globales para que el main.js pueda repintar estrellas en paginación -->
   <script>
-    const IS_FAV_PAGE = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
+    window.__USER__ = <%- JSON.stringify(user || null) %>;
+    window.__IS_FAV_PAGE__ = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
     window.__FAV_IDS__ = <%- JSON.stringify(Array.isArray(favoriteIds) ? favoriteIds.map(String) : []) %>;
   </script>
 
+  <!-- ✅ Toggle fav (delegación: funciona también con cards creadas por AJAX) -->
   <script>
     const filledStar = `
       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -242,11 +245,15 @@
       e.preventDefault();
       e.stopPropagation();
 
+      if (!window.__USER__ || !window.__USER__.id) {
+        window.location.href = "/login";
+        return;
+      }
+
       if (btn.dataset.loading === "1") return;
       btn.dataset.loading = "1";
 
       const vehicleId = btn.dataset.vehicleId;
-
       const wasFav = btn.classList.contains("active");
 
       // ✅ Optimista
@@ -266,21 +273,21 @@
         if (nowFav) addFavId(vehicleId);
         else removeFavId(vehicleId);
 
-        // ✅ Solo si estás en /favourites y lo quitas, quita la card
-        if (IS_FAV_PAGE && nowFav === false) {
+        // si estás en /favourites y lo quitas, eliminamos card sin recargar
+        if (window.__IS_FAV_PAGE__ && nowFav === false) {
           const card = btn.closest(".vehicle-card");
           if (card) card.remove();
 
           const grid = document.getElementById("vehicle-grid");
-          const remainingCards = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
-          if (grid && remainingCards === 0) {
+          const remaining = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
+          if (grid && remaining === 0) {
             grid.innerHTML = `<p class="empty-message">No tienes vehículos en favoritos.</p>`;
           }
         }
       } catch (err) {
         console.error("FAV ERROR:", err);
 
-        // ❌ rollback
+        // rollback
         setFavUI(btn, wasFav);
         if (wasFav) addFavId(vehicleId);
         else removeFavId(vehicleId);
