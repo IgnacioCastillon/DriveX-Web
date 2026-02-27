@@ -1,14 +1,4 @@
-document.addEventListener("click", async (e) => {
-  const link = e.target.closest(".page-link");
-  if (!link) return;
-
-  e.preventDefault();
-
-  const href = link.getAttribute("href");
-  const url = href + (href.includes("?") ? "&" : "?") + "partial=1";
-
-  const previousScroll = window.scrollY;
-
+(function () {
   const filledStar = `
     <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
@@ -21,6 +11,38 @@ document.addEventListener("click", async (e) => {
             fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
     </svg>
   `;
+
+  function ensureGlobals() {
+    if (!window.__USER__) window.__USER__ = null;
+    if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
+    if (typeof window.__IS_FAV_PAGE__ !== "boolean") {
+      window.__IS_FAV_PAGE__ = window.location.pathname === "/favourites" || window.location.pathname === "/favourites/";
+    }
+  }
+
+  function setFavUI(btn, isFav) {
+    if (isFav) {
+      btn.classList.add("active");
+      btn.innerHTML = filledStar;
+      btn.title = "Remove from favourites";
+      btn.setAttribute("aria-label", "Remove from favourites");
+    } else {
+      btn.classList.remove("active");
+      btn.innerHTML = outlineStar;
+      btn.title = "Add to favourites";
+      btn.setAttribute("aria-label", "Add to favourites");
+    }
+  }
+
+  function addFavId(id) {
+    const sid = String(id);
+    if (!window.__FAV_IDS__.includes(sid)) window.__FAV_IDS__.push(sid);
+  }
+
+  function removeFavId(id) {
+    const sid = String(id);
+    window.__FAV_IDS__ = window.__FAV_IDS__.filter((x) => x !== sid);
+  }
 
   function escapeHtml(str) {
     return String(str ?? "")
@@ -59,8 +81,6 @@ document.addEventListener("click", async (e) => {
 
     const mainSrc = getMainImage(v);
 
-    // ✅ IMPORTANTE: si quieres que la galería funcione, pon la clase gallery-opener en el IMG
-    // (tu initGallery busca .gallery-opener)
     return `
       <article class="vehicle-card" data-vehicle-id="${escapeHtml(v.id)}">
         ${favBtnHtml}
@@ -86,15 +106,18 @@ document.addEventListener("click", async (e) => {
     `;
   }
 
-  try {
-    const res = await fetch(url, {
-      headers: { Accept: "application/json" },
-    });
+  async function handlePaginationClick(link) {
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    const url = href + (href.includes("?") ? "&" : "?") + "partial=1";
+    const previousScroll = window.scrollY;
+
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) throw new Error("Error al cargar página " + res.status);
 
     const data = await res.json();
 
-    // ✅ MUY IMPORTANTE: refrescar favIds cuando cambias página (si el backend los manda)
     if (Array.isArray(data.favoriteIds)) {
       window.__FAV_IDS__ = data.favoriteIds.map(String);
     } else if (!Array.isArray(window.__FAV_IDS__)) {
@@ -142,8 +165,89 @@ document.addEventListener("click", async (e) => {
     window.history.pushState({}, "", newUrl);
 
     window.scrollTo({ top: previousScroll, behavior: "instant" });
-  } catch (err) {
-    console.error(err);
-    alert("Error cambiando de página");
   }
-});
+
+  async function handleFavClick(btn) {
+    if (!window.__USER__ || !window.__USER__.id) {
+      window.location.href = "/login";
+      return;
+    }
+
+    if (btn.dataset.loading === "1") return;
+    btn.dataset.loading = "1";
+
+    const vehicleId = btn.dataset.vehicleId;
+    const wasFav = btn.classList.contains("active");
+
+    setFavUI(btn, !wasFav);
+    if (!wasFav) addFavId(vehicleId);
+    else removeFavId(vehicleId);
+
+    try {
+      const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || "Request failed");
+
+      const data = JSON.parse(text);
+      const nowFav = !!data.favorite;
+
+      setFavUI(btn, nowFav);
+      if (nowFav) addFavId(vehicleId);
+      else removeFavId(vehicleId);
+
+      if (window.__IS_FAV_PAGE__ && nowFav === false) {
+        const card = btn.closest(".vehicle-card");
+        if (card) card.remove();
+
+        const grid = document.getElementById("vehicle-grid");
+        const remaining = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
+        if (grid && remaining === 0) {
+          grid.innerHTML = `<p class="empty-message">No tienes vehículos en favoritos.</p>`;
+        }
+      }
+    } catch (err) {
+      console.error("FAV ERROR:", err);
+
+      setFavUI(btn, wasFav);
+      if (wasFav) addFavId(vehicleId);
+      else removeFavId(vehicleId);
+
+      alert("No se pudo actualizar fav (mira consola F12)");
+    } finally {
+      btn.dataset.loading = "0";
+    }
+  }
+
+  document.addEventListener("click", async (e) => {
+    ensureGlobals();
+
+    const link = e.target.closest(".page-link");
+    if (link) {
+      e.preventDefault();
+      try {
+        await handlePaginationClick(link);
+      } catch (err) {
+        console.error(err);
+        alert("Error cambiando de página");
+      }
+      return;
+    }
+
+    const btn = e.target.closest(".fav-btn");
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      await handleFavClick(btn);
+      return;
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    ensureGlobals();
+
+    const loginBtn = document.querySelector('a[href="/login"].btn-premium.primary');
+    if (loginBtn) window.__USER__ = null;
+
+    if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
+  });
+})();
