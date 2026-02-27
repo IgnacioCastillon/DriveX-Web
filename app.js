@@ -40,6 +40,9 @@ app.use("/", contactRouter);
 const aboutUsRouter = require("./routes/aboutUs");
 app.use("/", aboutUsRouter)
 
+const detailsRoutes = require("./routes/details");
+app.use("/", detailsRoutes);
+
 
 
 const PORT = process.env.PORT || 3000;
