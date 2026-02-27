@@ -56,5 +56,18 @@ router.patch("/vehicles/:id/offers", async (req, res) => {
   });
 
 
+  router.delete("/vehicles/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await axios.delete(`${BACKEND_URL}/vehicles/${id}`);
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Delete error:", error.message);
+    res.status(500).json({ ok: false });
+  }
+});
+
+
 
 module.exports = router;

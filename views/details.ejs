@@ -172,7 +172,22 @@
                 <% if (user && user.role=="Admin" ) { %>
                   <div class="admin-actions">
                     <button id="editButton" class="btn-premium primary" style="flex: 1;">Edit Vehicle</button>
-                    <button id="deleteButton" class="btn-premium btn-delete" style="flex: 1;">Delete Vehicle</button>
+                    
+                    <button id="deleteButton" data-vehicle-id="<%= vehicle.id %>" class="btn-premium btn-delete" style="flex: 1;">Delete Vehicle</button>
+                    <div id="deleteModal" class="delete-modal">
+                      <div class="delete-modal-content">
+                        <h3>Confirm Deletion</h3>
+                        <p>This action cannot be undone.</p>
+                        <p>Type <strong>YES</strong> to confirm:</p>
+                    
+                        <input type="text" id="confirmInput" placeholder="Type YES">
+                    
+                        <div class="delete-actions">
+                          <button id="cancelDelete" class="btn-premium secondary">Cancel</button>
+                          <button id="confirmDelete" class="btn-premium btn-delete">Delete</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <% } else { %>
                     <div class="user-actions">

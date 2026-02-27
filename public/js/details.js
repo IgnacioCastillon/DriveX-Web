@@ -24,3 +24,48 @@ document.addEventListener("change", async (e) => {
     alert("Error updating offer");
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const deleteBtn = document.getElementById("deleteButton");
+  const modal = document.getElementById("deleteModal");
+  const cancelBtn = document.getElementById("cancelDelete");
+  const confirmBtn = document.getElementById("confirmDelete");
+  const input = document.getElementById("confirmInput");
+
+  if (!deleteBtn) return;
+
+  const vehicleId = deleteBtn.dataset.vehicleId;
+
+  deleteBtn.addEventListener("click", () => {
+    modal.classList.add("active");
+    input.value = "";
+  });
+
+  cancelBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+  });
+
+  confirmBtn.addEventListener("click", async () => {
+
+    if (input.value !== "YES") {
+      alert("You must type YES to confirm.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/vehicles/${vehicleId}`, {
+        method: "DELETE"
+      });
+
+      if (!res.ok) throw new Error("Delete failed");
+
+      window.location.href = "/";
+
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting vehicle.");
+    }
+  });
+
+});

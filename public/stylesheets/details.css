@@ -242,6 +242,49 @@
   color:var(--text-muted);
 }
 
+.delete-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:9999;
+}
+
+.delete-modal.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.delete-modal-content{
+  background:var(--bg-card);
+  padding:30px;
+  border-radius:12px;
+  width:350px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+.delete-modal input{
+  width:100%;
+  padding:10px;
+  margin:15px 0;
+  border-radius:6px;
+  border:1px solid #444;
+  background:#111;
+  color:white;
+}
+
+.delete-actions{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+}
+
 @media (max-width: 900px) {
   .details-main {
     grid-template-columns: 1fr;
