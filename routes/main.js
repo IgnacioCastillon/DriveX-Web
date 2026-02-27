@@ -35,6 +35,7 @@ router.get("/", async (req, res) => {
     if (search.trim() !== "") {
       apiUrl = `${BACKEND_URL}/vehicles/search?q=${encodeURIComponent(search)}`;
     }
+    
 
     const response = await axios.get(apiUrl, { timeout: 2500 });
 
@@ -53,7 +54,6 @@ router.get("/", async (req, res) => {
       try {
         const userId = req.session.user.id;
 
-        // ✅ Backend: GET /api/favourites/{userId}
         const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
 
         if (Array.isArray(favRes.data)) {
@@ -181,6 +181,44 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
   }
 });
 
+
+router.get("/offers", async (req, res) => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/vehicles/offers`, { timeout: 2500 });
+
+    let vehicles = [];
+    if (Array.isArray(response.data)) {
+      vehicles = response.data;
+    } else if (Array.isArray(response.data.content)) {
+      vehicles = response.data.content;
+    }
+
+    return res.render("main", {
+      vehicles,
+      search: "",
+      currentPage: 1,
+      totalPages: 1,
+      totalVehicles: vehicles.length,
+      user: req.session.user || null,
+      favoriteIds: [],
+      isFavouritesPage: false
+    });
+  } catch (error) {
+    console.error("Error loading offers:", error.message);
+
+    return res.render("main", {
+      vehicles: [],
+      search: "",
+      currentPage: 1,
+      totalPages: 1,
+      totalVehicles: 0,
+      user: req.session.user || null,
+      favoriteIds: [],
+      isFavouritesPage: false
+    });
+  }
+});
+
 router.get("/vehicles/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -214,7 +252,6 @@ router.get("/vehicles/:id", async (req, res) => {
   }
 });
 
-// --------- Toggle favourite ----------
 router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   const userId = req.session.user.id;
   const vehicleId = req.params.vehicleId;
