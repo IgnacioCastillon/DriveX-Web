@@ -12,12 +12,19 @@
     </svg>
   `;
 
-  function ensureGlobals() {
-    if (!window.__USER__) window.__USER__ = null;
-    if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
-    if (typeof window.__IS_FAV_PAGE__ !== "boolean") {
-      window.__IS_FAV_PAGE__ = window.location.pathname === "/favourites" || window.location.pathname === "/favourites/";
-    }
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function getMainImage(v) {
+    const images = Array.isArray(v.images) ? v.images : [];
+    const main = images.find((img) => img && img.isMain) || images[0];
+    return main?.imageUrl || "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
   }
 
   function setFavUI(btn, isFav) {
@@ -44,24 +51,33 @@
     window.__FAV_IDS__ = window.__FAV_IDS__.filter((x) => x !== sid);
   }
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  function isLoggedInByDom() {
+    return !!document.querySelector(".user-profile");
   }
 
-  function getMainImage(v) {
-    const images = Array.isArray(v.images) ? v.images : [];
-    const main = images.find((img) => img && img.isMain) || images[0];
-    return main?.imageUrl || "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
+  function ensureGlobals() {
+    if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
+    if (typeof window.__IS_FAV_PAGE__ !== "boolean") {
+      window.__IS_FAV_PAGE__ = window.location.pathname === "/favourites" || window.location.pathname === "/favourites/";
+    }
+    if (isLoggedInByDom()) {
+      if (!window.__USER__) window.__USER__ = { id: true };
+    } else {
+      window.__USER__ = null;
+    }
+  }
+
+  function initFavIdsFromDom() {
+    ensureGlobals();
+    document.querySelectorAll(".fav-btn.active").forEach((btn) => {
+      const id = btn.dataset.vehicleId;
+      if (id) addFavId(id);
+    });
   }
 
   function renderCard(v) {
     const idStr = String(v.id);
-    const hasUser = !!(window.__USER__ && window.__USER__.id);
+    const hasUser = isLoggedInByDom();
     const favIds = Array.isArray(window.__FAV_IDS__) ? window.__FAV_IDS__.map(String) : [];
     const isFav = favIds.includes(idStr);
 
@@ -165,10 +181,14 @@
     window.history.pushState({}, "", newUrl);
 
     window.scrollTo({ top: previousScroll, behavior: "instant" });
+
+    initFavIdsFromDom();
   }
 
   async function handleFavClick(btn) {
-    if (!window.__USER__ || !window.__USER__.id) {
+    ensureGlobals();
+
+    if (!window.__USER__) {
       window.location.href = "/login";
       return;
     }
@@ -185,6 +205,12 @@
 
     try {
       const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
+
+      if (res.status === 401 || res.status === 403) {
+        window.location.href = "/login";
+        return;
+      }
+
       const text = await res.text();
       if (!res.ok) throw new Error(text || "Request failed");
 
@@ -218,6 +244,81 @@
     }
   }
 
+  async function handleAddVehicleSubmit(form) {
+    const msgClass = "js-form-msg";
+    let msg = form.querySelector("." + msgClass);
+    if (!msg) {
+      msg = document.createElement("div");
+      msg.className = msgClass;
+      msg.style.marginTop = "12px";
+      msg.style.fontSize = "0.95rem";
+      msg.style.color = "var(--text-muted)";
+      form.appendChild(msg);
+    }
+
+    msg.textContent = "";
+    msg.style.color = "var(--text-muted)";
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : "";
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Publishing...";
+    }
+
+    try {
+      const photosInput = form.querySelector("#photos");
+      if (photosInput?.files?.length > 15) {
+        throw new Error("Select up to 15 images.");
+      }
+
+      const formData = new FormData(form);
+
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" }
+      });
+
+      const text = await res.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch (_) {}
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Error publishing vehicle.");
+      }
+
+      msg.style.color = "green";
+      msg.textContent = data?.message || "Vehicle published successfully ✅";
+
+      form.reset();
+
+      const details = form.closest("details");
+      if (details) details.open = false;
+
+    } catch (err) {
+      console.error("ADD VEHICLE ERROR:", err);
+      msg.style.color = "crimson";
+      msg.textContent = err?.message || "Unexpected error.";
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+  }
+
+  function initAddVehicleAjax() {
+    const form = document.querySelector('form[action="/addVehicle"]');
+    if (!form) return;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await handleAddVehicleSubmit(form);
+    });
+  }
+
   document.addEventListener("click", async (e) => {
     ensureGlobals();
 
@@ -244,10 +345,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     ensureGlobals();
-
-    const loginBtn = document.querySelector('a[href="/login"].btn-premium.primary');
-    if (loginBtn) window.__USER__ = null;
-
-    if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
+    initFavIdsFromDom();
+    initAddVehicleAjax();
   });
 })();
