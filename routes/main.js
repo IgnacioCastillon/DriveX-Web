@@ -4,6 +4,7 @@ const axios = require("axios");
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
+// --------- Guards ----------
 function requireLoginPage(req, res, next) {
   if (!req.session.user || !req.session.user.id) {
     return res.redirect("/login");
@@ -18,6 +19,7 @@ function requireLogin(req, res, next) {
   next();
 }
 
+// --------- Home ----------
 router.get("/", async (req, res) => {
   const search = req.query.search || "";
   const vehicleType = req.query.vehicleType || "";
@@ -54,7 +56,7 @@ router.get("/", async (req, res) => {
       try {
         const userId = req.session.user.id;
 
-        // ✅ API REAL (tu backend): /api/favorites/{userId}
+        // ✅ Backend: GET /api/favourites/{userId}
         const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
 
         if (Array.isArray(favRes.data)) {
@@ -87,7 +89,7 @@ router.get("/", async (req, res) => {
       });
     }
 
-    res.render("main", {
+    return res.render("main", {
       vehicles,
       search,
       currentPage,
@@ -95,7 +97,7 @@ router.get("/", async (req, res) => {
       totalVehicles,
       user: req.session.user || null,
       favoriteIds,
-      isFavoritesPage: false,
+      isFavouritesPage: false, // ✅ MISMO NOMBRE QUE EN EL EJS
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
@@ -136,29 +138,29 @@ router.get("/", async (req, res) => {
       }
     ];
 
-    res.render("main", {
+    return res.render("main", {
       vehicles: mockVehicles,
       search: "",
       currentPage: 1,
       totalPages: 1,
-      totalVehicles: 3,
+      totalVehicles: mockVehicles.length,
       user: req.session.user || null,
       favoriteIds: [],
-      isFavoritesPage: false,
+      isFavouritesPage: false, // ✅ MISMO NOMBRE QUE EN EL EJS
     });
   }
 });
 
-// ✅ Página "Mis favoritos" (estrella del header → /favorites)
+// --------- Page: My favourites ----------
 router.get("/favourites", requireLoginPage, async (req, res) => {
   try {
     const userId = req.session.user.id;
 
-    // ✅ API REAL (tu backend): /api/favorites/{userId}
+    // ✅ Backend: GET /api/favourites/{userId}
     const response = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const vehicles = Array.isArray(response.data) ? response.data : [];
 
-    res.render("main", {
+    return res.render("main", {
       vehicles,
       search: "",
       currentPage: 1,
@@ -166,12 +168,12 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       totalVehicles: vehicles.length,
       user: req.session.user,
       favoriteIds: vehicles.map(v => v.id),
-      isFavoritesPage: true,
+      isFavouritesPage: true, // ✅ MISMO NOMBRE QUE EN EL EJS
     });
   } catch (error) {
-    console.error("Error loading favorites:", error.message);
+    console.error("Error loading favourites:", error.message);
 
-    res.render("main", {
+    return res.render("main", {
       vehicles: [],
       search: "",
       currentPage: 1,
@@ -179,11 +181,12 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       totalVehicles: 0,
       user: req.session.user,
       favoriteIds: [],
-      isFavoritesPage: true,
+      isFavouritesPage: true, // ✅ MISMO NOMBRE QUE EN EL EJS
     });
   }
 });
 
+// --------- Details ----------
 router.get("/vehicles/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -191,9 +194,10 @@ router.get("/vehicles/:id", async (req, res) => {
     const response = await axios.get(`${BACKEND_URL}/vehicles/${id}`, { timeout: 2500 });
     const vehicle = response.data;
 
-    res.render("details", { vehicle, user: req.session.user || null });
+    return res.render("details", { vehicle, user: req.session.user || null });
   } catch (error) {
     console.warn("Backend down, showing mock vehicle for UI preview...");
+
     const mockVehicle = {
       id: 1,
       brand: "Tesla",
@@ -211,27 +215,28 @@ router.get("/vehicles/:id", async (req, res) => {
         { imageUrl: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&q=80&w=800", isMain: false }
       ]
     };
-    res.render("details", { vehicle: mockVehicle, user: req.session.user || null });
+
+    return res.render("details", { vehicle: mockVehicle, user: req.session.user || null });
   }
 });
 
-// ✅ Toggle favorito (botón estrella de cada card)
+// --------- Toggle favourite ----------
 router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
   const userId = req.session.user.id;
   const vehicleId = req.params.vehicleId;
 
   try {
-    // ✅ API REAL (tu backend): /api/favorites/{userId}
+    // ✅ Backend: GET /api/favourites/{userId}
     const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const favs = Array.isArray(favRes.data) ? favRes.data : [];
     const isFav = favs.some(v => String(v.id) === String(vehicleId));
 
     if (isFav) {
-      // ✅ DELETE /api/favorites/{userId}/{vehicleId}
+      // ✅ Backend: DELETE /api/favourites/{userId}/{vehicleId}
       await axios.delete(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, { timeout: 2500 });
       return res.json({ ok: true, favorite: false });
     } else {
-      // ✅ POST /api/favorites/{userId}/{vehicleId}
+      // ✅ Backend: POST /api/favourites/{userId}/{vehicleId}
       await axios.post(`${BACKEND_URL}/favourites/${userId}/${vehicleId}`, null, { timeout: 2500 });
       return res.json({ ok: true, favorite: true });
     }
@@ -241,7 +246,7 @@ router.post("/favourites/:vehicleId/toggle", requireLogin, async (req, res) => {
     const upstreamUrl = error.config?.url || null;
     const code = error.code || null;
 
-    console.error("Toggle favorite error:", {
+    console.error("Toggle favourite error:", {
       code,
       upstreamStatus,
       upstreamUrl,

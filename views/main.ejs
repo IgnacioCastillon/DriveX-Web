@@ -40,7 +40,6 @@
             </form>
           </div>
 
-          <!-- ✅ Ir a la página de favoritos -->
           <a href="/favourites" class="nav-icon-link" title="Favourites">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
               <path
@@ -108,12 +107,10 @@
                     title="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
                   >
                     <% if (isFavorite) { %>
-                      <!-- Filled star -->
                       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
                       </svg>
                     <% } else { %>
-                      <!-- Outline star -->
                       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
                               fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -190,8 +187,10 @@
 
   <script src="/js/main.js"></script>
 
-  <!-- ✅ Toggle fav sin recargar (optimista + rollback si falla) -->
   <script>
+    // ✅ Flag real desde servidor (no dependas de la URL)
+    const IS_FAV_PAGE = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
+
     const filledStar = `
       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
@@ -233,27 +232,22 @@
 
       // ✅ Cambio optimista (sin recargar)
       const wasFav = btn.classList.contains("active");
-      const optimisticFav = !wasFav;
-      setFavUI(btn, optimisticFav);
+      setFavUI(btn, !wasFav);
 
       try {
         const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
         const text = await res.text();
-        console.log("STATUS:", res.status, "BODY:", text);
 
         if (!res.ok) throw new Error(text || "Request failed");
 
         const data = JSON.parse(text); // { ok:true, favorite:true/false }
-
-        // ✅ Ajuste a estado real
         setFavUI(btn, !!data.favorite);
 
-        // ✅ Si estás en /favourites y lo quitaste, quita la card sin recargar
-        if (window.location.pathname === "/favourites" && data.favorite === false) {
+        // ✅ SOLO si estás viendo la página de favoritos, quitamos la card del grid
+        if (IS_FAV_PAGE && data.favorite === false) {
           const card = btn.closest(".vehicle-card");
           if (card) card.remove();
 
-          // Si te quedas sin cards, pon mensaje
           const grid = document.getElementById("vehicle-grid");
           const remainingCards = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
           if (grid && remainingCards === 0) {
@@ -262,10 +256,8 @@
         }
       } catch (err) {
         console.error("FAV ERROR:", err);
-
-        // ❌ rollback
+        // rollback
         setFavUI(btn, wasFav);
-
         alert("No se pudo actualizar fav (mira consola F12)");
       } finally {
         btn.dataset.loading = "0";
