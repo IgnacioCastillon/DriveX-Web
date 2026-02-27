@@ -164,12 +164,29 @@
 }
 
 .vehicle-card {
+  position: relative; /* 👈 IMPORTANTE */
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: var(--shadow-lg);
   transition: var(--transition-base);
+}
+
+.offer-badge {
+  position: absolute;
+  top: 18px;
+  left: -45px;
+  background: linear-gradient(135deg, #ff3b3b, #ff0000);
+  color: #fff;
+  padding: 8px 70px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transform: rotate(-45deg);
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  z-index: 20;
 }
 
 .vehicle-card:hover {
