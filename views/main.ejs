@@ -35,15 +35,19 @@
         <div class="header-right">
           <div class="search-wrapper">
             <form method="get" action="/">
-              <input type="search" name="search" placeholder="Search vehicles..."
-                value="<%= typeof search !== 'undefined' ? search : '' %>" class="search-input">
+              <input
+                type="search"
+                name="search"
+                placeholder="Search vehicles..."
+                value="<%= typeof search !== 'undefined' ? search : '' %>"
+                class="search-input"
+              >
             </form>
           </div>
 
           <a href="/favourites" class="nav-icon-link" title="Favourites">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
+              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
             </svg>
           </a>
 
@@ -69,10 +73,8 @@
             <h1>Find Your Dream Vehicle</h1>
             <p>Explore our premium collection of cars, bikes, and more.</p>
             <nav class="hero-nav">
-              <a href="/?vehicleType=Sedan,Suv,Hatchback,Off-road / 4x4,Van,MPV,Pickup,Sport Car,Hyper Car"
-                class="active">Cars</a>
-              <a href="/?vehicleType=Sport Bike,Custom,Naked,Enduro,Trial,MotoCross,Trail,Touring"
-                class="active">Bikes</a>
+              <a href="/?vehicleType=Sedan,Suv,Hatchback,Off-road / 4x4,Van,MPV,Pickup,Sport Car,Hyper Car" class="active">Cars</a>
+              <a href="/?vehicleType=Sport Bike,Custom,Naked,Enduro,Trial,MotoCross,Trail,Touring" class="active">Bikes</a>
               <a href="#" class="active">Trucks</a>
               <a href="#" class="offers">Offers</a>
             </nav>
@@ -80,300 +82,288 @@
         </div>
       </section>
 
-      <main class="home-main">
-        <div class="section-header">
-          <h2>
-            <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'Your Favourites' : 'Latest Arrivals' %>
-          </h2>
-        </div>
+      <div class="section-header">
+        <h2>
+          <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'Your Favourites' : 'Latest Arrivals' %>
+        </h2>
+      </div>
 
-        <!-- ✅ DESPLEGABLE SOLO ADMIN: Add Vehicle -->
-        <% if (user && user.role === "Admin") { %>
-          <details class="glass-panel" style="
-            margin: 1.5rem 0 2.5rem;
-            padding: 1.25rem 1.25rem;
-            border-radius: var(--radius-xl);
-            border: 1px solid rgba(255,255,255,.08);
-            background: rgba(255,255,255,.02);
+      <!-- ✅ DESPLEGABLE SOLO ADMIN: Add Vehicle -->
+      <% if (user && user.role === "Admin") { %>
+        <details class="glass-panel" style="
+          margin: 1.5rem 0 2.5rem;
+          padding: 1.25rem 1.25rem;
+          border-radius: var(--radius-xl);
+          border: 1px solid rgba(255,255,255,.08);
+          background: rgba(255,255,255,.02);
+        ">
+          <summary style="
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            user-select: none;
+            list-style: none;
           ">
-            <summary style="
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 1rem;
-              user-select: none;
-              list-style: none;
-            ">
-              <div style="display:flex; flex-direction:column; gap:.25rem;">
-                <span style="font-weight: 900; letter-spacing: .02em; text-transform: uppercase;">
-                  Add New Vehicle
-                </span>
-                <span style="color: var(--text-muted); font-size: .95rem;">
-                  Only visible for Admins
-                </span>
-              </div>
-
-              <span class="btn-premium primary" style="pointer-events:none;">
-                Open
+            <div style="display:flex; flex-direction:column; gap:.25rem;">
+              <span style="font-weight: 900; letter-spacing: .02em; text-transform: uppercase;">
+                Add New Vehicle
               </span>
-            </summary>
+              <span style="color: var(--text-muted); font-size: .95rem;">
+                Only visible for Admins
+              </span>
+            </div>
 
-            <div style="height:1px; background:rgba(255,255,255,.06); margin: 1.25rem 0;"></div>
+            <span class="btn-premium primary" style="pointer-events:none;">
+              Open
+            </span>
+          </summary>
 
-            <form method="post" action="/addVehicle" enctype="multipart/form-data"
-              style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div style="height:1px; background:rgba(255,255,255,.06); margin: 1.25rem 0;"></div>
 
-              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <form method="post" action="/addVehicle" enctype="multipart/form-data"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div class="auth-field">
+                <label for="brand">Brand</label>
+                <select id="brand" name="brand" required>
+                  <option value="" selected disabled>- Select a brand -</option>
+                </select>
+              </div>
+
+              <div class="auth-field">
+                <label for="model">Model</label>
+                <input type="text" id="model" name="model" placeholder="e.g. Model S" required>
+              </div>
+
+              <div class="auth-field">
+                <label for="vehicle_type">Vehicle Type</label>
+                <select id="vehicle_type" name="vehicle_type" required>
+                  <option value="" disabled selected> - Select Type - </option>
+                  <optgroup label="Cars">
+                    <option value="Sedan">Sedan</option>
+                    <option value="Suv">Suv</option>
+                    <option value="Hatchback">Hatchback</option>
+                    <option value="Off-road / 4x4">Off-road / 4x4</option>
+                    <option value="Van">Van</option>
+                    <option value="MPV / Minivan">MPV / Minivan</option>
+                    <option value="Pickup">Pickup</option>
+                    <option value="Sport Car">Sport Car</option>
+                    <option value="Hyper car">Hyper car</option>
+                  </optgroup>
+                  <optgroup label="Bikes">
+                    <option value="Sport Bike">Sport Bike</option>
+                    <option value="Custom">Custom</option>
+                    <option value="Naked">Naked</option>
+                    <option value="Enduro">Enduro</option>
+                    <option value="Trial">Trial</option>
+                    <option value="MotoCross">MotoCross</option>
+                    <option value="Trail">Trail</option>
+                    <option value="Touring">Touring</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="auth-field">
-                  <label for="brand">Brand</label>
-                  <select id="brand" name="brand" required>
-                    <option value="" selected disabled>- Select a brand -</option>
-                  </select>
+                  <label for="year">Year</label>
+                  <input type="number" id="year" name="year" min="1900" max="2026" placeholder="2024" required>
                 </div>
-
                 <div class="auth-field">
-                  <label for="model">Model</label>
-                  <input type="text" id="model" name="model" placeholder="e.g. Model S" required>
-                </div>
-
-                <div class="auth-field">
-                  <label for="vehicle_type">Vehicle Type</label>
-                  <select id="vehicle_type" name="vehicle_type" required>
-                    <option value="" disabled selected> - Select Type - </option>
-                    <optgroup label="Cars">
-                      <option value="Sedan">Sedan</option>
-                      <option value="Suv">Suv</option>
-                      <option value="Hatchback">Hatchback</option>
-                      <option value="Off-road / 4x4">Off-road / 4x4</option>
-                      <option value="Van">Van</option>
-                      <option value="MPV / Minivan">MPV / Minivan</option>
-                      <option value="Pickup">Pickup</option>
-                      <option value="Sport Car">Sport Car</option>
-                      <option value="Hyper car">Hyper car</option>
-                    </optgroup>
-                    <optgroup label="Bikes">
-                      <option value="Sport Bike">Sport Bike</option>
-                      <option value="Custom">Custom</option>
-                      <option value="Naked">Naked</option>
-                      <option value="Enduro">Enduro</option>
-                      <option value="Trial">Trial</option>
-                      <option value="MotoCross">MotoCross</option>
-                      <option value="Trail">Trail</option>
-                      <option value="Touring">Touring</option>
-                    </optgroup>
-                  </select>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                  <div class="auth-field">
-                    <label for="year">Year</label>
-                    <input type="number" id="year" name="year" min="1900" max="2026" placeholder="2024" required>
-                  </div>
-                  <div class="auth-field">
-                    <label for="price">Price (€)</label>
-                    <input type="number" id="price" name="price" min="0" placeholder="50000" required>
-                  </div>
-                </div>
-
-                <div class="auth-field">
-                  <label for="description">Description</label>
-                  <textarea id="description" name="description" placeholder="Describe the vehicle..." rows="5" required></textarea>
-                </div>
-
-                <div class="auth-field">
-                  <label for="photos">Vehicle Photos</label>
-                  <input type="file" id="photos" name="photos" multiple accept="image/*">
-                  <small style="color: var(--text-muted);">Select up to 15 high-quality images.</small>
+                  <label for="price">Price (€)</label>
+                  <input type="number" id="price" name="price" min="0" placeholder="50000" required>
                 </div>
               </div>
 
-              <!-- Column 2 -->
-              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                  <div class="auth-field">
-                    <label for="mileage">Mileage (miles)</label>
-                    <input type="number" id="mileage" name="mileage" min="0" placeholder="0" required>
-                  </div>
-                  <div class="auth-field">
-                    <label for="doors">Doors</label>
-                    <input type="number" id="doors" name="doors" min="0" max="5" value="4" required>
-                  </div>
-                </div>
+              <div class="auth-field">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Describe the vehicle..." rows="5" required></textarea>
+              </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                  <div class="auth-field">
-                    <label for="hp">Horsepower (HP)</label>
-                    <input type="number" id="hp" name="hp" min="1" placeholder="150" required>
-                  </div>
-                  <div class="auth-field">
-                    <label for="fuel_type">Fuel Type</label>
-                    <select id="fuel_type" name="fuel_type" required>
-                      <option value="" disabled selected> - Fuel - </option>
-                      <option value="Gasoline">Gasoline</option>
-                      <option value="Diesel">Diesel</option>
-                      <option value="Electric">Electric</option>
-                      <option value="Hybrid">Hybrid</option>
-                      <option value="Plug-in Hybrid">Plug-in Hybrid</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                </div>
+              <div class="auth-field">
+                <label for="photos">Vehicle Photos</label>
+                <input type="file" id="photos" name="photos" multiple accept="image/*">
+                <small style="color: var(--text-muted);">Select up to 15 high-quality images.</small>
+              </div>
+            </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                  <div class="auth-field">
-                    <label for="autonomy">Range (miles)</label>
-                    <input type="number" id="autonomy" name="autonomy" min="1" placeholder="400" required>
-                  </div>
-                  <div class="auth-field">
-                    <label for="average_consumption">Consumption (L/100m)</label>
-                    <input type="number" id="average_consumption" name="average_consumption" min="0" step="0.1" placeholder="6.5" required>
-                  </div>
-                </div>
-
+            <!-- Column 2 -->
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="auth-field">
-                  <label for="extras">Extras & Features</label>
-                  <select id="extras" name="extras" multiple>
-                    <option value="ABS">ABS</option>
-                    <option value="Airbags">Airbags</option>
-                    <option value="Automatic Climate Control">Automatic Climate Control</option>
-                    <option value="Bluetooth">Bluetooth</option>
-                    <option value="Cruise Control">Cruise Control</option>
-                    <option value="Navigation System">Navigation System</option>
-                    <option value="Parking Sensors">Parking Sensors</option>
-                    <option value="Rear Camera">Rear Camera</option>
-                    <option value="360 Camera">360 Camera</option>
-                    <option value="Sunroof">Sunroof</option>
-                    <option value="Panoramic Roof">Panoramic Roof</option>
-                    <option value="Leather Seats">Leather Seats</option>
-                    <option value="Heated Seats">Heated Seats</option>
-                    <option value="Ventilated Seats">Ventilated Seats</option>
-                    <option value="Sport Seats">Sport Seats</option>
-                    <option value="Electric Seats">Electric Seats</option>
-                    <option value="Keyless Entry">Keyless Entry</option>
-                    <option value="Keyless Start">Keyless Start</option>
-                    <option value="LED Headlights">LED Headlights</option>
-                    <option value="Xenon Headlights">Xenon Headlights</option>
-                    <option value="Fog Lights">Fog Lights</option>
-                    <option value="Alloy Wheels">Alloy Wheels</option>
-                    <option value="Sport Exhaust">Sport Exhaust</option>
-                    <option value="Adaptive Cruise Control">Adaptive Cruise Control</option>
-                    <option value="Lane Assist">Lane Assist</option>
-                    <option value="Blind Spot Assist">Blind Spot Assist</option>
-                    <option value="Traffic Sign Recognition">Traffic Sign Recognition</option>
-                    <option value="Automatic Emergency Braking">Automatic Emergency Braking</option>
-                    <option value="Android Auto">Android Auto</option>
-                    <option value="Apple CarPlay">Apple CarPlay</option>
-                    <option value="Premium Sound System">Premium Sound System</option>
-                    <option value="Wireless Charger">Wireless Charger</option>
-                    <option value="Tow Hitch">Tow Hitch</option>
-                    <option value="Roof Rack">Roof Rack</option>
-                    <option value="Tinted Windows">Tinted Windows</option>
-                    <option value="Air Suspension">Air Suspension</option>
-                    <option value="Sport Suspension">Sport Suspension</option>
-                  </select>
-                  <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
+                  <label for="mileage">Mileage (miles)</label>
+                  <input type="number" id="mileage" name="mileage" min="0" placeholder="0" required>
                 </div>
+                <div class="auth-field">
+                  <label for="doors">Doors</label>
+                  <input type="number" id="doors" name="doors" min="0" max="5" value="4" required>
+                </div>
+              </div>
 
-                <button type="submit" class="btn-premium primary" style="width: 100%;">
-                  Publish Vehicle
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="auth-field">
+                  <label for="hp">Horsepower (HP)</label>
+                  <input type="number" id="hp" name="hp" min="1" placeholder="150" required>
+                </div>
+                <div class="auth-field">
+                  <label for="fuel_type">Fuel Type</label>
+                  <select id="fuel_type" name="fuel_type" required>
+                    <option value="" disabled selected> - Fuel - </option>
+                    <option value="Gasoline">Gasoline</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Plug-in Hybrid">Plug-in Hybrid</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="auth-field">
+                  <label for="autonomy">Range (miles)</label>
+                  <input type="number" id="autonomy" name="autonomy" min="1" placeholder="400" required>
+                </div>
+                <div class="auth-field">
+                  <label for="average_consumption">Consumption (L/100m)</label>
+                  <input type="number" id="average_consumption" name="average_consumption" min="0" step="0.1" placeholder="6.5" required>
+                </div>
+              </div>
+
+              <div class="auth-field">
+                <label for="extras">Extras & Features</label>
+                <select id="extras" name="extras" multiple>
+                  <option value="ABS">ABS</option>
+                  <option value="Airbags">Airbags</option>
+                  <option value="Automatic Climate Control">Automatic Climate Control</option>
+                  <option value="Bluetooth">Bluetooth</option>
+                  <option value="Cruise Control">Cruise Control</option>
+                  <option value="Navigation System">Navigation System</option>
+                  <option value="Parking Sensors">Parking Sensors</option>
+                  <option value="Rear Camera">Rear Camera</option>
+                  <option value="360 Camera">360 Camera</option>
+                  <option value="Sunroof">Sunroof</option>
+                  <option value="Panoramic Roof">Panoramic Roof</option>
+                  <option value="Leather Seats">Leather Seats</option>
+                  <option value="Heated Seats">Heated Seats</option>
+                  <option value="Ventilated Seats">Ventilated Seats</option>
+                  <option value="Sport Seats">Sport Seats</option>
+                  <option value="Electric Seats">Electric Seats</option>
+                  <option value="Keyless Entry">Keyless Entry</option>
+                  <option value="Keyless Start">Keyless Start</option>
+                  <option value="LED Headlights">LED Headlights</option>
+                  <option value="Xenon Headlights">Xenon Headlights</option>
+                  <option value="Fog Lights">Fog Lights</option>
+                  <option value="Alloy Wheels">Alloy Wheels</option>
+                  <option value="Sport Exhaust">Sport Exhaust</option>
+                  <option value="Adaptive Cruise Control">Adaptive Cruise Control</option>
+                  <option value="Lane Assist">Lane Assist</option>
+                  <option value="Blind Spot Assist">Blind Spot Assist</option>
+                  <option value="Traffic Sign Recognition">Traffic Sign Recognition</option>
+                  <option value="Automatic Emergency Braking">Automatic Emergency Braking</option>
+                  <option value="Android Auto">Android Auto</option>
+                  <option value="Apple CarPlay">Apple CarPlay</option>
+                  <option value="Premium Sound System">Premium Sound System</option>
+                  <option value="Wireless Charger">Wireless Charger</option>
+                  <option value="Tow Hitch">Tow Hitch</option>
+                  <option value="Roof Rack">Roof Rack</option>
+                  <option value="Tinted Windows">Tinted Windows</option>
+                  <option value="Air Suspension">Air Suspension</option>
+                  <option value="Sport Suspension">Sport Suspension</option>
+                </select>
+                <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
+              </div>
+
+              <button type="submit" class="btn-premium primary" style="width: 100%;">
+                Publish Vehicle
+              </button>
+            </div>
+          </form>
+        </details>
+      <% } %>
+
+      <section class="vehicle-grid" id="vehicle-grid">
+        <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
+
+          <% vehicles.forEach(v => { %>
+            <article class="vehicle-card">
+              <% if (user) { %>
+                <button
+                  class="fav-btn <%= (Array.isArray(favoriteIds) && favoriteIds.map(String).includes(String(v.id))) ? 'active' : '' %>"
+                  type="button"
+                  data-vehicle-id="<%= v.id %>"
+                  aria-label="Toggle favourite"
+                  title="Toggle favourite"
+                >
+                  <% if (Array.isArray(favoriteIds) && favoriteIds.map(String).includes(String(v.id))) { %>
+                    <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
+                    </svg>
+                  <% } else { %>
+                    <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
+                            fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                  <% } %>
                 </button>
-              </div>
-            </form>
+              <% } %>
 
-            <script>
-              window.BACKEND_URL = "<%= typeof process !== 'undefined' ? (process.env.BACKEND_URL || 'http://localhost:8080/api') : 'http://localhost:8080/api' %>";
-            </script>
-            <script src="/js/add.js"></script>
-          </details>
+              <a href="/vehicles/<%= v.id %>" class="vehicle-link">
+                <% const images = v.images || []; %>
+                <% const mainImage = images.find(img => img.isMain) || images[0]; %>
+                <% const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png"; %>
+
+                <div class="vehicle-main-image">
+                  <img class="gallery-opener" src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
+                </div>
+
+                <div class="vehicle-info">
+                  <h3><%= v.brand %> <%= v.model %></h3>
+                  <p><%= v.vehicleType %></p>
+                  <br>
+                  <p>
+                    <%= v.price %> € · <%= v.mileage %> miles
+                    <% if (v.year) { %> · <%= v.year %><% } %>
+                    <% if (v.fuelType || v.fuel_type) { %> · <%= v.fuelType || v.fuel_type %><% } %>
+                  </p>
+                </div>
+              </a>
+            </article>
+          <% }) %>
+
+        <% } else { %>
+          <p class="empty-message">
+            <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage)
+                ? 'No tienes vehículos en favoritos.'
+                : 'No hay vehículos disponibles.' %>
+          </p>
+        <% } %>
+      </section>
+
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a class="arrow page-link"
+            href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
+        <% } else { %>
+          <span class="arrow disabled">←</span>
         <% } %>
 
-        <section class="vehicle-grid" id="vehicle-grid">
-          <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
+        <span class="current-page"><%= currentPage %></span>
 
-            <%
-              const favIds2 = Array.isArray(favoriteIds) ? favoriteIds.map(String) : [];
-            %>
+        <% if (currentPage < totalPages) { %>
+          <a class="arrow page-link"
+            href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
+        <% } else { %>
+          <span class="arrow disabled">→</span>
+        <% } %>
+      </div>
+    </main>
 
-            <% vehicles.forEach(v => { %>
-              <article class="vehicle-card">
-                <% if (user) { %>
-                  <% const isFavorite = favIds2.includes(String(v.id)); %>
-
-                  <button
-                    class="fav-btn <%= isFavorite ? 'active' : '' %>"
-                    type="button"
-                    data-vehicle-id="<%= v.id %>"
-                    aria-label="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
-                    title="<%= isFavorite ? 'Remove from favourites' : 'Add to favourites' %>"
-                  >
-                    <% if (isFavorite) { %>
-                      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
-                      </svg>
-                    <% } else { %>
-                      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
-                              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                      </svg>
-                    <% } %>
-                  </button>
-                <% } %>
-
-                <a href="/vehicles/<%= v.id %>" class="vehicle-link">
-                  <% const images = v.images || []; %>
-                  <% const mainImage = images.find(img => img.isMain) || images[0]; %>
-                  <% const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png"; %>
-
-                  <div class="vehicle-main-image">
-                    <img class="gallery-opener" src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
-                  </div>
-
-                  <div class="vehicle-info">
-                    <h3><%= v.brand %> <%= v.model %></h3>
-                    <p><%= v.vehicleType %></p>
-                    <br>
-                    <p>
-                      <%= v.price %> € · <%= v.mileage %> miles
-                      <% if (v.year) { %> · <%= v.year %><% } %>
-                      <% if (v.fuelType || v.fuel_type) { %> · <%= v.fuelType || v.fuel_type %><% } %>
-                    </p>
-                  </div>
-                </a>
-              </article>
-            <% }) %>
-
-          <% } else { %>
-            <p class="empty-message">
-              <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage)
-                  ? 'No tienes vehículos en favoritos.'
-                  : 'No hay vehículos disponibles.' %>
-            </p>
-          <% } %>
-        </section>
-
-        <div class="pagination">
-          <% if (currentPage > 1) { %>
-            <a class="arrow page-link"
-              href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
-          <% } else { %>
-            <span class="arrow disabled">←</span>
-          <% } %>
-
-          <span class="current-page"><%= currentPage %></span>
-
-          <% if (currentPage < totalPages) { %>
-            <a class="arrow page-link"
-              href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
-          <% } else { %>
-            <span class="arrow disabled">→</span>
-          <% } %>
-        </div>
-      </main>
-
-      <footer class="home-footer">
-        <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
-      </footer>
+    <footer class="home-footer">
+      <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
+    </footer>
 
   </div>
 
@@ -386,110 +376,8 @@
     <button id="closeMessage">Close</button>
   </div>
 
+  <!-- ✅ ÚNICO JS -->
   <script src="/js/main.js"></script>
-
-  <script>
-    window.__USER__ = <%- JSON.stringify(user || null) %>;
-    window.__IS_FAV_PAGE__ = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
-    window.__FAV_IDS__ = <%- JSON.stringify(Array.isArray(favoriteIds) ? favoriteIds.map(String) : []) %>;
-  </script>
-
-  <!-- Tu script de toggle fav (lo mantengo tal cual lo tenías) -->
-  <script>
-    const filledStar = `
-      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
-      </svg>
-    `;
-
-    const outlineStar = `
-      <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 17.75l-6.172 3.245 1.18-6.875L2.01 9.255l6.902-1.003L12 2l3.088 6.252 6.902 1.003-4.998 4.865 1.18 6.875L12 17.75z"
-              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-      </svg>
-    `;
-
-    function setFavUI(btn, isFav) {
-      if (isFav) {
-        btn.classList.add("active");
-        btn.innerHTML = filledStar;
-        btn.title = "Remove from favourites";
-        btn.setAttribute("aria-label", "Remove from favourites");
-      } else {
-        btn.classList.remove("active");
-        btn.innerHTML = outlineStar;
-        btn.title = "Add to favourites";
-        btn.setAttribute("aria-label", "Add to favourites");
-      }
-    }
-
-    function addFavId(id) {
-      const sid = String(id);
-      if (!window.__FAV_IDS__.includes(sid)) window.__FAV_IDS__.push(sid);
-    }
-
-    function removeFavId(id) {
-      const sid = String(id);
-      window.__FAV_IDS__ = window.__FAV_IDS__.filter(x => x !== sid);
-    }
-
-    document.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".fav-btn");
-      if (!btn) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (!window.__USER__ || !window.__USER__.id) {
-        window.location.href = "/login";
-        return;
-      }
-
-      if (btn.dataset.loading === "1") return;
-      btn.dataset.loading = "1";
-
-      const vehicleId = btn.dataset.vehicleId;
-      const wasFav = btn.classList.contains("active");
-
-      setFavUI(btn, !wasFav);
-      if (!wasFav) addFavId(vehicleId);
-      else removeFavId(vehicleId);
-
-      try {
-        const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
-        const text = await res.text();
-        if (!res.ok) throw new Error(text || "Request failed");
-
-        const data = JSON.parse(text);
-        const nowFav = !!data.favorite;
-
-        setFavUI(btn, nowFav);
-        if (nowFav) addFavId(vehicleId);
-        else removeFavId(vehicleId);
-
-        if (window.__IS_FAV_PAGE__ && nowFav === false) {
-          const card = btn.closest(".vehicle-card");
-          if (card) card.remove();
-
-          const grid = document.getElementById("vehicle-grid");
-          const remaining = grid ? grid.querySelectorAll(".vehicle-card").length : 0;
-          if (grid && remaining === 0) {
-            grid.innerHTML = `<p class="empty-message">No tienes vehículos en favoritos.</p>`;
-          }
-        }
-      } catch (err) {
-        console.error("FAV ERROR:", err);
-
-        setFavUI(btn, wasFav);
-        if (wasFav) addFavId(vehicleId);
-        else removeFavId(vehicleId);
-
-        alert("No se pudo actualizar fav (mira consola F12)");
-      } finally {
-        btn.dataset.loading = "0";
-      }
-    });
-  </script>
 
 </body>
 </html>
