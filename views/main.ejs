@@ -85,23 +85,223 @@
           <h2>
             <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'Your Favourites' : 'Latest Arrivals' %>
           </h2>
-          <% if (user && user.role=="Admin" ) { %>
-            <a class="btn-premium primary" href="/add">Add Vehicle</a>
-          <% } %>
         </div>
+
+        <!-- ✅ DESPLEGABLE SOLO ADMIN: Add Vehicle -->
+        <% if (user && user.role === "Admin") { %>
+          <details class="glass-panel" style="
+            margin: 1.5rem 0 2.5rem;
+            padding: 1.25rem 1.25rem;
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(255,255,255,.02);
+          ">
+            <summary style="
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 1rem;
+              user-select: none;
+              list-style: none;
+            ">
+              <div style="display:flex; flex-direction:column; gap:.25rem;">
+                <span style="font-weight: 900; letter-spacing: .02em; text-transform: uppercase;">
+                  Add New Vehicle
+                </span>
+                <span style="color: var(--text-muted); font-size: .95rem;">
+                  Only visible for Admins
+                </span>
+              </div>
+
+              <span class="btn-premium primary" style="pointer-events:none;">
+                Open
+              </span>
+            </summary>
+
+            <div style="height:1px; background:rgba(255,255,255,.06); margin: 1.25rem 0;"></div>
+
+            <!-- ✅ TU FORM ORIGINAL (mismo action y enctype) -->
+            <form method="post" action="/addVehicle" enctype="multipart/form-data"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+
+              <!-- Column 1 -->
+              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div class="auth-field">
+                  <label for="brand">Brand</label>
+                  <select id="brand" name="brand" required>
+                    <option value="" selected disabled>- Select a brand -</option>
+                  </select>
+                </div>
+
+                <div class="auth-field">
+                  <label for="model">Model</label>
+                  <input type="text" id="model" name="model" placeholder="e.g. Model S" required>
+                </div>
+
+                <div class="auth-field">
+                  <label for="vehicle_type">Vehicle Type</label>
+                  <select id="vehicle_type" name="vehicle_type" required>
+                    <option value="" disabled selected> - Select Type - </option>
+                    <optgroup label="Cars">
+                      <option value="Sedan">Sedan</option>
+                      <option value="Suv">Suv</option>
+                      <option value="Hatchback">Hatchback</option>
+                      <option value="Off-road / 4x4">Off-road / 4x4</option>
+                      <option value="Van">Van</option>
+                      <option value="MPV / Minivan">MPV / Minivan</option>
+                      <option value="Pickup">Pickup</option>
+                      <option value="Sport Car">Sport Car</option>
+                      <option value="Hyper car">Hyper car</option>
+                    </optgroup>
+                    <optgroup label="Bikes">
+                      <option value="Sport Bike">Sport Bike</option>
+                      <option value="Custom">Custom</option>
+                      <option value="Naked">Naked</option>
+                      <option value="Enduro">Enduro</option>
+                      <option value="Trial">Trial</option>
+                      <option value="MotoCross">MotoCross</option>
+                      <option value="Trail">Trail</option>
+                      <option value="Touring">Touring</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="auth-field">
+                    <label for="year">Year</label>
+                    <input type="number" id="year" name="year" min="1900" max="2026" placeholder="2024" required>
+                  </div>
+                  <div class="auth-field">
+                    <label for="price">Price (€)</label>
+                    <input type="number" id="price" name="price" min="0" placeholder="50000" required>
+                  </div>
+                </div>
+
+                <div class="auth-field">
+                  <label for="description">Description</label>
+                  <textarea id="description" name="description" placeholder="Describe the vehicle..." rows="5" required></textarea>
+                </div>
+
+                <div class="auth-field">
+                  <label for="photos">Vehicle Photos</label>
+                  <input type="file" id="photos" name="photos" multiple accept="image/*">
+                  <small style="color: var(--text-muted);">Select up to 15 high-quality images.</small>
+                </div>
+              </div>
+
+              <!-- Column 2 -->
+              <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="auth-field">
+                    <label for="mileage">Mileage (miles)</label>
+                    <input type="number" id="mileage" name="mileage" min="0" placeholder="0" required>
+                  </div>
+                  <div class="auth-field">
+                    <label for="doors">Doors</label>
+                    <input type="number" id="doors" name="doors" min="0" max="5" value="4" required>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="auth-field">
+                    <label for="hp">Horsepower (HP)</label>
+                    <input type="number" id="hp" name="hp" min="1" placeholder="150" required>
+                  </div>
+                  <div class="auth-field">
+                    <label for="fuel_type">Fuel Type</label>
+                    <select id="fuel_type" name="fuel_type" required>
+                      <option value="" disabled selected> - Fuel - </option>
+                      <option value="Gasoline">Gasoline</option>
+                      <option value="Diesel">Diesel</option>
+                      <option value="Electric">Electric</option>
+                      <option value="Hybrid">Hybrid</option>
+                      <option value="Plug-in Hybrid">Plug-in Hybrid</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="auth-field">
+                    <label for="autonomy">Range (miles)</label>
+                    <input type="number" id="autonomy" name="autonomy" min="1" placeholder="400" required>
+                  </div>
+                  <div class="auth-field">
+                    <label for="average_consumption">Consumption (L/100m)</label>
+                    <input type="number" id="average_consumption" name="average_consumption" min="0" step="0.1" placeholder="6.5" required>
+                  </div>
+                </div>
+
+                <div class="auth-field">
+                  <label for="extras">Extras & Features</label>
+                  <select id="extras" name="extras" multiple>
+                    <option value="ABS">ABS</option>
+                    <option value="Airbags">Airbags</option>
+                    <option value="Automatic Climate Control">Automatic Climate Control</option>
+                    <option value="Bluetooth">Bluetooth</option>
+                    <option value="Cruise Control">Cruise Control</option>
+                    <option value="Navigation System">Navigation System</option>
+                    <option value="Parking Sensors">Parking Sensors</option>
+                    <option value="Rear Camera">Rear Camera</option>
+                    <option value="360 Camera">360 Camera</option>
+                    <option value="Sunroof">Sunroof</option>
+                    <option value="Panoramic Roof">Panoramic Roof</option>
+                    <option value="Leather Seats">Leather Seats</option>
+                    <option value="Heated Seats">Heated Seats</option>
+                    <option value="Ventilated Seats">Ventilated Seats</option>
+                    <option value="Sport Seats">Sport Seats</option>
+                    <option value="Electric Seats">Electric Seats</option>
+                    <option value="Keyless Entry">Keyless Entry</option>
+                    <option value="Keyless Start">Keyless Start</option>
+                    <option value="LED Headlights">LED Headlights</option>
+                    <option value="Xenon Headlights">Xenon Headlights</option>
+                    <option value="Fog Lights">Fog Lights</option>
+                    <option value="Alloy Wheels">Alloy Wheels</option>
+                    <option value="Sport Exhaust">Sport Exhaust</option>
+                    <option value="Adaptive Cruise Control">Adaptive Cruise Control</option>
+                    <option value="Lane Assist">Lane Assist</option>
+                    <option value="Blind Spot Assist">Blind Spot Assist</option>
+                    <option value="Traffic Sign Recognition">Traffic Sign Recognition</option>
+                    <option value="Automatic Emergency Braking">Automatic Emergency Braking</option>
+                    <option value="Android Auto">Android Auto</option>
+                    <option value="Apple CarPlay">Apple CarPlay</option>
+                    <option value="Premium Sound System">Premium Sound System</option>
+                    <option value="Wireless Charger">Wireless Charger</option>
+                    <option value="Tow Hitch">Tow Hitch</option>
+                    <option value="Roof Rack">Roof Rack</option>
+                    <option value="Tinted Windows">Tinted Windows</option>
+                    <option value="Air Suspension">Air Suspension</option>
+                    <option value="Sport Suspension">Sport Suspension</option>
+                  </select>
+                  <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
+                </div>
+
+                <button type="submit" class="btn-premium primary" style="width: 100%;">
+                  Publish Vehicle
+                </button>
+              </div>
+            </form>
+
+            <!-- Tu add.js (si rellena brands, etc.) -->
+            <script>
+              window.BACKEND_URL = "<%= typeof process !== 'undefined' ? (process.env.BACKEND_URL || 'http://localhost:8080/api') : 'http://localhost:8080/api' %>";
+            </script>
+            <script src="/js/add.js"></script>
+          </details>
+        <% } %>
 
         <section class="vehicle-grid" id="vehicle-grid">
           <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
 
             <%
-              // ✅ ROBUSTO: compara SIEMPRE como string
-              const favIds = Array.isArray(favoriteIds) ? favoriteIds.map(String) : [];
+              const favIds2 = Array.isArray(favoriteIds) ? favoriteIds.map(String) : [];
             %>
 
             <% vehicles.forEach(v => { %>
               <article class="vehicle-card">
                 <% if (user) { %>
-                  <% const isFavorite = favIds.includes(String(v.id)); %>
+                  <% const isFavorite = favIds2.includes(String(v.id)); %>
 
                   <button
                     class="fav-btn <%= isFavorite ? 'active' : '' %>"
@@ -129,7 +329,7 @@
                   <% const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png"; %>
 
                   <div class="vehicle-main-image">
-                    <img src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
+                    <img class="gallery-opener" src="<%= mainSrc %>" alt="<%= v.brand %> <%= v.model %>">
                   </div>
 
                   <div class="vehicle-info">
@@ -189,17 +389,15 @@
     <button id="closeMessage">Close</button>
   </div>
 
-  <!-- ✅ JS principal -->
   <script src="/js/main.js"></script>
 
-  <!-- ✅ Variables globales para que el main.js pueda repintar estrellas en paginación -->
   <script>
     window.__USER__ = <%- JSON.stringify(user || null) %>;
     window.__IS_FAV_PAGE__ = <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage) ? 'true' : 'false' %>;
     window.__FAV_IDS__ = <%- JSON.stringify(Array.isArray(favoriteIds) ? favoriteIds.map(String) : []) %>;
   </script>
 
-  <!-- ✅ Toggle fav (delegación: funciona también con cards creadas por AJAX) -->
+  <!-- Tu script de toggle fav (lo mantengo tal cual lo tenías) -->
   <script>
     const filledStar = `
       <svg class="fav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -256,7 +454,6 @@
       const vehicleId = btn.dataset.vehicleId;
       const wasFav = btn.classList.contains("active");
 
-      // ✅ Optimista
       setFavUI(btn, !wasFav);
       if (!wasFav) addFavId(vehicleId);
       else removeFavId(vehicleId);
@@ -273,7 +470,6 @@
         if (nowFav) addFavId(vehicleId);
         else removeFavId(vehicleId);
 
-        // si estás en /favourites y lo quitas, eliminamos card sin recargar
         if (window.__IS_FAV_PAGE__ && nowFav === false) {
           const card = btn.closest(".vehicle-card");
           if (card) card.remove();
@@ -287,7 +483,6 @@
       } catch (err) {
         console.error("FAV ERROR:", err);
 
-        // rollback
         setFavUI(btn, wasFav);
         if (wasFav) addFavId(vehicleId);
         else removeFavId(vehicleId);
@@ -298,6 +493,6 @@
       }
     });
   </script>
-</body>
 
+</body>
 </html>
