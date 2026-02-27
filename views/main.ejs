@@ -40,7 +40,7 @@
             </form>
           </div>
 
-          <a href="/?favourite" class="nav-icon-link" title="Favourites">
+          <a href="/favourites" class="nav-icon-link" title="Favourites">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
               <path
                 d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
@@ -212,15 +212,14 @@
     const vehicleId = btn.dataset.vehicleId;
 
     try {
-      const res = await fetch(`/favorites/${vehicleId}/toggle`, { method: "POST" });
+      const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
 
-      const text = await res.text(); // 👈 ver respuesta aunque no sea JSON
+      const text = await res.text();
       console.log("STATUS:", res.status, "BODY:", text);
 
       if (!res.ok) throw new Error(text || "Request failed");
 
       const data = JSON.parse(text);
-      // ... tu lógica de pintar estrella ...
     } catch (err) {
       console.error("FAV ERROR:", err);
       alert("No se pudo actualizar fav (mira consola F12)");
