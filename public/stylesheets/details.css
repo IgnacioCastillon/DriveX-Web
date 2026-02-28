@@ -696,30 +696,29 @@
 .details-main-wrap{
   position: relative;
   width: 100%;
+  overflow: hidden; /* 👈 ESTO ES LO IMPORTANTE */
+  border-radius: 18px; /* mismo radio que tu imagen si lo tienes */
 }
 
 /* Badge oferta en la foto principal */
 .offer-badge-details{
   position: absolute;
-  top: 16px;
-  left: -52px;
-  z-index: 50;
+  top: 18px;
+  left: -60px;
 
   background: linear-gradient(135deg, #ff3b3b, #ff0000);
   color: #fff;
-  padding: 10px 80px;
 
-  font-size: 0.78rem;
+  padding: 8px 85px;
+  font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 1px;
 
   transform: rotate(-45deg);
   text-align: center;
 
-  box-shadow: 0 10px 22px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.12);
-
-  pointer-events: none; /* para que no moleste al click */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+  pointer-events: none;
 }
 
 /* Ajuste en móvil */
