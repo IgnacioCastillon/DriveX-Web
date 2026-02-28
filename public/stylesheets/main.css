@@ -1,7 +1,7 @@
 /* =========================================================
    DriveX - Luxury Dark Edition (FULL CSS)
-   - Desktop: header normal (no fijo)
-   - Mobile: header fijo arriba (no se mueve al hacer scroll)
+   - Desktop: como está
+   - Mobile: 4 tarjetas por fila + estética corregida
    ========================================================= */
 
    .home-wrapper {
@@ -558,8 +558,6 @@
   
   /* =========================================================
      RESPONSIVE
-     - Desktop: NO TOCA header (normal)
-     - Mobile: HEADER FIJO + layout simplificado
      ========================================================= */
   
   @media (max-width: 1024px) {
@@ -578,45 +576,221 @@
     }
   }
   
+  /* =========================================================
+     MOBILE LOOK (4 cards per row)
+     ========================================================= */
   @media (max-width: 768px) {
-
-    /* Header NORMAL en móvil: se va al hacer scroll */
-    .main-header {
-      position: relative;   /* o static */
-      top: auto;
-      left: auto;
-      width: 100%;
-      z-index: auto;
   
-      background: rgba(15, 15, 15, 0.95);
+    /* Evitar desbordes raros en iPhone */
+    html, body { overflow-x: hidden; }
+  
+    .home-wrapper { padding: 0 12px; }
+  
+    /* Header: normal (desaparece al hacer scroll) pero con estética */
+    .main-header{
+      position: relative;
+      width: 100%;
+      background: rgba(15, 15, 15, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
   
-    /* Ya NO hace falta separar el contenido */
-    .home-main {
-      margin-top: 0;
-    }
-  
-    /* Header-container ajustado al móvil */
-    .header-container {
+    .header-container{
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
+      padding: 0.85rem 12px;
+      margin: 0 auto;
   
       display: flex;
       flex-direction: column;
-      gap: 0.9rem;
-  
-      padding: 1rem 16px;
-      margin: 0 auto;
+      gap: 0.75rem;
     }
   
-    body { overflow-x: hidden; }
+    /* Nav scrolleable cómodo */
+    .main-nav{
+      display: flex;
+      gap: .75rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: .25rem;
+      scrollbar-width: none;
+    }
+    .main-nav::-webkit-scrollbar{ display:none; }
+  
+    /* Search full width (sin expandirse en móvil) */
+    .search-wrapper{ width: 100%; }
+    .search-input{ width: 100%; }
+    .search-input:focus{ width: 100%; }
+  
+    /* HERO más limpio */
+    #backgroundImageContainer{
+      height: 300px;
+      border-radius: 18px;
+    }
+  
+    .hero-overlay{
+      padding: 1.25rem;
+      justify-content: flex-end;
+      background: linear-gradient(to bottom, rgba(0,0,0,.88), rgba(0,0,0,.50), rgba(0,0,0,.15));
+    }
+  
+    .hero-overlay h1{
+      font-size: 1.65rem;
+      letter-spacing: -0.8px;
+      margin-bottom: .35rem;
+      max-width: 100%;
+      line-height: 1.08;
+    }
+  
+    .hero-overlay p{
+      font-size: .95rem;
+      margin-bottom: .85rem;
+      max-width: 100%;
+    }
+  
+    .hero-nav{
+      gap: .5rem;
+    }
+  
+    .hero-nav a{
+      padding: .55rem .75rem;
+      font-size: .70rem;
+      border-radius: 14px;
+    }
+  
+    /* Section header más compacto */
+    .section-header{
+      margin: 2rem 0 1.1rem;
+      padding-bottom: .9rem;
+    }
+  
+    .section-header h2{
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+  
+    /* =====================================================
+       4 TARJETAS POR FILA (sí o sí)
+       ===================================================== */
+    .vehicle-grid{
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 3rem;
+    }
+  
+    .vehicle-card{
+      border-radius: 14px;
+    }
+  
+    .vehicle-main-image{
+      aspect-ratio: 1 / 1;
+    }
+  
+    .vehicle-main-image img{
+      filter: brightness(0.92);
+    }
+  
+    .vehicle-info{
+      padding: .65rem .65rem .75rem;
+    }
+  
+    .vehicle-info h3{
+      font-size: .78rem;
+      margin-bottom: .25rem;
+      letter-spacing: -0.3px;
+      line-height: 1.1;
+  
+      /* cortar texto para que no rompa */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  
+    .vehicle-info p{
+      font-size: .68rem;
+      line-height: 1.15;
+    }
+  
+    .vehicle-info .price{
+      font-size: .85rem;
+      margin-top: .35rem;
+    }
+  
+    /* Offer badge mini */
+    .offer-badge{
+      top: 10px;
+      left: -52px;
+      padding: 5px 60px;
+      font-size: .55rem;
+    }
+  
+    /* Fav button mini */
+    .fav-btn{
+      width: 28px;
+      height: 28px;
+      top: 8px;
+      right: 8px;
+    }
+  
+    .fav-icon{
+      width: 14px;
+      height: 14px;
+    }
+  
+    /* Pagination más compacta */
+    .pagination{
+      margin: 3rem 0 3.5rem;
+      gap: .7rem;
+    }
+  
+    .page-link,
+    .current-page{
+      width: 42px;
+      height: 42px;
+    }
+  
+    /* Modal en móvil */
+    #contactMessage{
+      width: calc(100% - 24px);
+      padding: 2rem 1.4rem;
+    }
+  
+    #contactMessage h2{
+      font-size: 1.7rem;
+      margin-bottom: .4rem;
+    }
   }
   
+  /* Extra pequeño: mantenemos 4 columnas igualmente, pero aún más compacto */
   @media (max-width: 420px) {
-    #backgroundImageContainer { height: 320px; }
-    .hero-overlay h1 { font-size: 1.85rem; }
-    .section-header h2 { font-size: 1.55rem; }
+    #backgroundImageContainer{ height: 270px; }
+  
+    .hero-overlay h1{ font-size: 1.55rem; }
+    .hero-overlay p{ font-size: .9rem; }
+  
+    .vehicle-grid{
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+  
+    .vehicle-info{
+      padding: .6rem .6rem .7rem;
+    }
+  
+    .vehicle-info h3{
+      font-size: .74rem;
+    }
+  
+    .vehicle-info p{
+      font-size: .66rem;
+    }
+  
+    .fav-btn{
+      width: 26px;
+      height: 26px;
+      top: 7px;
+      right: 7px;
+    }
   }
