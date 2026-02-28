@@ -580,8 +580,25 @@
   
   @media (max-width: 768px) {
 
+    /* Header NORMAL en móvil: se va al hacer scroll */
+    .main-header {
+      position: relative;   /* o static */
+      top: auto;
+      left: auto;
+      width: 100%;
+      z-index: auto;
   
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
   
+    /* Ya NO hace falta separar el contenido */
+    .home-main {
+      margin-top: 0;
+    }
+  
+    /* Header-container ajustado al móvil */
     .header-container {
       width: 100%;
       max-width: 100%;
@@ -595,16 +612,7 @@
       margin: 0 auto;
     }
   
-    /* Que el contenido no quede debajo */
-    .home-main {
-      margin-top: 95px;
-    }
-  
-    /* Asegurar que nada desborde horizontalmente */
-    body {
-      overflow-x: hidden;
-    }
-  
+    body { overflow-x: hidden; }
   }
   
   @media (max-width: 420px) {
