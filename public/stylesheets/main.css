@@ -1,861 +1,734 @@
-/* Main Styles for DriveX Luxury Dark Edition */
-
-.home-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* Header & Navigation */
-
-.search-wrapper {
-  position: relative;
-}
-
-.search-input {
-  padding: 0.7rem 1.5rem;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.2);
-  width: 220px;
-  transition: var(--transition-base);
-  color: white;
-}
-
-.search-input:focus {
-  width: 320px;
-  background: rgba(0, 0, 0, 0.4);
-  border-color: var(--primary);
-  outline: none;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-}
-
-.nav-icon-link {
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  transition: var(--transition-base);
-  border: 1px solid transparent;
-}
-
-.nav-icon-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--accent);
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
-}
-
-/* Hero Section Aggressive */
-.hero-section {
-  margin: 2.5rem 0;
-}
-
-#backgroundImageContainer {
-  height: 500px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  position: relative;
-  background: #000;
-}
-
-#backgroundImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.7);
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4), transparent);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5rem;
-}
-
-.hero-overlay h1 {
-  font-size: 4.5rem;
-  color: white;
-  margin-bottom: 1.5rem;
-  max-width: 700px;
-  line-height: 1;
-  text-transform: uppercase;
-  font-weight: 900;
-  letter-spacing: -2px;
-}
-
-.hero-overlay p {
-  font-size: 1.4rem;
-  color: var(--text-muted);
-  margin-bottom: 3rem;
-  max-width: 550px;
-}
-
-.hero-nav {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.hero-nav a {
-  padding: 0.85rem 2rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  color: white;
-  font-weight: 700;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.85rem;
-}
-
-.hero-nav a:hover,
-.hero-nav a.active {
-  background: white;
-  color: #000;
-  border-color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
-}
-
-.hero-nav a.offers {
-  background: linear-gradient(135deg, var(--accent), #d97706);
-  border-color: var(--accent);
-  color: white;
-}
-
-.hero-nav a.offers:hover {
-  box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
-}
-
-/* Section Titles Lux */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin: 4rem 0 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.section-header h2 {
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-}
-
-/* Vehicle Grid Aggressive */
-.vehicle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2.5rem;
-  margin-bottom: 5rem;
-}
-
-.vehicle-card {
-  position: relative; /* 👈 IMPORTANTE */
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: var(--shadow-lg);
-  transition: var(--transition-base);
-}
-
-.offer-badge {
-  position: absolute;
-  top: 18px;
-  left: -45px;
-  background: linear-gradient(135deg, #ff3b3b, #ff0000);
-  color: #fff;
-  padding: 8px 70px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  transform: rotate(-45deg);
-  text-align: center;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-  z-index: 20;
-}
-
-.vehicle-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(59, 130, 246, 0.2);
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
-}
-
-.vehicle-main-image {
-  position: relative;
-  aspect-ratio: 16/10;
-  overflow: hidden;
-}
-
-.vehicle-main-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: brightness(0.9);
-}
-
-.vehicle-card:hover .vehicle-main-image img {
-  transform: scale(1.05);
-}
-
-.vehicle-info {
-  padding: 1.75rem;
-}
-
-.vehicle-info h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.75rem;
-  transition: var(--transition-base);
-  letter-spacing: -0.5px;
-}
-
-.vehicle-card:hover .vehicle-info h3 {
-  color: var(--primary);
-}
-
-.vehicle-info p {
-  color: var(--text-muted);
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.vehicle-info .price {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-top: 1.25rem;
-  display: block;
-  font-family: 'Outfit', sans-serif;
-}
-
-/* Pagination Dark Lux */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.25rem;
-  margin: 5rem 0;
-}
-
-.page-link {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.page-link:hover {
-  border-color: var(--primary);
-  color: #ffffff;
-  background: rgba(59, 130, 246, 0.1);
-}
-
-.current-page {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-  background: var(--primary);
-  color: white;
-  font-weight: 800;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-}
-
-/* Overlay / Modal Lux */
-#overlay {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-}
-
-#contactMessage {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  width: 90%;
-  max-width: 450px;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 30px rgba(59, 130, 246, 0.1);
-  padding: 3.5rem;
-  border-radius: var(--radius-xl);
-  z-index: 9999;
-  visibility: hidden;
-  opacity: 0;
-  transition: var(--transition-base);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-#contactMessage.show {
-  visibility: visible;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.btn-login-oculto {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: var(--primary);
-  color: white;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: var(--transition-base);
-}
-
-.btn-login-oculto:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px var(--primary-glow);
-}
-
-#closeMessage {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-light);
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  font-weight: 600;
-  transition: var(--transition-base);
-}
-
-#closeMessage:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-}
-
-#contactMessage h2 {
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-
-/* Responsive Lux (original) */
-@media (max-width: 1024px) {
-  .hero-overlay h1 {
-    font-size: 3.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-container {
-    flex-direction: column;
-    padding: 1.5rem;
-  }
-
-  .hero-overlay {
-    padding: 2.5rem;
-  }
-
-  .hero-overlay h1 {
-    font-size: 2.5rem;
-  }
-
-  .main-nav {
-    width: 100%;
-    overflow-x: auto;
-  }
-}
-
-/* ===== Favorites (Star) ===== */
-.vehicle-card{
-  position: relative; /* necesario para posicionar la estrella */
-}
-
-.fav-btn{
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 20;
-
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-
-  display: grid;
-  place-items: center;
-
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(10px);
-
-  color: rgba(255,255,255,0.92);
-  cursor: pointer;
-
-  transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
-}
-
-.vehicle-card:hover .fav-btn{
-  background: rgba(0,0,0,0.45);
-  border-color: rgba(59,130,246,0.35); /* usa tu vibe azul */
-}
-
-.fav-btn:hover{
-  transform: translateY(-1px) scale(1.06);
-}
-
-.fav-btn:active{
-  transform: scale(0.98);
-}
-
-.fav-icon{
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-/* Estado activo (relleno) */
-.fav-btn.active{
-  border-color: rgba(245,158,11,0.45);       /* tu accent naranja */
-  background: rgba(245,158,11,0.10);
-  box-shadow: 0 0 16px rgba(245,158,11,0.18);
-  color: rgba(245,158,11,0.95);
-}
-
-/* =========================
-   ADMIN ADD VEHICLE FORM
-   ========================= */
-
-.admin-add-body .auth-card,
-.admin-add-wrap .auth-card {
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  padding: 1.25rem;
-}
-
-.admin-add-body form,
-.admin-add-wrap form {
-  width: 100%;
-}
-
-.auth-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.auth-field label {
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
-  color: var(--text, #fff);
-  opacity: 0.92;
-}
-
-.auth-field input,
-.auth-field select,
-.auth-field textarea {
-  width: 100%;
-  padding: 0.85rem 0.95rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text, #fff);
-  outline: none;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
-}
-
-.auth-field input::placeholder,
-.auth-field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.auth-field input:focus,
-.auth-field select:focus,
-.auth-field textarea:focus {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.085);
-}
-
-.auth-field input:hover,
-.auth-field select:hover,
-.auth-field textarea:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-.auth-field textarea {
-  resize: vertical;
-  min-height: 120px;
-  line-height: 1.35;
-}
-
-.auth-field select[multiple] {
-  min-height: 180px;
-  padding: 0.65rem 0.75rem;
-}
-
-.auth-field option,
-.auth-field optgroup {
-  color: #111;
-}
-
-.auth-field input[type="file"] {
-  padding: 0.75rem 0.85rem;
-  cursor: pointer;
-}
-
-.auth-field small {
-  font-size: 0.85rem;
-  opacity: 0.75;
-  line-height: 1.2;
-}
-
-.admin-add-body .btn-premium.primary,
-.admin-add-wrap .btn-premium.primary {
-  border-radius: 14px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  padding: 0.95rem 1.1rem;
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
-}
-
-.admin-add-body .btn-premium.primary:active,
-.admin-add-wrap .btn-premium.primary:active {
-  transform: translateY(1px);
-}
-
-@media (max-width: 900px) {
-  .admin-add-body form[style*="grid-template-columns"],
-  .admin-add-wrap form[style*="grid-template-columns"] {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
-  }
-}
-
-.auth-field select[multiple] {
-  background: #ffffff;
-  color: #111;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.auth-field select[multiple] option {
-  background: #ffffff;
-  color: #111;
-}
-
-.auth-field select[multiple] option:checked {
-  background: #111;
-  color: #ffffff;
-}
-
 /* =========================================================
-   RESPONSIVE MOBILE UPGRADE (NO CAMBIA ESCRITORIO)
+   DriveX - Luxury Dark Edition (FULL CSS)
+   - Desktop: header normal (no fijo)
+   - Mobile: header fijo arriba (no se mueve al hacer scroll)
    ========================================================= */
 
-@media (max-width: 900px) {
-  .home-wrapper{
-    padding: 0 14px;
+   .home-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
-
-  /* Hero */
-  #backgroundImageContainer{
-    height: 420px;
+  
+  /* =========================================================
+     HEADER & SEARCH
+     ========================================================= */
+  
+  .search-wrapper {
+    position: relative;
   }
-
-  .hero-overlay{
-    padding: 2.2rem;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.88), rgba(0,0,0,0.55), rgba(0,0,0,0.20));
-    justify-content: flex-end;
-    gap: 0.85rem;
+  
+  .search-input {
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    width: 220px;
+    transition: var(--transition-base);
+    color: white;
   }
-
-  .hero-overlay h1{
-    font-size: 2.6rem;
-    letter-spacing: -1px;
-    margin-bottom: .3rem;
-    max-width: 100%;
+  
+  .search-input:focus {
+    width: 320px;
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
   }
-
-  .hero-overlay p{
-    font-size: 1.05rem;
-    margin-bottom: 1.2rem;
-    max-width: 100%;
-  }
-
-  .hero-nav{
-    flex-wrap: wrap;
-    gap: .75rem;
-  }
-
-  .hero-nav a{
-    padding: .75rem 1.2rem;
-    font-size: .8rem;
-  }
-
-  /* Grid tarjetas */
-  .vehicle-grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.2rem;
-    margin-bottom: 3.5rem;
-  }
-
-  .vehicle-info{
-    padding: 1.25rem;
-  }
-
-  .vehicle-info h3{
-    font-size: 1.18rem;
-  }
-
-  .vehicle-info p{
-    font-size: .95rem;
-  }
-
-  /* Fav btn compacto */
-  .fav-btn{
-    width: 40px;
-    height: 40px;
-    top: 12px;
-    right: 12px;
-  }
-
-  .fav-icon{
-    width: 19px;
-    height: 19px;
-  }
-
-  /* Oferta badge más pequeño */
-  .offer-badge{
-    top: 16px;
-    left: -48px;
-    padding: 7px 68px;
-    font-size: .7rem;
-  }
-
-  /* Título sección */
-  .section-header{
-    margin: 2.8rem 0 1.75rem;
-    padding-bottom: 1.1rem;
-  }
-
-  .section-header h2{
-    font-size: 2rem;
-  }
-
-  /* Paginación */
-  .pagination{
-    margin: 3.5rem 0 4rem;
-    gap: .9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Header cómodo en móvil */
-  .header-container{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1.1rem;
-  }
-
-  .header-left,
-  .header-center,
-  .header-right{
-    width: 100%;
-  }
-
-  /* Nav scrolleable */
-  .main-nav{
+  
+  .nav-icon-link {
+    color: var(--text-muted);
     display: flex;
-    gap: .75rem;
-    overflow-x: auto;
-    padding-bottom: .25rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .main-nav::-webkit-scrollbar{ display:none; }
-
-  /* Search full width */
-  .search-wrapper{
-    width: 100%;
-  }
-  .search-input{
-    width: 100%;
-    max-width: 100%;
-  }
-  .search-input:focus{
-    width: 100%;
-  }
-
-  /* Header-right layout */
-  .header-right{
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: .75rem;
     align-items: center;
-  }
-
-  .auth-buttons{
-    justify-self: end;
-  }
-
-  /* Modal */
-  #contactMessage{
-    width: calc(100% - 28px);
-    padding: 2.3rem 1.8rem;
-  }
-  #contactMessage h2{
-    font-size: 2rem;
-    margin-bottom: .6rem;
-  }
-}
-
-@media (max-width: 520px) {
-  .home-wrapper{
-    padding: 0 12px;
-  }
-
-  /* Hero compacto */
-  #backgroundImageContainer{
-    height: 360px;
-    border-radius: 18px;
-  }
-
-  #backgroundImage{
-    filter: brightness(0.65);
-  }
-
-  .hero-overlay{
-    padding: 1.6rem;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.90), rgba(0,0,0,0.60), rgba(0,0,0,0.18));
-  }
-
-  .hero-overlay h1{
-    font-size: 2.05rem;
-    letter-spacing: -0.8px;
-    line-height: 1.05;
-  }
-
-  .hero-overlay p{
-    font-size: 0.98rem;
-    margin-bottom: 1rem;
-  }
-
-  .hero-nav a{
-    flex: 1 1 auto;
-    text-align: center;
-    padding: .7rem 1rem;
-    border-radius: 14px;
-  }
-
-  /* Grid a 1 columna */
-  .vehicle-grid{
-    grid-template-columns: 1fr;
-    gap: 1.15rem;
-  }
-
-  .vehicle-card{
-    border-radius: 18px;
-  }
-
-  .vehicle-main-image{
-    aspect-ratio: 16/9;
-  }
-
-  .vehicle-info{
-    padding: 1.25rem 1.2rem;
-  }
-
-  .vehicle-info h3{
-    font-size: 1.22rem;
-    margin-bottom: .55rem;
-  }
-
-  .vehicle-info p{
-    font-size: .95rem;
-    line-height: 1.35;
-  }
-
-  /* Badge y fav más finos */
-  .offer-badge{
-    top: 14px;
-    left: -52px;
-    padding: 7px 70px;
-    font-size: .68rem;
-  }
-
-  .fav-btn{
-    width: 40px;
-    height: 40px;
-    top: 12px;
-    right: 12px;
-  }
-
-  /* Título sección */
-  .section-header{
-    margin: 2.2rem 0 1.4rem;
-  }
-
-  .section-header h2{
-    font-size: 1.65rem;
-    letter-spacing: -0.5px;
-  }
-
-  /* Paginación más fácil */
-  .page-link,
-  .current-page{
+    justify-content: center;
     width: 44px;
     height: 44px;
+    border-radius: var(--radius-full);
+    transition: var(--transition-base);
+    border: 1px solid transparent;
+  }
+  
+  .nav-icon-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+  }
+  
+  /* =========================================================
+     HERO
+     ========================================================= */
+  
+  .hero-section {
+    margin: 2.5rem 0;
+  }
+  
+  #backgroundImageContainer {
+    height: 500px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+    background: #000;
+  }
+  
+  #backgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.4),
+      transparent
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem;
+  }
+  
+  .hero-overlay h1 {
+    font-size: 4.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: -2px;
+  }
+  
+  .hero-overlay p {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    max-width: 550px;
+  }
+  
+  .hero-nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  
+  .hero-nav a {
+    padding: 0.85rem 2rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    transition: var(--transition-base);
+  }
+  
+  .hero-nav a:hover,
+  .hero-nav a.active {
+    background: white;
+    color: #000;
+    border-color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+  }
+  
+  .hero-nav a.offers {
+    background: linear-gradient(135deg, var(--accent), #d97706);
+    border-color: var(--accent);
+    color: white;
+  }
+  
+  /* =========================================================
+     SECTION TITLE
+     ========================================================= */
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 4rem 0 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .section-header h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+  }
+  
+  /* =========================================================
+     VEHICLE GRID
+     ========================================================= */
+  
+  .vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 5rem;
+  }
+  
+  .vehicle-card {
+    position: relative; /* necesario */
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-base);
+  }
+  
+  .offer-badge {
+    position: absolute;
+    top: 18px;
+    left: -45px;
+    background: linear-gradient(135deg, #ff3b3b, #ff0000);
+    color: #fff;
+    padding: 8px 70px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transform: rotate(-45deg);
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    z-index: 20;
+  }
+  
+  .vehicle-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+  }
+  
+  .vehicle-main-image {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+  }
+  
+  .vehicle-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: brightness(0.9);
+  }
+  
+  .vehicle-card:hover .vehicle-main-image img {
+    transform: scale(1.05);
+  }
+  
+  .vehicle-info {
+    padding: 1.75rem;
+  }
+  
+  .vehicle-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    transition: var(--transition-base);
+    letter-spacing: -0.5px;
+  }
+  
+  .vehicle-card:hover .vehicle-info h3 {
+    color: var(--primary);
+  }
+  
+  .vehicle-info p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .vehicle-info .price {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-top: 1.25rem;
+    display: block;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  /* =========================================================
+     PAGINATION
+     ========================================================= */
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 5rem 0;
+  }
+  
+  .page-link {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  
+  .page-link:hover {
+    border-color: var(--primary);
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.1);
+  }
+  
+  .current-page {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+  
+  /* =========================================================
+     OVERLAY / MODAL
+     ========================================================= */
+  
+  #overlay {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+  }
+  
+  #contactMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 450px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 30px rgba(59, 130, 246, 0.1);
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: var(--transition-base);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  #contactMessage.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .btn-login-oculto {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: var(--transition-base);
+  }
+  
+  .btn-login-oculto:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--primary-glow);
+  }
+  
+  #closeMessage {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition-base);
+  }
+  
+  #closeMessage:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+  
+  #contactMessage h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* =========================================================
+     FAVORITES (STAR)
+     ========================================================= */
+  
+  .vehicle-card {
+    position: relative;
+  }
+  
+  .fav-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 20;
+  
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+  
+    display: grid;
+    place-items: center;
+  
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+  
+    color: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+  
+    transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  
+  .vehicle-card:hover .fav-btn {
+    background: rgba(0, 0, 0, 0.45);
+    border-color: rgba(59, 130, 246, 0.35);
+  }
+  
+  .fav-btn:hover {
+    transform: translateY(-1px) scale(1.06);
+  }
+  
+  .fav-btn:active {
+    transform: scale(0.98);
+  }
+  
+  .fav-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  
+  .fav-btn.active {
+    border-color: rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.10);
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.18);
+    color: rgba(245, 158, 11, 0.95);
+  }
+  
+  /* =========================================================
+     ADMIN ADD VEHICLE FORM
+     ========================================================= */
+  
+  .admin-add-body .auth-card,
+  .admin-add-wrap .auth-card {
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    padding: 1.25rem;
+  }
+  
+  .admin-add-body form,
+  .admin-add-wrap form {
+    width: 100%;
+  }
+  
+  .auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  
+  .auth-field label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: var(--text, #fff);
+    opacity: 0.92;
+  }
+  
+  .auth-field input,
+  .auth-field select,
+  .auth-field textarea {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text, #fff);
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
+  }
+  
+  .auth-field input::placeholder,
+  .auth-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+  }
+  
+  .auth-field input:focus,
+  .auth-field select:focus,
+  .auth-field textarea:focus {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.085);
+  }
+  
+  .auth-field input:hover,
+  .auth-field select:hover,
+  .auth-field textarea:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  
+  .auth-field textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.35;
+  }
+  
+  .auth-field select[multiple] {
+    min-height: 180px;
+    padding: 0.65rem 0.75rem;
+  }
+  
+  /* Options contraste (navegadores) */
+  .auth-field option,
+  .auth-field optgroup {
+    color: #111;
+  }
+  
+  .auth-field input[type="file"] {
+    padding: 0.75rem 0.85rem;
+    cursor: pointer;
+  }
+  
+  .auth-field small {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    line-height: 1.2;
+  }
+  
+  .admin-add-body .btn-premium.primary,
+  .admin-add-wrap .btn-premium.primary {
     border-radius: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    padding: 0.95rem 1.1rem;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.25);
   }
-
-  /* Admin form dentro del details: una columna siempre */
-  details.glass-panel form[style*="grid-template-columns"]{
-    grid-template-columns: 1fr !important;
-    gap: 1.15rem !important;
+  
+  .admin-add-body .btn-premium.primary:active,
+  .admin-add-wrap .btn-premium.primary:active {
+    transform: translateY(1px);
   }
-
-  /* Select multiple (extras) */
-  .auth-field select[multiple]{
-    min-height: 200px;
+  
+  /* Select multiple en blanco (como ya lo tenías) */
+  .auth-field select[multiple] {
+    background: #ffffff;
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.15);
   }
-}
-
-@media (max-width: 380px) {
-  .hero-overlay h1{
-    font-size: 1.85rem;
+  
+  .auth-field select[multiple] option {
+    background: #ffffff;
+    color: #111;
   }
-  .hero-nav{
-    gap: .6rem;
+  
+  .auth-field select[multiple] option:checked {
+    background: #111;
+    color: #ffffff;
   }
-  .hero-nav a{
-    font-size: .75rem;
-    padding: .65rem .9rem;
+  
+  /* =========================================================
+     RESPONSIVE
+     - Desktop: NO TOCA header (normal)
+     - Mobile: HEADER FIJO + layout simplificado
+     ========================================================= */
+  
+  @media (max-width: 1024px) {
+    .hero-overlay h1 {
+      font-size: 3.5rem;
+    }
   }
-
-  .header-right{
-    grid-template-columns: 1fr auto;
-    grid-auto-rows: auto;
+  
+  @media (max-width: 900px) {
+    .admin-add-body form[style*="grid-template-columns"],
+    .admin-add-wrap form[style*="grid-template-columns"],
+    details.glass-panel form[style*="grid-template-columns"] {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 1.25rem !important;
+    }
   }
-
-  .nav-icon-link{
-    width: 42px;
-    height: 42px;
+  
+  @media (max-width: 768px) {
+    /* =============================
+       HEADER FIJO SOLO EN MÓVIL
+       ============================= */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+    }
+  
+    /* IMPORTANTE: deja espacio para que el contenido no quede debajo */
+    .home-main {
+      margin-top: 92px; /* ajusta si tu header es más alto */
+    }
+  
+    .home-wrapper {
+      padding: 0 14px;
+    }
+  
+    /* Header layout simple */
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.1rem;
+    }
+  
+    .header-left,
+    .header-center,
+    .header-right {
+      width: 100%;
+    }
+  
+    /* Nav scrolleable */
+    .main-nav {
+      display: flex;
+      gap: .85rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: .25rem;
+      scrollbar-width: none;
+    }
+    .main-nav::-webkit-scrollbar { display: none; }
+  
+    /* Search full width (sin expandirse) */
+    .search-wrapper { width: 100%; }
+    .search-input { width: 100%; }
+    .search-input:focus { width: 100%; }
+  
+    /* Header-right: search + fav + auth */
+    .header-right {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: .75rem;
+      align-items: center;
+    }
+  
+    /* Hero compacto */
+    #backgroundImageContainer { height: 340px; }
+  
+    .hero-overlay {
+      padding: 1.6rem;
+      justify-content: flex-end;
+      background: linear-gradient(to bottom, rgba(0,0,0,.88), rgba(0,0,0,.55), rgba(0,0,0,.18));
+    }
+  
+    .hero-overlay h1 {
+      font-size: 2rem;
+      max-width: 100%;
+      margin-bottom: .4rem;
+      letter-spacing: -1px;
+    }
+  
+    .hero-overlay p {
+      font-size: 1rem;
+      max-width: 100%;
+      margin-bottom: 1rem;
+    }
+  
+    .hero-nav {
+      flex-wrap: wrap;
+      gap: .65rem;
+    }
+  
+    .hero-nav a {
+      padding: .7rem 1rem;
+      font-size: .78rem;
+    }
+  
+    /* Titles */
+    .section-header {
+      margin: 2.2rem 0 1.4rem;
+      padding-bottom: 1rem;
+    }
+  
+    .section-header h2 {
+      font-size: 1.7rem;
+    }
+  
+    /* Grid 1 columna */
+    .vehicle-grid {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin-bottom: 3.2rem;
+    }
+  
+    .vehicle-info { padding: 1.25rem; }
+    .vehicle-info h3 { font-size: 1.2rem; }
+    .vehicle-info p { font-size: .95rem; }
+  
+    /* Fav más pequeño */
+    .fav-btn {
+      width: 40px;
+      height: 40px;
+      top: 12px;
+      right: 12px;
+    }
+  
+    .fav-icon {
+      width: 19px;
+      height: 19px;
+    }
+  
+    /* Paginación */
+    .pagination {
+      margin: 3.2rem 0 3.8rem;
+      gap: .9rem;
+    }
+  
+    .page-link,
+    .current-page {
+      width: 44px;
+      height: 44px;
+    }
+  
+    /* Modal */
+    #contactMessage {
+      width: calc(100% - 28px);
+      padding: 2.2rem 1.7rem;
+    }
+  
+    #contactMessage h2 {
+      font-size: 2rem;
+      margin-bottom: .6rem;
+    }
   }
-}
+  
+  @media (max-width: 420px) {
+    #backgroundImageContainer { height: 320px; }
+    .hero-overlay h1 { font-size: 1.85rem; }
+    .section-header h2 { font-size: 1.55rem; }
+  }
