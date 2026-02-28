@@ -14,14 +14,50 @@
 
     <header class="main-header glass-panel">
       <div class="header-container">
+    
+        <!-- LEFT: Logo -->
         <div class="header-left">
           <a href="/" class="logo">
             <img src="/images/logo.png" alt="DriveX logo">
             <span>DriveX</span>
           </a>
         </div>
-
-        <div class="header-center">
+    
+        <!-- RIGHT: Icons + Auth -->
+        <div class="header-right">
+          <a href="/favourites" class="nav-icon-link" title="Favourites" aria-label="Favourites">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
+            </svg>
+          </a>
+    
+          <div class="auth-buttons">
+            <% if (!user) { %>
+              <a href="/login" class="btn-premium primary header-cta">Log in</a>
+            <% } else { %>
+              <div class="user-profile">
+                <span class="user-name"><%= user.name %></span>
+                <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
+              </div>
+            <% } %>
+          </div>
+        </div>
+    
+        <!-- SEARCH -->
+        <div class="header-search">
+          <form method="get" action="/" class="search-form">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search vehicles..."
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+              class="search-input"
+            >
+          </form>
+        </div>
+    
+        <!-- NAV -->
+        <div class="header-nav">
           <nav class="main-nav">
             <a href="/" id="home" class="nav-link active">Home</a>
             <a href="/aboutUs" id="aboutUs" class="nav-link">About Us</a>
@@ -31,37 +67,7 @@
             <% } %>
           </nav>
         </div>
-
-        <div class="header-right">
-          <div class="search-wrapper">
-            <form method="get" action="/">
-              <input
-                type="search"
-                name="search"
-                placeholder="Search vehicles..."
-                value="<%= typeof search !== 'undefined' ? search : '' %>"
-                class="search-input"
-              >
-            </form>
-          </div>
-
-          <a href="/favourites" class="nav-icon-link" title="Favourites">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
-            </svg>
-          </a>
-
-          <div class="auth-buttons">
-            <% if (!user) { %>
-              <a href="/login" class="btn-premium primary">Log in</a>
-            <% } else { %>
-              <div class="user-profile">
-                <span class="user-name"><%= user.name %></span>
-                <a href="/logout" class="btn-premium secondary">Sign out</a>
-              </div>
-            <% } %>
-          </div>
-        </div>
+    
       </div>
     </header>
 
