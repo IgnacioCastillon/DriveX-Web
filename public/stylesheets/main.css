@@ -579,152 +579,44 @@
   }
   
   @media (max-width: 768px) {
-    /* =============================
-       HEADER FIJO SOLO EN MÓVIL
-       ============================= */
+
+    /* Header fijo */
     .main-header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 9999;
+  
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
   
-    /* IMPORTANTE: deja espacio para que el contenido no quede debajo */
-    .home-main {
-      margin-top: 92px; /* ajusta si tu header es más alto */
-    }
-  
-    .home-wrapper {
-      padding: 0 14px;
-    }
-  
-    /* Header layout simple */
+    /* IMPORTANTE: evitar que sobresalga */
     .header-container {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+  
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      padding: 1.1rem;
+      gap: 0.9rem;
+  
+      padding: 1rem 16px;
+      margin: 0 auto;
     }
   
-    .header-left,
-    .header-center,
-    .header-right {
-      width: 100%;
+    /* Que el contenido no quede debajo */
+    .home-main {
+      margin-top: 95px;
     }
   
-    /* Nav scrolleable */
-    .main-nav {
-      display: flex;
-      gap: .85rem;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: .25rem;
-      scrollbar-width: none;
-    }
-    .main-nav::-webkit-scrollbar { display: none; }
-  
-    /* Search full width (sin expandirse) */
-    .search-wrapper { width: 100%; }
-    .search-input { width: 100%; }
-    .search-input:focus { width: 100%; }
-  
-    /* Header-right: search + fav + auth */
-    .header-right {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: .75rem;
-      align-items: center;
+    /* Asegurar que nada desborde horizontalmente */
+    body {
+      overflow-x: hidden;
     }
   
-    /* Hero compacto */
-    #backgroundImageContainer { height: 340px; }
-  
-    .hero-overlay {
-      padding: 1.6rem;
-      justify-content: flex-end;
-      background: linear-gradient(to bottom, rgba(0,0,0,.88), rgba(0,0,0,.55), rgba(0,0,0,.18));
-    }
-  
-    .hero-overlay h1 {
-      font-size: 2rem;
-      max-width: 100%;
-      margin-bottom: .4rem;
-      letter-spacing: -1px;
-    }
-  
-    .hero-overlay p {
-      font-size: 1rem;
-      max-width: 100%;
-      margin-bottom: 1rem;
-    }
-  
-    .hero-nav {
-      flex-wrap: wrap;
-      gap: .65rem;
-    }
-  
-    .hero-nav a {
-      padding: .7rem 1rem;
-      font-size: .78rem;
-    }
-  
-    /* Titles */
-    .section-header {
-      margin: 2.2rem 0 1.4rem;
-      padding-bottom: 1rem;
-    }
-  
-    .section-header h2 {
-      font-size: 1.7rem;
-    }
-  
-    /* Grid 1 columna */
-    .vehicle-grid {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-      margin-bottom: 3.2rem;
-    }
-  
-    .vehicle-info { padding: 1.25rem; }
-    .vehicle-info h3 { font-size: 1.2rem; }
-    .vehicle-info p { font-size: .95rem; }
-  
-    /* Fav más pequeño */
-    .fav-btn {
-      width: 40px;
-      height: 40px;
-      top: 12px;
-      right: 12px;
-    }
-  
-    .fav-icon {
-      width: 19px;
-      height: 19px;
-    }
-  
-    /* Paginación */
-    .pagination {
-      margin: 3.2rem 0 3.8rem;
-      gap: .9rem;
-    }
-  
-    .page-link,
-    .current-page {
-      width: 44px;
-      height: 44px;
-    }
-  
-    /* Modal */
-    #contactMessage {
-      width: calc(100% - 28px);
-      padding: 2.2rem 1.7rem;
-    }
-  
-    #contactMessage h2 {
-      font-size: 2rem;
-      margin-bottom: .6rem;
-    }
   }
   
   @media (max-width: 420px) {
