@@ -565,14 +565,14 @@
   }
 
   .details-wrapper .logo span{
-    font-size: 1.05rem;
+    font-size: 1.00rem; /* ↓ antes 1.05 */
   }
 
   /* Back compact (corta si no cabe) */
   .details-wrapper .back-link{
-    padding: 10px 12px;
-    font-size: .85rem;
-    max-width: 170px;
+    padding: 9px 10px;    /* ↓ antes 10px 12px */
+    font-size: .78rem;    /* ↓ antes .85 */
+    max-width: 150px;     /* ↓ antes 170 */
 
     white-space: nowrap;
     overflow: hidden;
@@ -586,14 +586,14 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 2px;
-    gap: 10px;
+    gap: 8px;            /* ↓ antes 10 */
   }
   .details-wrapper .main-nav::-webkit-scrollbar{ display:none; }
 
   .details-wrapper .main-nav .nav-link{
     flex: 0 0 auto;
-    padding: 10px 14px;
-    font-size: .86rem;
+    padding: 8px 10px;   /* ↓ antes 10px 14px */
+    font-size: .76rem;   /* ↓ antes .86 */
   }
 
   /* Content spacing */
@@ -665,13 +665,18 @@
 
 @media (max-width: 420px){
   .details-wrapper .back-link{
-    max-width: 135px;
-    padding: 9px 10px;
-    font-size: .82rem;
+    max-width: 120px;  /* ↓ antes 135 */
+    padding: 8px 9px;  /* ↓ antes 9px 10px */
+    font-size: .74rem; /* ↓ antes .82 */
   }
 
   .details-wrapper .logo span{
-    font-size: 1rem;
+    font-size: .95rem; /* ↓ antes 1rem */
+  }
+
+  .details-wrapper .main-nav .nav-link{
+    padding: 7px 9px;  /* extra compact */
+    font-size: .72rem;
   }
 
   .details-title h1{
