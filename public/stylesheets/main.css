@@ -1,12 +1,14 @@
 /* =========================================================
-   DriveX - Luxury Dark Edition (FULL CSS) - FIX RESPONSIVE
-   - Desktop: logo | nav | right (search + fav + auth)
-   - Mobile: top row (logo + actions) + big search + nav chips
+   DriveX · main.css (CATÁLOGO) — FULL PAGE
+   ✅ Hecho para TU HTML actual (header-left/right/nav/search)
+   ✅ Responsive real (no se va a la izquierda)
    ========================================================= */
 
-/* Evita desbordes en móvil */
+/* Anti overflow */
 html, body { overflow-x: hidden; }
+*, *::before, *::after { box-sizing: border-box; }
 
+/* Wrapper */
 .home-wrapper{
   max-width: 1400px;
   margin: 0 auto;
@@ -14,35 +16,50 @@ html, body { overflow-x: hidden; }
 }
 
 /* =========================================================
-   HEADER (PREMIUM RESPONSIVE)
+   HEADER (RESPONSIVE FUNCIONAL CON TU HTML)
    ========================================================= */
 
 .main-header{
-  position: relative;
   width: 100%;
+  max-width: 1400px;
   margin: 1.2rem auto 0;
-  border-radius: var(--radius-xl);
 
+  border-radius: var(--radius-xl);
   background: rgba(12,12,12,0.55);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.08);
-
   box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+
+  overflow: hidden; /* evita desbordes raros */
 }
 
-/* Desktop layout (1 fila) */
 .header-container{
   width: 100%;
   max-width: 1400px;
-  box-sizing: border-box;
   margin: 0 auto;
   padding: 1rem 1.25rem;
 
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 1rem;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "left nav right"
+    "search search search";
+  gap: .9rem 1rem;
   align-items: center;
 }
+
+.header-left{ grid-area: left; min-width: 0; }
+.header-right{
+  grid-area: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem;
+  min-width: 0;
+}
+.header-nav{ grid-area: nav; min-width: 0; }
+.header-search{ grid-area: search; width: 100%; }
 
 /* Logo */
 .logo{
@@ -52,13 +69,11 @@ html, body { overflow-x: hidden; }
   text-decoration: none;
   min-width: 0;
 }
-
 .logo img{
   width: 40px;
   height: 40px;
   object-fit: contain;
 }
-
 .logo span{
   color: #fff;
   font-weight: 900;
@@ -75,76 +90,34 @@ html, body { overflow-x: hidden; }
   gap: .75rem;
   flex-wrap: wrap;
 }
-
 .nav-link{
   text-decoration: none;
   color: rgba(255,255,255,0.88);
   font-weight: 800;
   font-size: .92rem;
-
   padding: .65rem 1rem;
   border-radius: 999px;
-
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.06);
-
   transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
 }
-
 .nav-link:hover{
   background: rgba(255,255,255,0.07);
   border-color: rgba(59,130,246,0.35);
   color: #fff;
   transform: translateY(-1px);
 }
-
 .nav-link.active{
   background: rgba(59,130,246,0.14);
   border-color: rgba(59,130,246,0.40);
   color: #fff;
 }
-
 .nav-link.admin-link{
   background: rgba(245,158,11,0.10);
   border-color: rgba(245,158,11,0.30);
 }
 
-/* Right */
-.header-right{
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: .75rem;
-}
-
-/* Search (desktop) */
-.search-wrapper{ position: relative; }
-.search-wrapper form{ margin: 0; }
-
-.search-input{
-  width: 260px;                /* desktop cómodo */
-  max-width: 340px;
-
-  padding: .8rem 1rem;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(0,0,0,0.28);
-  color: #fff;
-
-  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease, width .2s ease;
-}
-
-.search-input::placeholder{ color: rgba(255,255,255,0.55); }
-
-.search-input:focus{
-  outline: none;
-  background: rgba(0,0,0,0.38);
-  border-color: rgba(59,130,246,0.45);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-}
-
-/* Fav icon */
+/* Favs icon */
 .nav-icon-link{
   color: rgba(255,255,255,0.85);
   display: grid;
@@ -152,13 +125,10 @@ html, body { overflow-x: hidden; }
   width: 44px;
   height: 44px;
   border-radius: 999px;
-
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
-
   transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
 }
-
 .nav-icon-link:hover{
   background: rgba(255,255,255,0.08);
   border-color: rgba(245,158,11,0.35);
@@ -172,8 +142,8 @@ html, body { overflow-x: hidden; }
   display: flex;
   align-items: center;
   gap: .65rem;
+  min-width: 0;
 }
-
 .user-name{
   color: rgba(255,255,255,0.85);
   font-weight: 800;
@@ -182,6 +152,34 @@ html, body { overflow-x: hidden; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* CTA del header (tu class header-cta) */
+.header-cta{
+  padding: .65rem .95rem;
+  font-size: .9rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Search */
+.search-form{ margin: 0; width: 100%; }
+.search-input{
+  width: 100%;
+  max-width: 100%;
+  padding: .85rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.28);
+  color: #fff;
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.search-input::placeholder{ color: rgba(255,255,255,0.55); }
+.search-input:focus{
+  outline: none;
+  background: rgba(0,0,0,0.38);
+  border-color: rgba(59,130,246,0.45);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 /* =========================================================
@@ -222,7 +220,7 @@ html, body { overflow-x: hidden; }
 
 .hero-overlay h1{
   font-size: 4.5rem;
-  color: white;
+  color: #fff;
   margin-bottom: 1.5rem;
   max-width: 700px;
   line-height: 1;
@@ -249,7 +247,7 @@ html, body { overflow-x: hidden; }
   border-radius: var(--radius-md);
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(10px);
-  color: white;
+  color: #fff;
   font-weight: 700;
   border: 1px solid rgba(255,255,255,0.1);
   text-transform: uppercase;
@@ -260,9 +258,9 @@ html, body { overflow-x: hidden; }
 
 .hero-nav a:hover,
 .hero-nav a.active{
-  background: white;
+  background: #fff;
   color: #000;
-  border-color: white;
+  border-color: #fff;
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(255,255,255,0.2);
 }
@@ -270,11 +268,11 @@ html, body { overflow-x: hidden; }
 .hero-nav a.offers{
   background: linear-gradient(135deg, var(--accent), #d97706);
   border-color: var(--accent);
-  color: white;
+  color: #fff;
 }
 
 /* =========================================================
-   SECTION TITLE
+   SECTION HEADER
    ========================================================= */
 
 .section-header{
@@ -313,6 +311,13 @@ html, body { overflow-x: hidden; }
   transition: var(--transition-base);
 }
 
+/* link sin subrayado */
+.vehicle-link{
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .offer-badge{
   position: absolute;
   top: 18px;
@@ -341,28 +346,24 @@ html, body { overflow-x: hidden; }
   aspect-ratio: 16/10;
   overflow: hidden;
 }
-
 .vehicle-main-image img{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
   filter: brightness(0.9);
 }
-
 .vehicle-card:hover .vehicle-main-image img{
   transform: scale(1.05);
 }
 
 .vehicle-info{ padding: 1.75rem; }
-
 .vehicle-info h3{
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
   transition: var(--transition-base);
   letter-spacing: -0.5px;
 }
-
 .vehicle-card:hover .vehicle-info h3{ color: var(--primary); }
 
 .vehicle-info p{
@@ -371,13 +372,58 @@ html, body { overflow-x: hidden; }
   font-weight: 500;
 }
 
-.vehicle-info .price{
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-top: 1.25rem;
+.empty-message{
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2.5rem 0;
+}
+
+/* =========================================================
+   FAVORITES BUTTON
+   ========================================================= */
+
+.fav-btn{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+
+  color: rgba(255,255,255,0.92);
+  cursor: pointer;
+
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.vehicle-card:hover .fav-btn{
+  background: rgba(0,0,0,0.45);
+  border-color: rgba(59,130,246,0.35);
+}
+
+.fav-btn:hover{ transform: translateY(-1px) scale(1.06); }
+.fav-btn:active{ transform: scale(0.98); }
+
+.fav-icon{
+  width: 20px;
+  height: 20px;
   display: block;
-  font-family: 'Outfit', sans-serif;
+}
+
+.fav-btn.active{
+  border-color: rgba(245,158,11,0.45);
+  background: rgba(245,158,11,0.10);
+  box-shadow: 0 0 16px rgba(245,158,11,0.18);
+  color: rgba(245,158,11,0.95);
 }
 
 /* =========================================================
@@ -403,11 +449,12 @@ html, body { overflow-x: hidden; }
   border: 1px solid rgba(255,255,255,0.05);
   font-weight: 700;
   color: var(--text-muted);
+  text-decoration: none;
 }
 
 .page-link:hover{
   border-color: var(--primary);
-  color: #ffffff;
+  color: #fff;
   background: rgba(59,130,246,0.1);
 }
 
@@ -419,82 +466,165 @@ html, body { overflow-x: hidden; }
   justify-content: center;
   border-radius: var(--radius-md);
   background: var(--primary);
-  color: white;
+  color: #fff;
   font-weight: 800;
   box-shadow: 0 0 20px rgba(59,130,246,0.4);
 }
 
+.arrow.disabled{
+  opacity: .35;
+  user-select: none;
+}
+
 /* =========================================================
-   RESPONSIVE (HEADER + GRID)
+   OVERLAY / LOGIN MODAL
    ========================================================= */
 
-/* Tablet/móvil: 3 filas en header + search grande */
+#overlay{
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+}
+
+#contactMessage{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0.9);
+  width: 90%;
+  max-width: 450px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 50px rgba(0,0,0,1), 0 0 30px rgba(59,130,246,0.1);
+  padding: 3.5rem;
+  border-radius: var(--radius-xl);
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: var(--transition-base);
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+#contactMessage.show{
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%,-50%) scale(1);
+}
+
+.btn-login-oculto{
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: var(--transition-base);
+  text-decoration: none;
+}
+.btn-login-oculto:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+#closeMessage{
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition-base);
+}
+#closeMessage:hover{
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+
+#contactMessage h2{
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1024px){
+  .hero-overlay h1{ font-size: 3.5rem; }
+}
+
+/* MÓVIL/TABLET: 3 filas en header + search grande + nav chips */
 @media (max-width: 900px){
 
   .home-wrapper{ padding: 0 12px; }
 
   .main-header{
-    margin-top: 0;
+    max-width: 100%;
+    margin: 0;
     border-radius: 0;
     border-left: 0;
     border-right: 0;
   }
 
-  /* 3 filas: top / search / nav */
   .header-container{
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
     padding: .9rem .85rem;
 
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto auto;
-    gap: .75rem;
+    grid-template-areas:
+      "left right"
+      "search search"
+      "nav nav";
 
-    /* Importante: no grid-areas raros, simple y funciona */
+    gap: .75rem;
     align-items: center;
   }
 
-  /* Colocación */
-  .header-left{ grid-column: 1 / 2; grid-row: 1 / 2; }
-  .header-right{ grid-column: 2 / 3; grid-row: 1 / 2; }
-  .search-wrapper{ grid-column: 1 / 3; grid-row: 2 / 3; width: 100%; }
-  .header-center{ grid-column: 1 / 3; grid-row: 3 / 4; width: 100%; }
-
-  /* Logo más compacto */
+  /* Top row compact */
   .logo img{ width: 34px; height: 34px; }
   .logo span{ font-size: 1.03rem; }
 
-  /* Acciones más compactas */
   .header-right{ gap: .55rem; }
   .nav-icon-link{ width: 40px; height: 40px; }
 
-  /* ✅ Search “típico” */
-  .search-input{
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+  .header-cta{
+    padding: .55rem .75rem;
+    font-size: .82rem;
+  }
 
+  .user-name{ max-width: 120px; }
+
+  /* Search tipo normal (grande) */
+  .search-input{
     height: 50px;
     padding: 0 16px;
     font-size: 1rem;
-
     border-radius: 14px;
+
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.14);
-
     box-shadow: 0 10px 22px rgba(0,0,0,0.35);
   }
-
   .search-input::placeholder{
     color: rgba(255,255,255,0.65);
     font-weight: 600;
   }
-
   .search-input:focus{
     background: rgba(255,255,255,0.11);
     border-color: rgba(59,130,246,0.55);
     box-shadow: 0 0 0 3px rgba(59,130,246,0.18), 0 10px 22px rgba(0,0,0,0.35);
   }
 
-  /* Nav chips scrolleables */
+  /* Nav chips scrolleable */
   .main-nav{
     justify-content: flex-start;
     flex-wrap: nowrap;
@@ -503,6 +633,7 @@ html, body { overflow-x: hidden; }
     scrollbar-width: none;
     gap: .55rem;
     padding-bottom: 2px;
+    max-width: 100%;
   }
   .main-nav::-webkit-scrollbar{ display:none; }
 
@@ -512,13 +643,43 @@ html, body { overflow-x: hidden; }
     font-size: .78rem;
   }
 
-  /* Hero más compacto */
+  /* Hero compact */
   #backgroundImageContainer{ height: 320px; border-radius: 18px; }
-  .hero-overlay{ padding: 1.25rem; justify-content: flex-end; }
-  .hero-overlay h1{ font-size: 1.75rem; margin-bottom: .35rem; }
-  .hero-overlay p{ font-size: .95rem; margin-bottom: .85rem; }
+  .hero-overlay{
+    padding: 1.25rem;
+    justify-content: flex-end;
+    background: linear-gradient(to bottom, rgba(0,0,0,.88), rgba(0,0,0,.50), rgba(0,0,0,.15));
+  }
+  .hero-overlay h1{
+    font-size: 1.75rem;
+    letter-spacing: -0.8px;
+    margin-bottom: .35rem;
+    line-height: 1.08;
+    max-width: 100%;
+  }
+  .hero-overlay p{
+    font-size: .95rem;
+    margin-bottom: .85rem;
+    max-width: 100%;
+  }
+  .hero-nav{ gap: .5rem; }
+  .hero-nav a{
+    padding: .55rem .75rem;
+    font-size: .70rem;
+    border-radius: 14px;
+  }
 
-  /* ✅ 2 tarjetas por fila */
+  /* Section header compact */
+  .section-header{
+    margin: 2rem 0 1.1rem;
+    padding-bottom: .9rem;
+  }
+  .section-header h2{
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* ✅ 2 cards per row */
   .vehicle-grid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
@@ -533,23 +694,46 @@ html, body { overflow-x: hidden; }
     font-size: .78rem;
     margin-bottom: .25rem;
     line-height: 1.1;
+
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .vehicle-info p{ font-size: .68rem; }
-  .vehicle-info .price{ font-size: .85rem; margin-top: .35rem; }
+  .vehicle-info p{ font-size: .68rem; line-height: 1.15; }
+
+  /* Badge mini */
+  .offer-badge{
+    top: 10px;
+    left: -52px;
+    padding: 5px 60px;
+    font-size: .55rem;
+  }
+
+  /* Fav mini */
+  .fav-btn{
+    width: 28px;
+    height: 28px;
+    top: 8px;
+    right: 8px;
+  }
+  .fav-icon{ width: 14px; height: 14px; }
+
+  /* Pagination compact */
+  .pagination{ margin: 3rem 0 3.5rem; gap: .7rem; }
+  .page-link, .current-page{ width: 42px; height: 42px; }
+
+  /* Modal compact */
+  #contactMessage{
+    width: calc(100% - 24px);
+    padding: 2rem 1.4rem;
+  }
+  #contactMessage h2{ font-size: 1.7rem; }
 }
 
 @media (max-width: 420px){
   #backgroundImageContainer{ height: 280px; }
-
   .search-input{ height: 48px; font-size: .98rem; }
-
-  .vehicle-grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
+  .user-name{ max-width: 100px; }
 }
