@@ -763,16 +763,16 @@
     }
   }
   
-  /* Extra pequeño: mantenemos 4 columnas igualmente, pero aún más compacto */
   @media (max-width: 420px) {
     #backgroundImageContainer{ height: 270px; }
   
     .hero-overlay h1{ font-size: 1.55rem; }
     .hero-overlay p{ font-size: .9rem; }
   
+    /* 👇 IMPORTANTE: 2 por fila también aquí */
     .vehicle-grid{
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
     }
   
     .vehicle-info{
