@@ -43,18 +43,7 @@
           </div>
         </div>
     
-        <!-- SEARCH -->
-        <div class="header-search">
-          <form method="get" action="/" class="search-form">
-            <input
-              type="search"
-              name="search"
-              placeholder="Search vehicles..."
-              value="<%= typeof search !== 'undefined' ? search : '' %>"
-              class="search-input"
-            >
-          </form>
-        </div>
+        
     
         <!-- NAV -->
         <div class="header-nav">
@@ -66,6 +55,19 @@
               <a href="/users" class="nav-link admin-link">Admin</a>
             <% } %>
           </nav>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="header-search">
+          <form method="get" action="/" class="search-form">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search vehicles..."
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+              class="search-input"
+            >
+          </form>
         </div>
     
       </div>

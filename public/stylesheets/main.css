@@ -131,7 +131,7 @@ html, body { overflow-x: hidden; }
   border-color: rgba(245,158,11,0.30);
 }
 
-/* Search */
+/* Search (desktop/base) */
 .search-wrapper { position: relative; }
 .search-input{
   width: 100%;
@@ -316,7 +316,7 @@ html, body { overflow-x: hidden; }
 }
 
 .vehicle-card {
-  position: relative; /* necesario */
+  position: relative;
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -761,8 +761,38 @@ html, body { overflow-x: hidden; }
   .logo img{ width: 34px; height: 34px; }
   .logo span{ font-size: 1.02rem; }
 
-  /* Search */
-  .search-input{ padding: .78rem 1rem; font-size: .92rem; }
+  /* =====================================================
+     ✅ SEARCH EN MÓVIL TIPO "NORMAL" (GRANDE Y CÓMODO)
+     ===================================================== */
+  .header-container .search-wrapper{
+    width: 100%;
+  }
+
+  .search-input{
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+
+    height: 50px;             /* típico */
+    padding: 0 16px;          /* más aire */
+    font-size: 1rem;          /* letra normal */
+    border-radius: 14px;      /* moderno */
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  }
+
+  .search-input::placeholder{
+    color: rgba(255,255,255,0.65);
+    font-weight: 600;
+  }
+
+  .search-input:focus{
+    background: rgba(255,255,255,0.11);
+    border-color: rgba(59,130,246,0.55);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.18), 0 10px 22px rgba(0,0,0,0.35);
+  }
 
   /* HERO más limpio */
   #backgroundImageContainer{
@@ -904,5 +934,11 @@ html, body { overflow-x: hidden; }
     height: 26px;
     top: 7px;
     right: 7px;
+  }
+
+  /* Search un pelín más bajo en pantallas muy pequeñas */
+  .search-input{
+    height: 48px;
+    font-size: .98rem;
   }
 }
