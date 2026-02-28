@@ -1,195 +1,255 @@
-/* Vehicle Details Luxury Dark Styles */
+/* =========================================================
+   DriveX · Details (Luxury Dark Edition)
+   Basado en el estilo del home (luxury dark)
+   ========================================================= */
 
-.details-wrapper {
+/* Wrapper */
+.details-wrapper{
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-.details-main {
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.details-main{
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.12fr 0.88fr;
   gap: 3rem;
   margin-top: 3rem;
-  margin-bottom: 8rem;
-  /* Espacio extra para el footer */
+  margin-bottom: 7rem;
   align-items: start;
 }
 
-/* Gallery Lux */
-.details-gallery {
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+.details-gallery{
   position: sticky;
   top: 120px;
 }
 
-.details-main-image {
+.details-main-image{
   width: 100%;
   aspect-ratio: 16/10;
   object-fit: cover;
+
   border-radius: var(--radius-xl);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
-  margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+
+  box-shadow: 0 40px 80px rgba(0,0,0,0.70);
   transition: var(--transition-base);
+
+  margin-bottom: 1.6rem;
 }
 
-.details-thumbs {
+.details-thumbs{
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   overflow-x: auto;
-  padding-bottom: 1.5rem;
-}
+  padding-bottom: 1rem;
 
-.details-thumbs img {
-  width: 120px;
-  height: 80px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.details-thumbs::-webkit-scrollbar{ display:none; }
+
+.details-thumbs img{
+  width: 118px;
+  height: 78px;
   object-fit: cover;
+
   border-radius: var(--radius-md);
   cursor: pointer;
-  border: 2px solid rgba(255, 255, 255, 0.05);
+
+  border: 2px solid rgba(255,255,255,0.06);
   transition: var(--transition-fast);
+
   flex-shrink: 0;
-  filter: brightness(0.6);
+  filter: brightness(0.65);
 }
 
 .details-thumbs img:hover,
-.details-thumbs img.active {
+.details-thumbs img.active{
   border-color: var(--primary);
-  transform: translateY(-4px);
-  filter: brightness(1.1);
-  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 20px rgba(59,130,246,0.18);
 }
 
-/* Info Section Lux */
-.details-info {
+/* =========================================================
+   INFO
+   ========================================================= */
+
+.details-info{
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 2.1rem;
 }
 
-.details-title h1 {
+.details-title .spec-label{
+  display: inline-block;
+  margin-bottom: .45rem;
+}
+
+.details-title h1{
   font-size: 2.75rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.1;
+  margin-bottom: .2rem;
+  line-height: 1.08;
   text-transform: uppercase;
   letter-spacing: -1px;
 }
 
-.details-price {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #ffffff;
+.details-price{
+  font-size: 2.45rem;
+  font-weight: 900;
+  color: #fff;
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.5px;
 }
 
-.spec-grid {
+/* =========================================================
+   SPEC GRID
+   ========================================================= */
+
+.spec-grid{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 1.1rem;
 }
 
-.spec-item {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1.75rem;
+.spec-item{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  padding: 1.35rem;
+
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: .45rem;
+
   transition: var(--transition-base);
 }
 
-.spec-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--primary);
+.spec-item:hover{
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(59,130,246,0.35);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.35);
 }
 
-.spec-label {
-  font-size: 0.8rem;
+.spec-label{
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-weight: 800;
 }
 
-.spec-value {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
+.spec-value{
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #fff;
 }
 
-.details-description {
-  background: rgba(255, 255, 255, 0.02);
-  padding: 3rem;
+/* =========================================================
+   DESCRIPTION + EXTRAS
+   ========================================================= */
+
+.details-description{
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2.25rem;
 }
 
-.details-description h3 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+.details-description h3{
+  margin-bottom: 0.85rem;
+  font-size: 1.35rem;
   text-transform: uppercase;
   letter-spacing: -0.5px;
 }
 
-.details-description p {
+.details-description p{
   color: var(--text-muted);
   line-height: 1.7;
   font-size: 1rem;
 }
 
-.extras-list {
+.details-extras h3{
+  margin-bottom: 0.95rem;
+  font-size: 1.35rem;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.extras-list{
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: .75rem;
   list-style: none;
-  margin-top: 1.5rem;
+  margin-top: .75rem;
+  padding: 0;
 }
 
-.extras-list li {
-  padding: 0.75rem 1.5rem;
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--primary);
+.extras-list li{
+  padding: 0.65rem 1.1rem;
+  background: rgba(59,130,246,0.10);
+  color: rgba(147,197,253,0.95);
+
   border-radius: var(--radius-full);
-  font-weight: 700;
-  font-size: 0.9rem;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  font-weight: 800;
+  font-size: 0.85rem;
+
+  border: 1px solid rgba(59,130,246,0.22);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-/* User Profile in top bar */
-.user-profile {
-  color: white;
-}
+/* =========================================================
+   ADMIN ACTIONS / USER ACTIONS
+   ========================================================= */
 
-/* Admin Actions */
-.admin-actions {
+.admin-actions{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 3rem;
+  gap: 1.1rem;
+  margin-top: 1.25rem;
 }
 
-.btn-delete {
+.user-actions{
+  margin-top: .8rem;
+}
+
+.btn-delete{
   background: linear-gradient(135deg, #7f1d1d, #450a0a);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fecaca;
+  border: 1px solid rgba(239,68,68,0.30);
 }
 
-.btn-delete:hover {
+.btn-delete:hover{
   background: #991b1b;
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
-  color: white;
+  box-shadow: 0 12px 26px rgba(220,38,38,0.25);
+  color: #fff;
 }
 
+/* =========================================================
+   OFFER SWITCH (ADMIN)
+   ========================================================= */
 
 .offer-switch-wrapper{
   display:flex;
   align-items:center;
   gap:12px;
-  margin-top:10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
 }
 
 .offer-switch{
@@ -208,12 +268,10 @@
 .slider{
   position:absolute;
   cursor:pointer;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background-color:#555;
-  transition:.3s;
+  inset:0;
+  background-color: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition:.25s;
   border-radius:34px;
 }
 
@@ -224,13 +282,14 @@
   width:20px;
   left:3px;
   bottom:3px;
-  background-color:white;
-  transition:.3s;
+  background-color: white;
+  transition:.25s;
   border-radius:50%;
 }
 
 .offer-switch input:checked + .slider{
-  background-color:#1db954;
+  background-color: rgba(29,185,84,0.35);
+  border-color: rgba(29,185,84,0.55);
 }
 
 .offer-switch input:checked + .slider:before{
@@ -238,21 +297,31 @@
 }
 
 .offer-label{
-  font-size:0.9rem;
-  color:var(--text-muted);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  font-weight: 700;
 }
+
+/* =========================================================
+   DELETE MODAL (ADMIN)
+   ========================================================= */
 
 .delete-modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(10px);
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   opacity:0;
   pointer-events:none;
-  transition:.3s;
+  transition:.25s;
   z-index:9999;
+
+  padding: 18px;
 }
 
 .delete-modal.active{
@@ -261,41 +330,166 @@
 }
 
 .delete-modal-content{
-  background:var(--bg-card);
-  padding:30px;
-  border-radius:12px;
-  width:350px;
+  width: min(420px, 100%);
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+
+  padding: 26px 22px;
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+
+.delete-modal-content h3{
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: -0.4px;
+}
+
+.delete-modal-content p{
+  color: var(--text-muted);
+  margin: 8px 0;
+  line-height: 1.45;
 }
 
 .delete-modal input{
   width:100%;
-  padding:10px;
-  margin:15px 0;
-  border-radius:6px;
-  border:1px solid #444;
-  background:#111;
-  color:white;
+  padding: 12px 12px;
+  margin: 14px 0 16px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.35);
+  color: white;
+
+  outline: none;
+}
+
+.delete-modal input:focus{
+  border-color: rgba(59,130,246,0.45);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 .delete-actions{
   display:flex;
-  gap:10px;
-  justify-content:space-between;
+  gap: 10px;
+  justify-content: space-between;
 }
 
-@media (max-width: 900px) {
-  .details-main {
+.delete-actions .btn-premium{
+  flex: 1;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE (coherente con el home)
+   ========================================================= */
+
+@media (max-width: 900px){
+  .details-main{
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.2rem;
+    margin-top: 2rem;
   }
 
-  .details-gallery {
+  .details-gallery{
     position: static;
   }
 
-  .details-title h1 {
-    font-size: 3rem;
+  .details-title h1{
+    font-size: 2.25rem;
+  }
+
+  .details-price{
+    font-size: 2.05rem;
+  }
+}
+
+@media (max-width: 768px){
+  html, body { overflow-x: hidden; }
+
+  .details-wrapper{
+    padding: 0 12px;
+  }
+
+  .details-main{
+    gap: 1.6rem;
+    margin-bottom: 4.8rem;
+  }
+
+  .details-main-image{
+    border-radius: 18px;
+    margin-bottom: 1rem;
+    aspect-ratio: 16/11;
+  }
+
+  .details-thumbs{
+    gap: .7rem;
+    padding-bottom: .6rem;
+  }
+
+  .details-thumbs img{
+    width: 92px;
+    height: 62px;
+    border-radius: 14px;
+  }
+
+  .details-title h1{
+    font-size: 1.75rem;
+  }
+
+  .details-price{
+    font-size: 1.75rem;
+  }
+
+  .spec-grid{
+    gap: .8rem;
+  }
+
+  .spec-item{
+    padding: 1.05rem;
+  }
+
+  .spec-value{
+    font-size: 1rem;
+  }
+
+  .details-description{
+    padding: 1.6rem;
+    border-radius: 18px;
+  }
+
+  .extras-list li{
+    padding: .55rem .9rem;
+    font-size: .78rem;
+  }
+
+  .admin-actions{
+    grid-template-columns: 1fr;
+  }
+
+  .offer-switch-wrapper{
+    padding: 10px 12px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 420px){
+  .details-title h1{
+    font-size: 1.6rem;
+  }
+
+  .details-price{
+    font-size: 1.6rem;
+  }
+
+  .spec-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .details-thumbs img{
+    width: 84px;
+    height: 56px;
   }
 }
