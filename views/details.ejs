@@ -56,8 +56,18 @@
           "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
           %>
 
-          <img src="<%= mainSrc %>" alt="<%= vehicle.brand %> <%= vehicle.model %>" class="details-main-image"
-            id="details-main-image">
+          <div class="details-main-wrap">
+            <% if (vehicle.offers === "Yes") { %>
+              <div class="offer-badge-details">OFFER</div>
+            <% } %>
+          
+            <img
+              src="<%= mainSrc %>"
+              alt="<%= vehicle.brand %> <%= vehicle.model %>"
+              class="details-main-image"
+              id="details-main-image"
+            >
+          </div>
 
           <div class="details-thumbs">
             <% images.forEach((img, index)=> { %>

@@ -692,3 +692,42 @@
     height: 56px;
   }
 }
+
+.details-main-wrap{
+  position: relative;
+  width: 100%;
+}
+
+/* Badge oferta en la foto principal */
+.offer-badge-details{
+  position: absolute;
+  top: 16px;
+  left: -52px;
+  z-index: 50;
+
+  background: linear-gradient(135deg, #ff3b3b, #ff0000);
+  color: #fff;
+  padding: 10px 80px;
+
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+
+  transform: rotate(-45deg);
+  text-align: center;
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  pointer-events: none; /* para que no moleste al click */
+}
+
+/* Ajuste en móvil */
+@media (max-width: 768px){
+  .offer-badge-details{
+    top: 12px;
+    left: -58px;
+    padding: 7px 70px;
+    font-size: 0.62rem;
+  }
+}
