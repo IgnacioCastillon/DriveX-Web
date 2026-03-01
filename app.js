@@ -43,6 +43,8 @@ app.use("/", aboutUsRouter)
 const detailsRoutes = require("./routes/details");
 app.use("/", detailsRoutes);
 
+const frequentlyAskedQuestionsRouter = require("./routes/frequentlyAskedQuestions");
+app.use("/", frequentlyAskedQuestionsRouter);
 
 
 const PORT = process.env.PORT || 3000;

@@ -16,7 +16,6 @@
     <header class="main-header glass-panel">
       <div class="header-container">
     
-        <!-- LEFT: Logo -->
         <div class="header-left">
           <a href="/" class="logo">
             <img src="/images/logo.png" alt="DriveX logo">
@@ -24,7 +23,6 @@
           </a>
         </div>
     
-        <!-- RIGHT: Icons + Auth -->
         <div class="header-right">
           <a href="/favourites" class="nav-icon-link" title="Favourites" aria-label="Favourites">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -46,11 +44,11 @@
     
         
     
-        <!-- NAV -->
         <div class="header-nav">
           <nav class="main-nav">
             <a href="/" id="home" class="nav-link active">Home</a>
             <a href="/aboutUs" id="aboutUs" class="nav-link">About Us</a>
+            <a href="/frequentlyAskedQuestions" id="frequentlyAskedQuestions" class="nav-link">Frequently Asked Questions</a>
             <a href="/contact" id="contact" class="nav-link">Contact</a>
             <% if (user && user.role=="Admin" ){ %>
               <a href="/users" class="nav-link admin-link">Admin</a>
@@ -58,7 +56,6 @@
           </nav>
         </div>
 
-        <!-- SEARCH -->
         <div class="header-search">
           <form method="get" action="/" class="search-form">
             <input
