@@ -7,7 +7,7 @@ const FormData = require("form-data");
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
 
 const PHP_UPLOAD_VEHICLE_URL =
-  "https://darkorchid-chicken-425842.hostingersite.com/upload-image-vehicles.php";
+  "https://darkorchid-chicken-425842.hostingersite.com/upload-image.php";
 
 function requireLoginPage(req, res, next) {
   if (!req.session.user || !req.session.user.id) {
