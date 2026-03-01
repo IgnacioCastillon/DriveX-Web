@@ -142,7 +142,7 @@
 
                 <div class="user-card-bottom">
                   <button class="btn-mini ghost copy-email" data-email="<%= u.email || '' %>">Copy email</button>
-                  <button class="btn-mini danger disabled" type="button" title="Coming soon" disabled>Delete</button>
+                  <button class="btn-mini danger delete-user" type="button" data-user-id="<%= u.id %>" data-user-name="<%= u.username || u.name || 'User' %> > Delete</button>
                 </div>
               </article>
             <% }) %>
@@ -190,7 +190,6 @@
         <div class="auth-field">
           <label for="password_hash">Password</label>
           <input id="password_hash" name="password_hash" type="password" required placeholder="Create a password" />
-          <small class="muted">This will be sent to your backend as <code>password_hash</code>.</small>
         </div>
 
         <div class="auth-field">
