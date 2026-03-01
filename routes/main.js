@@ -52,16 +52,34 @@ async function uploadOnePhotoToPHP({ file, brand, model, vehicleId }) {
   return url;
 }
 
+async function postWithRetry(url, data, config, retries = 3) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await axios.post(url, data, config);
+    } catch (e) {
+      lastErr = e;
+      const status = e.response?.status;
+      if (status && status < 500) throw e;
+      await new Promise(r => setTimeout(r, 500 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function saveImagesToBackend(vehicleId, imageUrls) {
   for (let i = 0; i < imageUrls.length; i++) {
-    await axios.post(
+    await postWithRetry(
       `${BACKEND_URL}/vehicles/${vehicleId}/images`,
       { imageUrl: imageUrls[i], isMain: i === 0 },
       {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        timeout: 20000
-      }
+        timeout: 30000
+      },
+      3
     );
+
+    await new Promise(r => setTimeout(r, 150));
   }
 }
 
