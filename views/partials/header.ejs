@@ -1,0 +1,59 @@
+<header class="dx-header glass-panel">
+    <div class="dx-header__container">
+  
+      <div class="dx-header__left">
+        <a href="/" class="dx-logo">
+          <img src="/images/logo.png" alt="DriveX logo">
+          <span>DriveX</span>
+        </a>
+      </div>
+  
+      <div class="dx-header__right">
+        <a href="/favourites" class="dx-icon-link" title="Favourites" aria-label="Favourites">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
+          </svg>
+        </a>
+  
+        <div class="dx-auth">
+          <% if (!user) { %>
+            <a href="/login" class="btn-premium primary header-cta">Log in</a>
+          <% } else { %>
+            <div class="dx-user">
+              <span class="dx-user__name"><%= user.name || user.username %></span>
+              <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
+            </div>
+          <% } %>
+        </div>
+        <button class="dx-burger" type="button" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+  
+      <nav class="dx-nav" aria-label="Main navigation">
+        <a href="/" class="dx-link <%= activePage === 'home' ? 'active' : '' %>">Home</a>
+        <a href="/aboutUs" class="dx-link <%= activePage === 'aboutUs' ? 'active' : '' %>">About Us</a>
+        <a href="/frequentlyAskedQuestions" class="dx-link <%= activePage === 'faq' ? 'active' : '' %>">Frequently Asked Questions</a>
+        <a href="/contact" class="dx-link <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
+  
+        <% if (user && user.role === "Admin") { %>
+          <a href="/users" class="dx-link dx-admin <%= activePage === 'admin' ? 'active' : '' %>">Admin</a>
+        <% } %>
+  
+        <% if (typeof showSearch !== "undefined" && showSearch) { %>
+          <form method="get" action="<%= searchAction || '/' %>" class="dx-search">
+            <input
+              type="search"
+              name="search"
+              placeholder="<%= searchPlaceholder || 'Search...' %>"
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+              class="dx-search__input"
+            >
+          </form>
+        <% } %>
+      </nav>
+  
+    </div>
+  
+    <div class="dx-overlay" hidden></div>
+  </header>

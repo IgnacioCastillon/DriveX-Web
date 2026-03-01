@@ -5,71 +5,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DriveX · Catálogo</title>
-  <link rel="icon" type="image/png" href="/public/images/logo.png">
+  <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/main.css">
+  <link rel="stylesheet" href="/stylesheets/header.css">
 </head>
 
 <body class="home-body">
   <div class="home-wrapper">
 
-    <header class="main-header glass-panel">
-      <div class="header-container">
-    
-        <div class="header-left">
-          <a href="/" class="logo">
-            <img src="/images/logo.png" alt="DriveX logo">
-            <span>DriveX</span>
-          </a>
-        </div>
-    
-        <div class="header-right">
-          <a href="/favourites" class="nav-icon-link" title="Favourites" aria-label="Favourites">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
-            </svg>
-          </a>
-    
-          <div class="auth-buttons">
-            <% if (!user) { %>
-              <a href="/login" class="btn-premium primary header-cta">Log in</a>
-            <% } else { %>
-              <div class="user-profile">
-                <span class="user-name"><%= user.name %></span>
-                <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
-              </div>
-            <% } %>
-          </div>
-        </div>
-    
-        
-    
-        <div class="header-nav">
-          <nav class="main-nav">
-            <a href="/" id="home" class="nav-link active">Home</a>
-            <a href="/aboutUs" id="aboutUs" class="nav-link">About Us</a>
-            <a href="/frequentlyAskedQuestions" id="frequentlyAskedQuestions" class="nav-link">Frequently Asked Questions</a>
-            <a href="/contact" id="contact" class="nav-link">Contact</a>
-            <% if (user && user.role=="Admin" ){ %>
-              <a href="/users" class="nav-link admin-link">Admin</a>
-            <% } %>
-          </nav>
-        </div>
-
-        <div class="header-search">
-          <form method="get" action="/" class="search-form">
-            <input
-              type="search"
-              name="search"
-              placeholder="Search vehicles..."
-              value="<%= typeof search !== 'undefined' ? search : '' %>"
-              class="search-input"
-            >
-          </form>
-        </div>
-    
-      </div>
-    </header>
+    <!-- HEADER GLOBAL -->
+    <%- include("partials/header", { 
+      user, 
+      activePage: "home", 
+      showSearch: true,
+      searchAction: "/",
+      searchPlaceholder: "Search vehicles...",
+      search
+    }) %>
 
     <main class="home-main">
       <section class="hero-section">
@@ -89,14 +42,14 @@
       </section>
 
       <div class="section-header">
-  <h2>
-    <% if (search && search.trim() !== "") { %>
-      Results for "<%= search %>"
-    <% } else { %>
-      Latest Arrivals
-    <% } %>
-  </h2>
-</div>
+        <h2>
+          <% if (search && search.trim() !== "") { %>
+            Results for "<%= search %>"
+          <% } else { %>
+            Latest Arrivals
+          <% } %>
+        </h2>
+      </div>
 
       <% if (user && user.role === "Admin") { %>
         <details class="glass-panel" style="
@@ -387,6 +340,7 @@
     <button id="closeMessage">Close</button>
   </div>
 
+  <script src="/js/header.js"></script>
   <script src="/js/main.js"></script>
 
 </body>
