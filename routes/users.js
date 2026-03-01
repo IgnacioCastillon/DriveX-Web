@@ -155,4 +155,16 @@ router.post("/users", requireAdmin, upload.single("photo"), async (req, res) => 
   }
 });
 
+router.delete("/users/:id", requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await axios.delete(`${BACKEND_URL}/users/${id}`);
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error("Error borrando usuario:", error.response?.data || error.message);
+    return res.status(500).json({ ok: false, message: "Error deleting user" });
+  }
+});
+
 module.exports = router;

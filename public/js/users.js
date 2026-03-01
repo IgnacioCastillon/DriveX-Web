@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alertClose.closest(".alert")?.remove();
     });
   
-    // Copy email buttons
     document.querySelectorAll(".copy-email").forEach(btn => {
       btn.addEventListener("click", async () => {
         const email = btn.dataset.email || "";
@@ -62,13 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
           btn.textContent = "Copied!";
           setTimeout(() => btn.textContent = "Copy email", 900);
         } catch {
-          // fallback simple
           prompt("Copy email:", email);
         }
       });
     });
   
-    // Photo preview
     photoInput?.addEventListener("change", () => {
       const file = photoInput.files?.[0];
       if (!file) {
@@ -84,20 +81,17 @@ document.addEventListener("DOMContentLoaded", () => {
       photoEmpty.style.display = "none";
     });
   
-    // Filter + sort (client side)
     function applyFilterSort(){
       const cards = Array.from(usersGrid?.querySelectorAll(".user-card") || []);
       const role = roleFilter?.value || "all";
       const sort = sortBy?.value || "nameAsc";
   
-      // filter
       cards.forEach(card => {
         const cardRole = card.dataset.role || "User";
         const visible = (role === "all") || (cardRole === role);
         card.style.display = visible ? "" : "none";
       });
   
-      // sort (only those visible)
       const visibleCards = cards.filter(c => c.style.display !== "none");
   
       visibleCards.sort((a, b) => {
@@ -113,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return 0;
       });
   
-      // re-append in order
       visibleCards.forEach(c => usersGrid.appendChild(c));
     }
   
@@ -121,3 +114,41 @@ document.addEventListener("DOMContentLoaded", () => {
     sortBy?.addEventListener("change", applyFilterSort);
     applyFilterSort();
   });
+
+    document.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".delete-user");
+        if (!btn) return;
+    
+        const userId = btn.dataset.userId;
+        const userName = btn.dataset.userName || "this user";
+    
+        if (!userId) {
+          alert("Missing user id (data-user-id).");
+          return;
+        }
+    
+        const typed = prompt(`Type YES to delete ${userName}.`);
+        if (typed !== "YES") return;
+    
+        btn.disabled = true;
+        const oldText = btn.textContent;
+        btn.textContent = "Deleting...";
+    
+        try {
+          const res = await fetch(`/users/${userId}`, { method: "DELETE" });
+    
+          if (!res.ok) {
+            const msg = await res.text().catch(() => "");
+            throw new Error(`Delete failed: ${res.status} ${msg}`);
+          }
+    
+          const card = btn.closest(".user-card");
+          if (card) card.remove();
+    
+        } catch (err) {
+          console.error(err);
+          alert("Could not delete the user. Check console.");
+          btn.disabled = false;
+          btn.textContent = oldText;
+        }
+      });
