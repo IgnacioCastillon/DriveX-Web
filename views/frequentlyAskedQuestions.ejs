@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveX · Frequently Asked Questions</title>
+
+  <link rel="icon" type="image/png" href="/images/logo.png">
+  <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/faq.css">
+</head>
+
+<body class="faq-body">
+  <div class="faq-wrapper">
+
+    <!-- HEADER (igual estilo) -->
+    <header class="main-header glass-panel">
+      <div class="header-container">
+
+        <div class="header-left">
+          <a href="/" class="logo">
+            <img src="/images/logo.png" alt="DriveX logo">
+            <span>DriveX</span>
+          </a>
+        </div>
+
+        <div class="header-right">
+          <a href="/favourites" class="nav-icon-link" title="Favourites" aria-label="Favourites">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
+            </svg>
+          </a>
+
+          <div class="auth-buttons">
+            <% if (!user) { %>
+              <a href="/login" class="btn-premium primary header-cta">Log in</a>
+            <% } else { %>
+              <div class="user-profile">
+                <span class="user-name"><%= user.name %></span>
+                <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="header-nav">
+          <nav class="main-nav">
+            <a href="/" id="home" class="nav-link">Home</a>
+            <a href="/aboutUs" id="aboutUs" class="nav-link">About Us</a>
+            <a href="/frequentlyAskedQuestions" id="frequentlyAskedQuestions" class="nav-link active">Frequently Asked Questions</a>
+            <a href="/contact" id="contact" class="nav-link">Contact</a>
+            <% if (user && user.role=="Admin" ){ %>
+              <a href="/users" class="nav-link admin-link">Admin</a>
+            <% } %>
+          </nav>
+        </div>
+
+        <!-- Aquí no hace falta search, pero si quieres mantener el hueco -->
+        <div class="header-search">
+          <div class="search-placeholder"></div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="faq-main">
+      <section class="faq-hero glass-panel">
+        <div class="faq-hero-text">
+          <h1>Frequently Asked Questions</h1>
+          <p>
+            Everything you need to know about DriveX: how we select our vehicles, how offers work, favourites,
+            contact and purchase process.
+          </p>
+        </div>
+
+        <div class="faq-hero-card">
+          <h3>About our dealership</h3>
+          <p>
+            DriveX is a premium vehicle catalogue built in Málaga by <strong>Los Del Fondo Devs</strong>.
+            We focus on transparency, quality listings and a clean, fast browsing experience.
+          </p>
+          <ul class="faq-bullets">
+            <li>Verified listings & high-quality photos</li>
+            <li>Offers highlighted for quick discovery</li>
+            <li>Favourites to save what you love</li>
+          </ul>
+          <a href="/contact" class="btn-premium primary">Contact us</a>
+        </div>
+      </section>
+
+      <section class="faq-content">
+        <div class="faq-grid">
+
+          <!-- BUYING -->
+          <article class="faq-section glass-panel">
+            <h2>Buying & process</h2>
+
+            <details class="faq-item" open>
+              <summary>How do I buy a vehicle on DriveX?</summary>
+              <p>
+                Browse the catalogue, open the vehicle details and contact us. We’ll guide you with availability,
+                reservation steps, documentation and delivery options.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Are vehicles inspected?</summary>
+              <p>
+                Yes. We prioritize listings that include clear images, detailed descriptions and key specs.
+                For selected vehicles we also include extra verification and history details when available.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Can I reserve a vehicle?</summary>
+              <p>
+                In most cases yes. Contact us with the listing link and we’ll confirm the reservation conditions
+                and timeframe.
+              </p>
+            </details>
+          </article>
+
+          <!-- OFFERS -->
+          <article class="faq-section glass-panel">
+            <h2>Offers</h2>
+
+            <details class="faq-item" open>
+              <summary>What does the “OFFER” badge mean?</summary>
+              <p>
+                “OFFER” indicates a special price, limited-time deal or a discounted unit. You can also browse all offers
+                from the Offers section.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>How often do offers change?</summary>
+              <p>
+                Offers may change depending on stock, promotions, or seasonal campaigns. If you like a vehicle,
+                save it to favourites to keep it on your radar.
+              </p>
+            </details>
+          </article>
+
+          <!-- ACCOUNT -->
+          <article class="faq-section glass-panel">
+            <h2>Account & favourites</h2>
+
+            <details class="faq-item" open>
+              <summary>Why do I need to log in?</summary>
+              <p>
+                Logging in unlocks full functionality like favourites. It also helps us keep a cleaner and safer experience.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>How do favourites work?</summary>
+              <p>
+                When you’re logged in, tap the star on a vehicle card. It will be saved in your favourites list so you can
+                compare options later.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>I forgot my password. What can I do?</summary>
+              <p>
+                For now, contact our team and we’ll help you recover access. (We’re working on a self-service reset feature.)
+              </p>
+            </details>
+          </article>
+
+          <!-- SECURITY -->
+          <article class="faq-section glass-panel">
+            <h2>Security & trust</h2>
+
+            <details class="faq-item" open>
+              <summary>Is my data safe?</summary>
+              <p>
+                We store only what we need to provide the service, and we use secure practices to protect user credentials.
+                Never share your password with anyone.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>How do you avoid scam listings?</summary>
+              <p>
+                We prioritize quality listings and consistent data. If you ever spot something suspicious, report it via Contact.
+              </p>
+            </details>
+          </article>
+
+        </div>
+
+        <div class="faq-cta glass-panel">
+          <div>
+            <h2>Still have questions?</h2>
+            <p>
+              Reach out and we’ll reply as soon as possible. Tell us the vehicle link (if any) and what you need.
+            </p>
+          </div>
+          <a href="/contact" class="btn-premium primary">Go to Contact</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="faq-footer">
+      <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
