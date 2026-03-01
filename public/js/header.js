@@ -4,32 +4,36 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const burger = header.querySelector(".dx-burger");
     const overlay = header.querySelector(".dx-overlay");
-    const navLinks = header.querySelectorAll(".dx-nav a");
+    const drawer = header.querySelector(".dx-drawer");
+    const closeBtn = header.querySelector(".dx-close");
   
-    function openMenu(){
+    const openMenu = () => {
       header.classList.add("menu-open");
       burger?.setAttribute("aria-expanded", "true");
       overlay?.removeAttribute("hidden");
+      drawer?.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
-    }
+    };
   
-    function closeMenu(){
+    const closeMenu = () => {
       header.classList.remove("menu-open");
       burger?.setAttribute("aria-expanded", "false");
       overlay?.setAttribute("hidden", "");
+      drawer?.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-    }
+    };
   
     burger?.addEventListener("click", () => {
-      if (header.classList.contains("menu-open")) closeMenu();
-      else openMenu();
+      header.classList.contains("menu-open") ? closeMenu() : openMenu();
     });
   
     overlay?.addEventListener("click", closeMenu);
+    closeBtn?.addEventListener("click", closeMenu);
   
-    navLinks.forEach(a => a.addEventListener("click", () => {
-      if (window.matchMedia("(max-width: 900px)").matches) closeMenu();
-    }));
+    drawer?.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (link) closeMenu();
+    });
   
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeMenu();

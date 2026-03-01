@@ -1,59 +1,97 @@
-<header class="dx-header glass-panel">
-    <div class="dx-header__container">
+<header class="dx-header">
+    <div class="dx-header__bar glass-panel">
+      <div class="dx-header__container">
   
-      <div class="dx-header__left">
-        <a href="/" class="dx-logo">
+        <!-- Logo -->
+        <a href="/" class="dx-logo" aria-label="DriveX Home">
           <img src="/images/logo.png" alt="DriveX logo">
           <span>DriveX</span>
         </a>
-      </div>
   
-      <div class="dx-header__right">
-        <a href="/favourites" class="dx-icon-link" title="Favourites" aria-label="Favourites">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
-          </svg>
-        </a>
+        <!-- Desktop nav -->
+        <nav class="dx-nav dx-nav--desktop" aria-label="Main navigation">
+          <a href="/" class="dx-link <%= activePage === 'home' ? 'active' : '' %>">Home</a>
+          <a href="/aboutUs" class="dx-link <%= activePage === 'aboutUs' ? 'active' : '' %>">About Us</a>
+          <a href="/frequentlyAskedQuestions" class="dx-link <%= activePage === 'faq' ? 'active' : '' %>">Frequently Asked Questions</a>
+          <a href="/contact" class="dx-link <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
   
-        <div class="dx-auth">
+          <% if (user && user.role === "Admin") { %>
+            <a href="/users" class="dx-link dx-admin <%= activePage === 'admin' ? 'active' : '' %>">Admin</a>
+          <% } %>
+        </nav>
+  
+        <!-- Right actions -->
+        <div class="dx-actions">
+  
+          <a href="/favourites" class="dx-icon" title="Favourites" aria-label="Favourites">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z"/>
+            </svg>
+          </a>
+  
           <% if (!user) { %>
-            <a href="/login" class="btn-premium primary header-cta">Log in</a>
+            <a href="/login" class="btn-premium primary header-cta dx-authBtn">Log in</a>
           <% } else { %>
             <div class="dx-user">
               <span class="dx-user__name"><%= user.name || user.username %></span>
-              <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
+              <a href="/logout" class="btn-premium secondary header-cta dx-authBtn">Sign out</a>
             </div>
           <% } %>
+  
+          <!-- Burger (mobile) -->
+          <button class="dx-burger" type="button" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
         </div>
-        <button class="dx-burger" type="button" aria-label="Open menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
+  
       </div>
   
-      <nav class="dx-nav" aria-label="Main navigation">
-        <a href="/" class="dx-link <%= activePage === 'home' ? 'active' : '' %>">Home</a>
-        <a href="/aboutUs" class="dx-link <%= activePage === 'aboutUs' ? 'active' : '' %>">About Us</a>
-        <a href="/frequentlyAskedQuestions" class="dx-link <%= activePage === 'faq' ? 'active' : '' %>">Frequently Asked Questions</a>
-        <a href="/contact" class="dx-link <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
-  
-        <% if (user && user.role === "Admin") { %>
-          <a href="/users" class="dx-link dx-admin <%= activePage === 'admin' ? 'active' : '' %>">Admin</a>
-        <% } %>
-  
-        <% if (typeof showSearch !== "undefined" && showSearch) { %>
-          <form method="get" action="<%= searchAction || '/' %>" class="dx-search">
+      <% if (typeof showSearch !== "undefined" && showSearch) { %>
+        <div class="dx-header__search">
+          <form method="get" action="<%= searchAction || '/' %>" class="dx-searchForm">
             <input
               type="search"
               name="search"
               placeholder="<%= searchPlaceholder || 'Search...' %>"
               value="<%= typeof search !== 'undefined' ? search : '' %>"
-              class="dx-search__input"
+              class="dx-searchInput"
             >
           </form>
+        </div>
+      <% } %>
+    </div>
+  
+    <!-- Mobile overlay + drawer -->
+    <div class="dx-overlay" hidden></div>
+  
+    <aside class="dx-drawer" aria-hidden="true">
+      <div class="dx-drawer__top">
+        <span class="dx-drawer__title">Menu</span>
+        <button class="dx-close" type="button" aria-label="Close menu">×</button>
+      </div>
+  
+      <nav class="dx-nav dx-nav--mobile" aria-label="Mobile navigation">
+        <a href="/" class="dx-mLink <%= activePage === 'home' ? 'active' : '' %>">Home</a>
+        <a href="/aboutUs" class="dx-mLink <%= activePage === 'aboutUs' ? 'active' : '' %>">About Us</a>
+        <a href="/frequentlyAskedQuestions" class="dx-mLink <%= activePage === 'faq' ? 'active' : '' %>">Frequently Asked Questions</a>
+        <a href="/contact" class="dx-mLink <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
+  
+        <% if (user && user.role === "Admin") { %>
+          <a href="/users" class="dx-mLink dx-mAdmin <%= activePage === 'admin' ? 'active' : '' %>">Admin</a>
         <% } %>
       </nav>
   
-    </div>
+      <div class="dx-drawer__bottom">
+        <a href="/favourites" class="dx-mAction">⭐ Favourites</a>
   
-    <div class="dx-overlay" hidden></div>
+        <% if (!user) { %>
+          <a href="/login" class="dx-mPrimary">Log in</a>
+        <% } else { %>
+          <div class="dx-mUser">
+            <span class="dx-mUser__name"><%= user.name || user.username %></span>
+            <a href="/logout" class="dx-mSecondary">Sign out</a>
+          </div>
+        <% } %>
+      </div>
+    </aside>
   </header>
