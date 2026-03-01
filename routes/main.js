@@ -53,26 +53,25 @@ async function uploadOnePhotoToPHP({ file, brand, model, vehicleId }) {
 }
 
 async function saveImagesToBackend(vehicleId, imageUrls, createdVehicle) {
-  const imagesPayload = imageUrls.map((u, idx) => ({
-    imageUrl: u,
-    isMain: idx === 0
-  }));
+  const imagesPayloadA = imageUrls.map((u, idx) => ({ imageUrl: u, isMain: idx === 0 }));
+  const imagesPayloadB = imageUrls.map((u, idx) => ({ url: u, main: idx === 0 }));
 
-  try {
-    await axios.post(`${BACKEND_URL}/vehicles/${vehicleId}/images`, { images: imagesPayload }, {
+  const post = (data) =>
+    axios.post(`${BACKEND_URL}/vehicles/${vehicleId}/images`, data, {
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       timeout: 20000
     });
-    return;
-  } catch (e) {
-    const st = e.response?.status || 0;
-    if (st !== 404) throw e;
-  }
+
+  try { await post({ images: imagesPayloadA }); return; } catch (e) {}
+  try { await post(imagesPayloadA); return; } catch (e) {}
+  try { await post({ images: imagesPayloadB }); return; } catch (e) {}
+  try { await post(imagesPayloadB); return; } catch (e) {}
+  try { await post({ imageUrls: imageUrls }); return; } catch (e) {}
 
   const putPayload = {
     ...(createdVehicle || {}),
     id: vehicleId,
-    images: imagesPayload
+    images: imagesPayloadA
   };
 
   await axios.put(`${BACKEND_URL}/vehicles/${vehicleId}`, putPayload, {
