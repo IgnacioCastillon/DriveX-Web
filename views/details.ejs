@@ -4,216 +4,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DriveX · <%= vehicle.brand %>
-      <%= vehicle.model %>
-  </title>
-  <link rel="icon" type="image/png" href="/public/images/logo.png">
+  <title>DriveX · <%= vehicle.brand %> <%= vehicle.model %></title>
+  <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/details.css">
+  <link rel="stylesheet" href="/stylesheets/header.css">
 </head>
 
 <body class="details-body">
 
   <div class="details-wrapper">
-    <header class="main-header glass-panel">
-      <div class="header-container header-grid">
-    
-        <!-- Logo -->
-        <div class="header-left">
-          <a href="/" class="logo">
-            <img src="/images/logo.png" alt="DriveX logo">
-            <span>DriveX</span>
-          </a>
-        </div>
-    
-        <!-- Nav -->
-        <div class="header-center">
-          <nav class="main-nav">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/aboutUs" class="nav-link">About Us</a>
-            <a href="/contact" class="nav-link">Contact</a>
-          </nav>
-        </div>
-    
-        <!-- Back -->
-        <div class="header-right">
-          <a href="/" class="back-link" aria-label="Home">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span class="back-text">Home</span>
-          </a>
-        </div>
-    
-      </div>
-    </header>
+
+    <%- include("partials/header", { 
+      user, 
+      activePage: "",
+      showSearch: false
+    }) %>
 
     <main class="details-main">
       <section class="details-gallery">
-        <% const images=vehicle.images || []; const mainImage=images.find(img=> img.isMain) || images[0];
-          const mainSrc = mainImage ? mainImage.imageUrl :
-          "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
-          %>
+        <% 
+          const images = vehicle.images || []; 
+          const mainImage = images.find(img => img.isMain) || images[0];
+          const mainSrc = mainImage ? mainImage.imageUrl : "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
+        %>
 
-          <div class="details-main-wrap">
-            <% if (vehicle.offers === "Yes") { %>
-              <div class="offer-badge-details">OFFER</div>
-            <% } %>
-          
-            <img
-              src="<%= mainSrc %>"
-              alt="<%= vehicle.brand %> <%= vehicle.model %>"
-              class="details-main-image"
-              id="details-main-image"
-            >
-          </div>
-
-          <div class="details-thumbs">
-            <% images.forEach((img, index)=> { %>
-              <img src="<%= img.imageUrl %>" alt="<%= vehicle.brand %> <%= vehicle.model %>"
-                data-src="<%= img.imageUrl %>" class="<%= index === 0 ? 'active' : '' %>"
-                onclick="document.getElementById('details-main-image').src = this.dataset.src; document.querySelectorAll('.details-thumbs img').forEach(i => i.classList.remove('active')); this.classList.add('active');">
-              <% }) %>
-          </div>
-
-          <% if (user && user.role === "Admin") { %>
-            <div class="offer-switch-wrapper">
-              <label class="offer-switch">
-                <input 
-                  type="checkbox"
-                  class="offer-toggle"
-                  data-vehicle-id="<%= vehicle.id %>"
-                  <%= vehicle.offers === "Yes" ? "checked" : "" %>
-                >
-                <span class="slider"></span>
-              </label>
-              <span class="offer-label">
-                <%= vehicle.offers === "Yes" ? "Offers Enabled" : "Offers Disabled" %>
-              </span>
-            </div>
+        <div class="details-main-wrap">
+          <% if (vehicle.offers === "Yes") { %>
+            <div class="offer-badge-details">OFFER</div>
           <% } %>
+
+          <img
+            src="<%= mainSrc %>"
+            alt="<%= vehicle.brand %> <%= vehicle.model %>"
+            class="details-main-image"
+            id="details-main-image"
+          >
+        </div>
+
+        <div class="details-thumbs">
+          <% images.forEach((img, index) => { %>
+            <img 
+              src="<%= img.imageUrl %>" 
+              alt="<%= vehicle.brand %> <%= vehicle.model %>"
+              data-src="<%= img.imageUrl %>" 
+              class="<%= index === 0 ? 'active' : '' %>"
+              onclick="document.getElementById('details-main-image').src = this.dataset.src; document.querySelectorAll('.details-thumbs img').forEach(i => i.classList.remove('active')); this.classList.add('active');"
+            >
+          <% }) %>
+        </div>
+
+        <% if (user && user.role === "Admin") { %>
+          <div class="offer-switch-wrapper">
+            <label class="offer-switch">
+              <input 
+                type="checkbox"
+                class="offer-toggle"
+                data-vehicle-id="<%= vehicle.id %>"
+                <%= vehicle.offers === "Yes" ? "checked" : "" %>
+              >
+              <span class="slider"></span>
+            </label>
+            <span class="offer-label">
+              <%= vehicle.offers === "Yes" ? "Offers Enabled" : "Offers Disabled" %>
+            </span>
+          </div>
+        <% } %>
       </section>
 
       <section class="details-info">
         <div class="details-title">
-          <p class="spec-label">
-            <%= vehicle.vehicleType %>
-          </p>
-          <h1>
-            <%= vehicle.brand %>
-              <%= vehicle.model %>
-          </h1>
+          <p class="spec-label"><%= vehicle.vehicleType %></p>
+          <h1><%= vehicle.brand %> <%= vehicle.model %></h1>
         </div>
 
-        <div class="details-price">
-          <%= vehicle.price %> €
-        </div>
+        <div class="details-price"><%= vehicle.price %> €</div>
 
         <div class="spec-grid">
           <% if (vehicle.year) { %>
             <div class="spec-item">
               <span class="spec-label">Year</span>
-              <span class="spec-value">
-                <%= vehicle.year %>
-              </span>
+              <span class="spec-value"><%= vehicle.year %></span>
             </div>
-            <% } %>
+          <% } %>
 
-              <% if (vehicle.mileage) { %>
-                <div class="spec-item">
-                  <span class="spec-label">Mileage</span>
-                  <span class="spec-value">
-                    <%= vehicle.mileage %> miles
-                  </span>
-                </div>
-                <% } %>
+          <% if (vehicle.mileage) { %>
+            <div class="spec-item">
+              <span class="spec-label">Mileage</span>
+              <span class="spec-value"><%= vehicle.mileage %> miles</span>
+            </div>
+          <% } %>
 
-                  <% if (vehicle.fuelType) { %>
-                    <div class="spec-item">
-                      <span class="spec-label">Fuel Type</span>
-                      <span class="spec-value">
-                        <%= vehicle.fuelType %>
-                      </span>
-                    </div>
-                    <% } %>
+          <% if (vehicle.fuelType) { %>
+            <div class="spec-item">
+              <span class="spec-label">Fuel Type</span>
+              <span class="spec-value"><%= vehicle.fuelType %></span>
+            </div>
+          <% } %>
 
-                      <% if (vehicle.hp) { %>
-                        <div class="spec-item">
-                          <span class="spec-label">Horsepower</span>
-                          <span class="spec-value">
-                            <%= vehicle.hp %> HP
-                          </span>
-                        </div>
-                        <% } %>
+          <% if (vehicle.hp) { %>
+            <div class="spec-item">
+              <span class="spec-label">Horsepower</span>
+              <span class="spec-value"><%= vehicle.hp %> HP</span>
+            </div>
+          <% } %>
 
-                          <% if (vehicle.doors) { %>
-                            <div class="spec-item">
-                              <span class="spec-label">Doors</span>
-                              <span class="spec-value">
-                                <%= vehicle.doors %>
-                              </span>
-                            </div>
-                            <% } %>
+          <% if (vehicle.doors) { %>
+            <div class="spec-item">
+              <span class="spec-label">Doors</span>
+              <span class="spec-value"><%= vehicle.doors %></span>
+            </div>
+          <% } %>
 
-                              <% if (vehicle.reference) { %>
-                                <div class="spec-item">
-                                  <span class="spec-label">Reference</span>
-                                  <span class="spec-value">#<%= vehicle.reference %></span>
-                                </div>
-                                <% } %>
+          <% if (vehicle.reference) { %>
+            <div class="spec-item">
+              <span class="spec-label">Reference</span>
+              <span class="spec-value">#<%= vehicle.reference %></span>
+            </div>
+          <% } %>
         </div>
 
         <% if (vehicle.description) { %>
           <div class="details-description">
             <h3>Description</h3>
-            <p>
-              <%= vehicle.description %>
-            </p>
+            <p><%= vehicle.description %></p>
           </div>
-          <% } %>
+        <% } %>
 
-            <% if (vehicle.extras) { const partes=vehicle.extras.split(",").map(p=> p.trim()).sort();
-              %>
-              <div class="details-extras">
-                <h3>Extras & Features</h3>
-                <ul class="extras-list">
-                  <% partes.forEach(parte=> { %>
-                    <li>
-                      <%= parte %>
-                    </li>
-                    <% }) %>
-                </ul>
+        <% if (vehicle.extras) { 
+          const partes = vehicle.extras.split(",").map(p => p.trim()).sort();
+        %>
+          <div class="details-extras">
+            <h3>Extras & Features</h3>
+            <ul class="extras-list">
+              <% partes.forEach(parte => { %>
+                <li><%= parte %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+
+        <% if (user && user.role=="Admin") { %>
+          <div class="admin-actions">
+            <button id="editButton" class="btn-premium primary" style="flex: 1;">Edit Vehicle</button>
+
+            <button id="deleteButton" data-vehicle-id="<%= vehicle.id %>" class="btn-premium btn-delete" style="flex: 1;">Delete Vehicle</button>
+
+            <div id="deleteModal" class="delete-modal">
+              <div class="delete-modal-content">
+                <h3>Confirm Deletion</h3>
+                <p>This action cannot be undone.</p>
+                <p>Type <strong>YES</strong> to confirm:</p>
+
+                <input type="text" id="confirmInput" placeholder="Type YES">
+
+                <div class="delete-actions">
+                  <button id="cancelDelete" class="btn-premium secondary">Cancel</button>
+                  <button id="confirmDelete" class="btn-premium btn-delete">Delete</button>
+                </div>
               </div>
-              <% } %>
-
-                <% if (user && user.role=="Admin" ) { %>
-                  <div class="admin-actions">
-                    <button id="editButton" class="btn-premium primary" style="flex: 1;">Edit Vehicle</button>
-                    
-                    <button id="deleteButton" data-vehicle-id="<%= vehicle.id %>" class="btn-premium btn-delete" style="flex: 1;">Delete Vehicle</button>
-                    <div id="deleteModal" class="delete-modal">
-                      <div class="delete-modal-content">
-                        <h3>Confirm Deletion</h3>
-                        <p>This action cannot be undone.</p>
-                        <p>Type <strong>YES</strong> to confirm:</p>
-                    
-                        <input type="text" id="confirmInput" placeholder="Type YES">
-                    
-                        <div class="delete-actions">
-                          <button id="cancelDelete" class="btn-premium secondary">Cancel</button>
-                          <button id="confirmDelete" class="btn-premium btn-delete">Delete</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <% } else { %>
-                    <div class="user-actions">
-                      <button class="btn-premium primary" style="width: 100%;"
-                        onclick="window.location.href='/contact'">Request Information</button>
-                    </div>
-                    <% } %>
+            </div>
+          </div>
+        <% } else { %>
+          <div class="user-actions">
+            <button class="btn-premium primary" style="width: 100%;" onclick="window.location.href='/contact'">Request Information</button>
+          </div>
+        <% } %>
 
       </section>
     </main>
@@ -223,6 +179,7 @@
     </footer>
   </div>
 
+  <script src="/js/header.js"></script>
   <script src="/js/details.js"></script>
 </body>
 

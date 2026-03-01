@@ -5,9 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DriveX · Contact Form</title>
-  <link rel="icon" type="image/png" href="/public/images/logo.png">
+  <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/login.css">
+  <link rel="stylesheet" href="/stylesheets/header.css">
   <style>
     textarea {
       padding: 0.8rem 1rem;
@@ -40,13 +41,14 @@
 </head>
 
 <body class="auth-body">
+
   <div class="auth-wrapper">
-    <header class="auth-header">
-      <a href="/" class="logo">
-        <img src="/images/logo.png" alt="DriveX logo">
-        <span>DriveX</span>
-      </a>
-    </header>
+
+    <%- include("partials/header", { 
+      user, 
+      activePage: "contact", 
+      showSearch: false
+    }) %>
 
     <main class="auth-main">
       <section class="auth-card">
@@ -69,34 +71,35 @@
             <textarea id="body" name="body" placeholder="Write your message here..." rows="4" required></textarea>
           </div>
 
-          <% if (typeof user !=='undefined' && user) { %>
+          <% if (typeof user !== 'undefined' && user) { %>
             <input type="hidden" id="email" name="email" value="<%= user.email %>">
-            <% } else { %>
-              <div class="auth-field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="your@email.com" required>
-              </div>
-              <% } %>
+          <% } else { %>
+            <div class="auth-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+          <% } %>
 
-                <button type="submit" class="btn-premium primary auth-button">
-                  Send Message
-                </button>
+          <button type="submit" class="btn-premium primary auth-button">
+            Send Message
+          </button>
 
-                <% if (typeof success !=='undefined' && success) { %>
-                  <p class="auth-success">
-                    <%= success %>
-                  </p>
-                  <% } %>
+          <% if (typeof success !== 'undefined' && success) { %>
+            <p class="auth-success">
+              <%= success %>
+            </p>
+          <% } %>
 
-                    <% if (typeof error !=='undefined' && error) { %>
-                      <p class="auth-error">
-                        <%= error %>
-                      </p>
-                      <% } %>
+          <% if (typeof error !== 'undefined' && error) { %>
+            <p class="auth-error">
+              <%= error %>
+            </p>
+          <% } %>
 
-                        <p class="auth-extra">
-                          <a href="/">← Return to Catalog</a>
-                        </p>
+          <p class="auth-extra">
+            <a href="/">← Return to Catalog</a>
+          </p>
+
         </form>
       </section>
     </main>
@@ -104,7 +107,11 @@
     <footer class="auth-footer">
       <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
     </footer>
+
   </div>
+
+  <script src="/js/header.js"></script>
+
 </body>
 
 </html>

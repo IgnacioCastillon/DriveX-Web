@@ -9,62 +9,18 @@
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/faq.css">
+  <link rel="stylesheet" href="/stylesheets/header.css">
 </head>
 
 <body class="faq-body">
   <div class="faq-wrapper">
 
-    <!-- HEADER (igual estilo) -->
-    <header class="main-header glass-panel">
-      <div class="header-container">
+    <%- include("partials/header", { 
+      user, 
+      activePage: "faq", 
+      showSearch: false
+    }) %>
 
-        <div class="header-left">
-          <a href="/" class="logo">
-            <img src="/images/logo.png" alt="DriveX logo">
-            <span>DriveX</span>
-          </a>
-        </div>
-
-        <div class="header-right">
-          <a href="/favourites" class="nav-icon-link" title="Favourites" aria-label="Favourites">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.568L24 9.748l-6 5.848L19.335 24 12 19.897 4.665 24 6 15.596 0 9.748l8.332-1.593z" />
-            </svg>
-          </a>
-
-          <div class="auth-buttons">
-            <% if (!user) { %>
-              <a href="/login" class="btn-premium primary header-cta">Log in</a>
-            <% } else { %>
-              <div class="user-profile">
-                <span class="user-name"><%= user.name %></span>
-                <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
-              </div>
-            <% } %>
-          </div>
-        </div>
-
-        <div class="header-nav">
-          <nav class="main-nav">
-            <a href="/" id="home" class="nav-link">Home</a>
-            <a href="/aboutUs" id="aboutUs" class="nav-link">About Us</a>
-            <a href="/frequentlyAskedQuestions" id="frequentlyAskedQuestions" class="nav-link active">Frequently Asked Questions</a>
-            <a href="/contact" id="contact" class="nav-link">Contact</a>
-            <% if (user && user.role=="Admin" ){ %>
-              <a href="/users" class="nav-link admin-link">Admin</a>
-            <% } %>
-          </nav>
-        </div>
-
-        <!-- Aquí no hace falta search, pero si quieres mantener el hueco -->
-        <div class="header-search">
-          <div class="search-placeholder"></div>
-        </div>
-
-      </div>
-    </header>
-
-    <!-- MAIN -->
     <main class="faq-main">
       <section class="faq-hero glass-panel">
         <div class="faq-hero-text">
@@ -93,7 +49,6 @@
       <section class="faq-content">
         <div class="faq-grid">
 
-          <!-- BUYING -->
           <article class="faq-section glass-panel">
             <h2>Buying & process</h2>
 
@@ -122,7 +77,6 @@
             </details>
           </article>
 
-          <!-- OFFERS -->
           <article class="faq-section glass-panel">
             <h2>Offers</h2>
 
@@ -143,7 +97,6 @@
             </details>
           </article>
 
-          <!-- ACCOUNT -->
           <article class="faq-section glass-panel">
             <h2>Account & favourites</h2>
 
@@ -170,7 +123,6 @@
             </details>
           </article>
 
-          <!-- SECURITY -->
           <article class="faq-section glass-panel">
             <h2>Security & trust</h2>
 
@@ -209,6 +161,8 @@
     </footer>
 
   </div>
+
+  <script src="/js/header.js"></script>
 </body>
 
 </html>
