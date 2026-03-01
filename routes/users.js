@@ -19,16 +19,24 @@ const upload = multer({
 
 
 function requireAdmin(req, res, next) {
-  if (!req.session.user || req.session.user.role !== "Admin") {
-    return res.status(403).send("Forbidden");
+  if (!req.session.user) {
+    return res.redirect("/login");
   }
+
+  if (req.session.user.role !== "Admin") {
+    return res.status(403).render("error", {
+      message: "Access denied. Admins only.",
+      user: req.session.user
+    });
+  }
+
   next();
 }
 
 
 
 
-router.get("/users", async (req, res) => {
+router.get("/users", requireAdmin, async (req, res) => {
   const search = req.query.search || "";
   const page = parseInt(req.query.page || "1", 10);
   const perPage = 12;
@@ -43,7 +51,6 @@ router.get("/users", async (req, res) => {
 
     const response = await axios.get(apiUrl);
 
-    // Asegurar array
     let allUsers;
     if (Array.isArray(response.data)) {
       allUsers = response.data;

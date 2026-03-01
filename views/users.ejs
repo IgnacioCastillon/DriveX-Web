@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DriveX · Users Management</title>
-  <link rel="icon" type="image/png" href="/public/images/logo.png">
-  <link rel="stylesheet" href="/stylesheets/base.css">
-  <link rel="stylesheet" href="/stylesheets/main.css">
-  <link rel="stylesheet" href="/stylesheets/users.css">
-  <link rel="stylesheet" href="/stylesheets/login.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DriveX · Admin · Users</title>
+
+  <link rel="icon" type="image/png" href="/images/logo.png">
+  <link rel="stylesheet" href="/stylesheets/base.css" />
+  <link rel="stylesheet" href="/stylesheets/users.css" />
 </head>
 
-<body class="home-body">
-  <div class="home-wrapper">
+<body class="users-body">
+  <div class="users-wrapper">
 
     <header class="main-header glass-panel">
       <div class="header-container">
+
         <div class="header-left">
           <a href="/" class="logo">
             <img src="/images/logo.png" alt="DriveX logo">
@@ -24,131 +23,205 @@
           </a>
         </div>
 
-        <div class="header-center">
+        <div class="header-right">
+          <div class="auth-buttons">
+            <% if (!user) { %>
+              <a href="/login" class="btn-premium primary header-cta">Log in</a>
+            <% } else { %>
+              <div class="user-profile">
+                <span class="user-name"><%= user.name || user.username %></span>
+                <a href="/logout" class="btn-premium secondary header-cta">Sign out</a>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="header-nav">
           <nav class="main-nav">
             <a href="/" class="nav-link">Home</a>
             <a href="/aboutUs" class="nav-link">About Us</a>
+            <a href="/frequentlyAskedQuestions" class="nav-link">Frequently Asked Questions</a>
             <a href="/contact" class="nav-link">Contact</a>
-            <a href="/users" class="nav-link active">Admin</a>
+            <a href="/users" class="nav-link admin-link active">Admin</a>
           </nav>
         </div>
 
-        <div class="header-right">
-          <div class="search-wrapper">
-            <form method="get" action="/users">
-              <input type="search" name="search" placeholder="Search users..."
-                value="<%= typeof search !== 'undefined' ? search : '' %>" class="search-input">
-            </form>
-          </div>
-
-          <div class="auth-buttons">
-            <div class="user-profile">
-              <span class="user-name">
-                <%= user.name %>
-              </span>
-              <a href="/logout" class="btn-premium secondary">Sign out</a>
-            </div>
-          </div>
+        <div class="header-search">
+          <form class="search-form" method="get" action="/users">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search users..."
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+              class="search-input"
+            />
+          </form>
         </div>
+
       </div>
     </header>
 
-    <main class="home-main">
-      <div class="users-header-bar">
-        <h1 class="users-title">User Management</h1>
+    <main class="users-main">
 
-        <% if (user && user.role==="Admin" ) { %>
-          <button class="btn-premium primary" id="toggleUserForm">
-            + Create New User
+      <section class="users-hero glass-panel">
+        <div>
+          <h1>Admin · Users</h1>
+          <p>Manage DriveX users, roles and profile images.</p>
+        </div>
+
+        <div class="users-actions">
+          <button id="openCreateModal" class="btn-premium primary">
+            + Create user
           </button>
-          <% } %>
-      </div>
 
-      <% if (user && user.role==="Admin" ) { %>
-        <form id="userForm" class="user-form hidden" method="post" action="/users" enctype="multipart/form-data">
-          <div class="auth-field">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Username" required>
+          <button id="refreshBtn" class="btn-premium secondary" title="Refresh list">
+            Refresh
+          </button>
+        </div>
+      </section>
+
+      <% if (error) { %>
+        <div class="alert alert-error glass-panel">
+          <strong>Oops:</strong> <%= error %>
+          <button class="alert-close" type="button" aria-label="Close">×</button>
+        </div>
+      <% } %>
+
+      <section class="users-panel glass-panel">
+        <div class="users-panel-head">
+          <div class="users-count">
+            <span class="badge">Users</span>
+            <span class="muted">
+              Showing <%= Array.isArray(users) ? users.length : 0 %> results
+              <% if (search && search.trim() !== "") { %>
+                for "<%= search %>"
+              <% } %>
+            </span>
           </div>
 
-          <div class="auth-field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="user@example.com" required>
-          </div>
-
-          <div class="auth-field">
-            <label for="password_hash">Password</label>
-            <input type="password" id="password_hash" name="password_hash" placeholder="••••••••" required>
-          </div>
-
-          <div class="auth-field">
-            <label for="role">Role</label>
-            <select id="role" name="role" required>
-              <option value="User">User</option>
+          <div class="users-filters">
+            <select id="roleFilter" class="select">
+              <option value="all">All roles</option>
               <option value="Admin">Admin</option>
+              <option value="User">User</option>
+            </select>
+
+            <select id="sortBy" class="select">
+              <option value="nameAsc">Sort: Name (A→Z)</option>
+              <option value="nameDesc">Sort: Name (Z→A)</option>
+              <option value="roleAsc">Sort: Role (A→Z)</option>
+              <option value="roleDesc">Sort: Role (Z→A)</option>
             </select>
           </div>
+        </div>
 
-          <div class="auth-field">
-            <label for="photo">Profile Photo</label>
-            <input type="file" id="photo" name="photo" accept="image/*">
-          </div>
-
-          <button type="submit" class="btn-premium primary">Create</button>
-        </form>
-        <% } %>
-
-          <section class="vehicle-grid" id="user-grid">
-            <% if (Array.isArray(users) && users.length> 0) { %>
-              <% users.forEach(u=> { %>
-                <article class="vehicle-card user-card">
-                  <a href="/users/<%= u.id %>" class="vehicle-link">
-                    <div class="vehicle-main-image">
-                      <img src="<%= u.profileImage || '/images/default-user.png' %>" alt="<%= u.username %>">
-                    </div>
-
-                    <div class="vehicle-info">
-                      <h3>
-                        <%= u.username %>
-                      </h3>
-                      <p class="user-email">
-                        <%= u.email %>
-                      </p>
-
-                      <% if (u.first_name || u.last_name) { %>
-                        <p>
-                          <%= (u.first_name || '' ) + ' ' + (u.last_name || '' ) %>
-                        </p>
-                        <% } %>
-
-                          <span class="user-role <%= u.role === 'Admin' ? 'role-admin' : 'role-user' %>">
-                            <%= u.role %>
-                          </span>
-                    </div>
-                  </a>
-                </article>
-                <% }) %>
-                  <% } else { %>
-                    <p class="empty-message">No users found.</p>
+        <div id="usersGrid" class="users-grid">
+          <% if (Array.isArray(users) && users.length > 0) { %>
+            <% users.forEach(u => { %>
+              <article class="user-card" data-role="<%= u.role || 'User' %>" data-name="<%= (u.username || u.name || '').toLowerCase() %>">
+                <div class="user-card-top">
+                  <div class="avatar">
+                    <% const img = u.profileImage || u.profile_image || u.photo || null; %>
+                    <% if (img) { %>
+                      <img src="<%= img %>" alt="User photo">
+                    <% } else { %>
+                      <div class="avatar-fallback">
+                        <%= ((u.username || u.name || 'U').charAt(0)).toUpperCase() %>
+                      </div>
                     <% } %>
-          </section>
+                  </div>
+
+                  <div class="user-meta">
+                    <h3><%= u.username || u.name || 'Unnamed' %></h3>
+                    <p class="muted"><%= u.email || 'No email' %></p>
+                    <span class="pill <%= (u.role === 'Admin') ? 'pill-admin' : 'pill-user' %>">
+                      <%= u.role || 'User' %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="user-card-bottom">
+                  <button class="btn-mini ghost copy-email" data-email="<%= u.email || '' %>">Copy email</button>
+                  <button class="btn-mini danger disabled" type="button" title="Coming soon" disabled>Delete</button>
+                </div>
+              </article>
+            <% }) %>
+          <% } else { %>
+            <div class="empty-state">
+              <h3>No users found</h3>
+              <p class="muted">Try a different search or create a new user.</p>
+              <button id="openCreateModal2" class="btn-premium primary">+ Create user</button>
+            </div>
+          <% } %>
+        </div>
+      </section>
     </main>
 
-    <footer class="home-footer">
+    <footer class="users-footer">
       <p>DriveX is a creation of Los Del Fondo Devs. All rights reserved. Malaga, 2025.</p>
     </footer>
+
   </div>
 
-  <script>
-    const toggleBtn = document.getElementById("toggleUserForm");
-    const userForm = document.getElementById("userForm");
+  <!-- CREATE USER MODAL -->
+  <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
 
-    if (toggleBtn && userForm) {
-      toggleBtn.addEventListener("click", () => {
-        userForm.classList.toggle("hidden");
-      });
-    }
-  </script>
+  <div id="createModal" class="modal glass-panel" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <div>
+        <h2>Create user</h2>
+        <p class="muted">Add a new account to DriveX.</p>
+      </div>
+      <button id="closeCreateModal" class="icon-btn" aria-label="Close">×</button>
+    </div>
+
+    <form id="createUserForm" method="post" action="/users" enctype="multipart/form-data" class="modal-form">
+      <div class="form-grid">
+        <div class="auth-field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required placeholder="e.g. markitos" />
+        </div>
+
+        <div class="auth-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="e.g. user@drivex.com" />
+        </div>
+
+        <div class="auth-field">
+          <label for="password_hash">Password</label>
+          <input id="password_hash" name="password_hash" type="password" required placeholder="Create a password" />
+          <small class="muted">This will be sent to your backend as <code>password_hash</code>.</small>
+        </div>
+
+        <div class="auth-field">
+          <label for="role">Role</label>
+          <select id="role" name="role" required>
+            <option value="User" selected>User</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="auth-field file-field">
+          <label for="photo">Profile Image</label>
+          <input id="photo" name="photo" type="file" accept="image/*" />
+          <div class="preview-wrap">
+            <img id="photoPreview" alt="Preview" />
+            <div id="photoEmpty" class="preview-empty">No image selected</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="cancelCreate" class="btn-premium secondary">Cancel</button>
+        <button type="submit" class="btn-premium primary" id="submitCreate">
+          Create user
+        </button>
+      </div>
+
+      <div id="formHint" class="form-hint muted"></div>
+    </form>
+  </div>
+
+  <script src="/js/users.js"></script>
 </body>
-
 </html>
