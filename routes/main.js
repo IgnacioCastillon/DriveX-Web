@@ -52,32 +52,17 @@ async function uploadOnePhotoToPHP({ file, brand, model, vehicleId }) {
   return url;
 }
 
-async function saveImagesToBackend(vehicleId, imageUrls, createdVehicle) {
-  const imagesPayloadA = imageUrls.map((u, idx) => ({ imageUrl: u, isMain: idx === 0 }));
-  const imagesPayloadB = imageUrls.map((u, idx) => ({ url: u, main: idx === 0 }));
-
-  const post = (data) =>
-    axios.post(`${BACKEND_URL}/vehicles/${vehicleId}/images`, data, {
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      timeout: 20000
-    });
-
-  try { await post({ images: imagesPayloadA }); return; } catch (e) {}
-  try { await post(imagesPayloadA); return; } catch (e) {}
-  try { await post({ images: imagesPayloadB }); return; } catch (e) {}
-  try { await post(imagesPayloadB); return; } catch (e) {}
-  try { await post({ imageUrls: imageUrls }); return; } catch (e) {}
-
-  const putPayload = {
-    ...(createdVehicle || {}),
-    id: vehicleId,
-    images: imagesPayloadA
-  };
-
-  await axios.put(`${BACKEND_URL}/vehicles/${vehicleId}`, putPayload, {
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    timeout: 20000
-  });
+async function saveImagesToBackend(vehicleId, imageUrls) {
+  for (let i = 0; i < imageUrls.length; i++) {
+    await axios.post(
+      `${BACKEND_URL}/vehicles/${vehicleId}/images`,
+      { imageUrl: imageUrls[i], isMain: i === 0 },
+      {
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        timeout: 20000
+      }
+    );
+  }
 }
 
 router.get("/", async (req, res) => {
@@ -401,7 +386,7 @@ router.post("/addVehicle", requireLogin, upload.array("photos", 15), async (req,
     }
 
     if (imageUrls.length > 0) {
-      await saveImagesToBackend(vehicleId, imageUrls, created);
+      await saveImagesToBackend(vehicleId, imageUrls);
     }
 
     const accept = req.headers.accept || "";
