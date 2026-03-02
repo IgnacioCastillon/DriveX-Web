@@ -150,6 +150,134 @@
 
             <button id="deleteButton" data-vehicle-id="<%= vehicle.id %>" class="btn-premium btn-delete" style="flex: 1;">Delete Vehicle</button>
 
+            <div id="editModal" class="dx-modal" aria-hidden="true">
+              <div class="dx-modal-backdrop" data-close="1"></div>
+
+              <div class="dx-modal-card glass-panel" role="dialog" aria-modal="true" aria-labelledby="dxEditTitle">
+                <div class="dx-modal-head">
+                  <div>
+                    <h3 id="dxEditTitle" style="margin:0;">Edit vehicle</h3>
+                    <p style="margin:.35rem 0 0; color: var(--text-muted);">Update the listing details and save changes.</p>
+                  </div>
+
+                  <button type="button" class="dx-modal-x btn-premium secondary" data-close="1" aria-label="Close">Close</button>
+                </div>
+
+                <div class="dx-modal-body">
+                  <form id="editVehicleForm" class="dx-edit-form">
+                    <input type="hidden" name="id" value="<%= vehicle.id %>">
+
+                    <div class="dx-form-grid">
+                      <div class="auth-field">
+                        <label>Brand</label>
+                        <select name="brand" id="editBrand" required></select>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Model</label>
+                        <input name="model" type="text" required>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Vehicle Type</label>
+                        <select name="vehicleType" required>
+                          <option value="Sedan">Sedan</option>
+                          <option value="Suv">Suv</option>
+                          <option value="Hatchback">Hatchback</option>
+                          <option value="Off-road / 4x4">Off-road / 4x4</option>
+                          <option value="Van">Van</option>
+                          <option value="MPV / Minivan">MPV / Minivan</option>
+                          <option value="Pickup">Pickup</option>
+                          <option value="Sport Car">Sport Car</option>
+                          <option value="Hyper car">Hyper car</option>
+                          <option value="Sport Bike">Sport Bike</option>
+                          <option value="Custom">Custom</option>
+                          <option value="Naked">Naked</option>
+                          <option value="Enduro">Enduro</option>
+                          <option value="Trial">Trial</option>
+                          <option value="MotoCross">MotoCross</option>
+                          <option value="Trail">Trail</option>
+                          <option value="Touring">Touring</option>
+                          <option value="Truck">Truck</option>
+                        </select>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Fuel Type</label>
+                        <select name="fuelType" required>
+                          <option value="Gasoline">Gasoline</option>
+                          <option value="Diesel">Diesel</option>
+                          <option value="Electric">Electric</option>
+                          <option value="Hybrid">Hybrid</option>
+                          <option value="Plug-in Hybrid">Plug-in Hybrid</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Year</label>
+                        <input name="year" type="number" min="1900" max="2026" required>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Price (€)</label>
+                        <input name="price" type="number" min="0" required>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Mileage (miles)</label>
+                        <input name="mileage" type="number" min="0" required>
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Horsepower (HP)</label>
+                        <input name="hp" type="number" min="0">
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Doors</label>
+                        <input name="doors" type="number" min="0" max="5">
+                      </div>
+
+                      <div class="auth-field">
+                        <label>Reference</label>
+                        <input name="reference" type="text" placeholder="e.g. DX-2026-001">
+                      </div>
+
+                      <div class="auth-field" style="grid-column: 1 / -1;">
+                        <label>Description</label>
+                        <textarea name="description" rows="5" required></textarea>
+                      </div>
+
+                      <div class="auth-field" style="grid-column: 1 / -1;">
+                        <label>Extras & Features</label>
+                        <select name="extras" id="editExtras" multiple></select>
+                        <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
+                      </div>
+
+                      <div class="auth-field" style="grid-column: 1 / -1; display:flex; align-items:center; gap:.75rem;">
+                        <label style="margin:0;">Offer</label>
+                        <select name="offers">
+                          <option value="No">No</option>
+                          <option value="Yes">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="dx-modal-actions">
+                      <div class="dx-edit-status" id="editStatus" style="color: var(--text-muted);"></div>
+                      <div style="display:flex; gap:.75rem; justify-content:flex-end; flex-wrap:wrap;">
+                        <button type="button" class="btn-premium secondary" data-close="1">Cancel</button>
+                        <button type="submit" class="btn-premium primary" id="saveEditBtn">Save changes</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <script id="vehiclePayload" type="application/json"><%- JSON.stringify(vehicle) %></script>
+
             <div id="deleteModal" class="delete-modal">
               <div class="delete-modal-content">
                 <h3>Confirm Deletion</h3>
