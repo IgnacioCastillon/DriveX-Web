@@ -522,16 +522,16 @@
       <div class="pagination">
         <% if (currentPage > 1) { %>
           <a class="arrow page-link"
-            href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
+            href="/?page=<%= currentPage - 1 %><%= baseQuery ? '&' + baseQuery : '' %>">←</a>
         <% } else { %>
           <span class="arrow disabled">←</span>
         <% } %>
-
+      
         <span class="current-page"><%= currentPage %></span>
-
+      
         <% if (currentPage < totalPages) { %>
           <a class="arrow page-link"
-            href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
+            href="/?page=<%= currentPage + 1 %><%= baseQuery ? '&' + baseQuery : '' %>">→</a>
         <% } else { %>
           <span class="arrow disabled">→</span>
         <% } %>
