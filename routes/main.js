@@ -83,13 +83,29 @@ async function saveImagesToBackend(vehicleId, imageUrls) {
   }
 }
 
-// Helpers para filtros
 function norm(s) {
   return String(s || "").toLowerCase().trim();
 }
 function num(v) {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
+}
+
+function buildBaseQuery(queryObj) {
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(queryObj || {})) {
+    if (k === "page") continue;
+    if (Array.isArray(v)) {
+      v.forEach(x => {
+        const val = String(x ?? "").trim();
+        if (val !== "") params.append(k, val);
+      });
+    } else {
+      const val = String(v ?? "").trim();
+      if (val !== "") params.set(k, val);
+    }
+  }
+  return params.toString();
 }
 
 router.get("/", async (req, res) => {
@@ -99,25 +115,23 @@ router.get("/", async (req, res) => {
   const perPage = 14;
   const partial = req.query.partial === "1";
 
-  // NUEVO: filtros tipo concesionario (GET)
   const filters = {
     brand: (req.query.brand || "").trim(),
-    vehicleType: (req.query.vehicleType || "").trim(), // compat con lo que ya usas
+    vehicleType: (req.query.vehicleType || "").trim(),
     fuelType: (req.query.fuelType || "").trim(),
     minYear: req.query.minYear ? Number(req.query.minYear) : null,
     maxYear: req.query.maxYear ? Number(req.query.maxYear) : null,
     minPrice: req.query.minPrice ? Number(req.query.minPrice) : null,
     maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null,
     maxMileage: req.query.maxMileage ? Number(req.query.maxMileage) : null,
-    offers: (req.query.offers || "").trim(), // "Yes" o ""
-    extras: (req.query.extras || "").trim(), // "ABS, Sunroof"
+    offers: (req.query.offers || "").trim(),
+    extras: [].concat(req.query.extras || []).map(x => String(x).trim()).filter(Boolean),
     sort: (req.query.sort || "").trim()
   };
 
   try {
     let apiUrl = `${BACKEND_URL}/vehicles`;
 
-    // Mantienes tu lógica actual (si quieres, luego podemos pasar todo a filtros locales)
     if (vehicleType.trim() !== "") {
       apiUrl = `${BACKEND_URL}/vehicles/vehicleType?q=${encodeURIComponent(vehicleType)}`;
     }
@@ -138,7 +152,6 @@ router.get("/", async (req, res) => {
       allVehicles = [];
     }
 
-    // NUEVO: listas para selects (antes de filtrar para que no desaparezcan opciones)
     const availableTypes = Array.from(
       new Set(allVehicles.map(v => v.vehicleType).filter(Boolean))
     ).sort();
@@ -147,7 +160,6 @@ router.get("/", async (req, res) => {
       new Set(allVehicles.map(v => (v.fuelType || v.fuel_type)).filter(Boolean))
     ).sort();
 
-    // NUEVO: aplicar filtros en Node antes de paginar
     let filtered = allVehicles;
 
     if (filters.brand) {
@@ -155,7 +167,7 @@ router.get("/", async (req, res) => {
       filtered = filtered.filter(v => norm(v.brand).includes(b));
     }
 
-    if (filters.vehicleType) {
+    if (filters.vehicleType && !filters.vehicleType.includes(",")) {
       const t = norm(filters.vehicleType);
       filtered = filtered.filter(v => norm(v.vehicleType).includes(t));
     }
@@ -187,12 +199,8 @@ router.get("/", async (req, res) => {
       filtered = filtered.filter(v => String(v.offers) === "Yes");
     }
 
-    if (filters.extras) {
-      const wanted = filters.extras
-        .split(",")
-        .map(x => norm(x))
-        .filter(Boolean);
-
+    if (filters.extras.length > 0) {
+      const wanted = filters.extras.map(norm).filter(Boolean);
       filtered = filtered.filter(v => {
         const hay = norm(v.extras);
         return wanted.every(w => hay.includes(w));
@@ -218,7 +226,6 @@ router.get("/", async (req, res) => {
 
     allVehicles = filtered;
 
-    // Favoritos
     let favoriteIds = [];
     if (req.session.user && req.session.user.id) {
       try {
@@ -236,12 +243,8 @@ router.get("/", async (req, res) => {
       }
     }
 
-    // NUEVO: query base para paginación (mantener filtros)
-    const qsObj = { ...req.query };
-    delete qsObj.page;
-    const baseQuery = new URLSearchParams(qsObj).toString();
+    const baseQuery = buildBaseQuery(req.query);
 
-    // paginación normal
     const totalVehicles = allVehicles.length;
     const totalPages = Math.max(1, Math.ceil(totalVehicles / perPage));
     const currentPage = Math.min(Math.max(page, 1), totalPages);
@@ -274,8 +277,6 @@ router.get("/", async (req, res) => {
       user: req.session.user || null,
       favoriteIds,
       isFavouritesPage: false,
-
-      // NUEVO para el EJS del filtro:
       filters,
       baseQuery,
       availableTypes,
@@ -320,10 +321,7 @@ router.get("/", async (req, res) => {
       }
     ];
 
-    // Para mock también pasamos filtros para que el EJS no pete
-    const qsObj = { ...req.query };
-    delete qsObj.page;
-    const baseQuery = new URLSearchParams(qsObj).toString();
+    const baseQuery = buildBaseQuery(req.query);
 
     const availableTypes = Array.from(new Set(mockVehicles.map(v => v.vehicleType).filter(Boolean))).sort();
     const availableFuels = Array.from(new Set(mockVehicles.map(v => v.fuelType).filter(Boolean))).sort();
@@ -337,7 +335,6 @@ router.get("/", async (req, res) => {
       user: req.session.user || null,
       favoriteIds: [],
       isFavouritesPage: false,
-
       filters: {
         brand: (req.query.brand || "").trim(),
         vehicleType: (req.query.vehicleType || "").trim(),
@@ -348,7 +345,7 @@ router.get("/", async (req, res) => {
         maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null,
         maxMileage: req.query.maxMileage ? Number(req.query.maxMileage) : null,
         offers: (req.query.offers || "").trim(),
-        extras: (req.query.extras || "").trim(),
+        extras: [].concat(req.query.extras || []).map(x => String(x).trim()).filter(Boolean),
         sort: (req.query.sort || "").trim()
       },
       baseQuery,
