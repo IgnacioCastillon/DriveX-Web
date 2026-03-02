@@ -362,6 +362,9 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
     const response = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
     const vehicles = Array.isArray(response.data) ? response.data : [];
 
+    const availableTypes = Array.from(new Set(vehicles.map(v => v.vehicleType).filter(Boolean))).sort();
+    const availableFuels = Array.from(new Set(vehicles.map(v => (v.fuelType || v.fuel_type)).filter(Boolean))).sort();
+
     return res.render("main", {
       vehicles,
       search: "",
@@ -371,6 +374,23 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       user: req.session.user,
       favoriteIds: vehicles.map(v => v.id),
       isFavouritesPage: true,
+
+      filters: {
+        brand: "",
+        vehicleType: "",
+        fuelType: "",
+        minYear: null,
+        maxYear: null,
+        minPrice: null,
+        maxPrice: null,
+        maxMileage: null,
+        offers: "",
+        extras: [],
+        sort: ""
+      },
+      baseQuery: "",
+      availableTypes,
+      availableFuels
     });
   } catch (error) {
     console.error("Error loading favourites:", error.message);
@@ -384,6 +404,23 @@ router.get("/favourites", requireLoginPage, async (req, res) => {
       user: req.session.user,
       favoriteIds: [],
       isFavouritesPage: true,
+
+      filters: {
+        brand: "",
+        vehicleType: "",
+        fuelType: "",
+        minYear: null,
+        maxYear: null,
+        minPrice: null,
+        maxPrice: null,
+        maxMileage: null,
+        offers: "",
+        extras: [],
+        sort: ""
+      },
+      baseQuery: "",
+      availableTypes: [],
+      availableFuels: []
     });
   }
 });
@@ -393,10 +430,21 @@ router.get("/offers", async (req, res) => {
     const response = await axios.get(`${BACKEND_URL}/vehicles/offers`, { timeout: 2500 });
 
     let vehicles = [];
-    if (Array.isArray(response.data)) {
-      vehicles = response.data;
-    } else if (Array.isArray(response.data.content)) {
-      vehicles = response.data.content;
+    if (Array.isArray(response.data)) vehicles = response.data;
+    else if (Array.isArray(response.data.content)) vehicles = response.data.content;
+
+    const availableTypes = Array.from(new Set(vehicles.map(v => v.vehicleType).filter(Boolean))).sort();
+    const availableFuels = Array.from(new Set(vehicles.map(v => (v.fuelType || v.fuel_type)).filter(Boolean))).sort();
+
+    let favoriteIds = [];
+    if (req.session.user && req.session.user.id) {
+      try {
+        const userId = req.session.user.id;
+        const favRes = await axios.get(`${BACKEND_URL}/favourites/${userId}`, { timeout: 2500 });
+        if (Array.isArray(favRes.data)) favoriteIds = favRes.data.map(v => v.id);
+      } catch (e) {
+        favoriteIds = [];
+      }
     }
 
     return res.render("main", {
@@ -406,8 +454,25 @@ router.get("/offers", async (req, res) => {
       totalPages: 1,
       totalVehicles: vehicles.length,
       user: req.session.user || null,
-      favoriteIds: [],
-      isFavouritesPage: false
+      favoriteIds,
+      isFavouritesPage: false,
+
+      filters: {
+        brand: "",
+        vehicleType: "",
+        fuelType: "",
+        minYear: null,
+        maxYear: null,
+        minPrice: null,
+        maxPrice: null,
+        maxMileage: null,
+        offers: "Yes",
+        extras: [],
+        sort: ""
+      },
+      baseQuery: "",
+      availableTypes,
+      availableFuels
     });
   } catch (error) {
     console.error("Error loading offers:", error.message);
@@ -420,7 +485,24 @@ router.get("/offers", async (req, res) => {
       totalVehicles: 0,
       user: req.session.user || null,
       favoriteIds: [],
-      isFavouritesPage: false
+      isFavouritesPage: false,
+
+      filters: {
+        brand: "",
+        vehicleType: "",
+        fuelType: "",
+        minYear: null,
+        maxYear: null,
+        minPrice: null,
+        maxPrice: null,
+        maxMileage: null,
+        offers: "Yes",
+        extras: [],
+        sort: ""
+      },
+      baseQuery: "",
+      availableTypes: [],
+      availableFuels: []
     });
   }
 });
