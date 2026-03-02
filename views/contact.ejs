@@ -1,48 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DriveX · Contact Form</title>
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/stylesheets/base.css">
-  <link rel="stylesheet" href="/stylesheets/login.css">
   <link rel="stylesheet" href="/stylesheets/header.css">
-  <style>
-    textarea {
-      padding: 0.8rem 1rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-light);
-      background: white;
-      transition: var(--transition-base);
-      font-size: 1rem;
-      font-family: inherit;
-      resize: vertical;
-    }
 
-    textarea:focus {
-      border-color: var(--primary);
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-    }
+  <link rel="stylesheet" href="/stylesheets/contact.css">
 
-    .auth-success {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--success);
-      padding: 0.75rem;
-      border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 1rem;
-      border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-  </style>
 </head>
 
-<body class="auth-body">
-
-  <div class="auth-wrapper">
+<body class="dx-page">
+  <div class="dx-page__wrap">
 
     <%- include("partials/header", { 
       user, 
@@ -50,25 +21,24 @@
       showSearch: false
     }) %>
 
-    <main class="auth-main">
-      <section class="auth-card">
-        <h1 class="auth-title">Contact Us</h1>
-        <p class="auth-subtitle">Send us a message and we'll get back to you shortly</p>
+    <main class="dx-page__main">
+      <section class="dx-contact glass-panel">
+        <header class="dx-contact__header">
+          <h1 class="dx-contact__title">Contact Us</h1>
+          <p class="dx-contact__subtitle">Send us a message and we'll get back to you shortly.</p>
+        </header>
 
-        <form class="auth-form" method="post" action="/contact">
-          <div class="auth-field">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Your full name" required>
-          </div>
+        <form class="dx-contact__form" method="post" action="/contact">
+          <div class="dx-grid">
+            <div class="auth-field">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your full name" required>
+            </div>
 
-          <div class="auth-field">
-            <label for="reason">Subject</label>
-            <input type="text" id="reason" name="reason" placeholder="What is this about?" required>
-          </div>
-
-          <div class="auth-field">
-            <label for="body">Message</label>
-            <textarea id="body" name="body" placeholder="Write your message here..." rows="4" required></textarea>
+            <div class="auth-field">
+              <label for="reason">Subject</label>
+              <input type="text" id="reason" name="reason" placeholder="What is this about?" required>
+            </div>
           </div>
 
           <% if (typeof user !== 'undefined' && user) { %>
@@ -80,38 +50,33 @@
             </div>
           <% } %>
 
-          <button type="submit" class="btn-premium primary auth-button">
-            Send Message
-          </button>
+          <div class="auth-field">
+            <label for="body">Message</label>
+            <textarea id="body" name="body" placeholder="Write your message here..." rows="6" required></textarea>
+          </div>
+
+          <div class="dx-contact__actions">
+            <a class="btn-premium" href="/" style="text-decoration:none;">← Return to Catalog</a>
+            <button type="submit" class="btn-premium primary">Send Message</button>
+          </div>
 
           <% if (typeof success !== 'undefined' && success) { %>
-            <p class="auth-success">
-              <%= success %>
-            </p>
+            <p class="dx-alert dx-alert--success"><%= success %></p>
           <% } %>
 
           <% if (typeof error !== 'undefined' && error) { %>
-            <p class="auth-error">
-              <%= error %>
-            </p>
+            <p class="dx-alert dx-alert--error"><%= error %></p>
           <% } %>
-
-          <p class="auth-extra">
-            <a href="/">← Return to Catalog</a>
-          </p>
-
         </form>
       </section>
     </main>
 
-    <footer class="auth-footer">
+    <footer class="dx-page__footer">
       <p>DriveX · Los Del Fondo Devs · Málaga, 2025.</p>
     </footer>
 
   </div>
 
   <script src="/js/header.js"></script>
-
 </body>
-
 </html>
