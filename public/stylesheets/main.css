@@ -1,24 +1,15 @@
-/* =========================================================
-   DriveX · main.css (CATÁLOGO) — FULL PAGE
-   ✅ Hecho para TU HTML actual (header-left/right/nav/search)
-   ✅ Responsive real (no se va a la izquierda)
-   ========================================================= */
-
-/* Anti overflow */
 html, body { overflow-x: hidden; }
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Wrapper */
 .home-wrapper{
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* =========================================================
-   HEADER (RESPONSIVE FUNCIONAL CON TU HTML)
-   ========================================================= */
-
+/* =========================
+   HEADER
+========================= */
 .main-header{
   width: 100%;
   max-width: 1400px;
@@ -30,7 +21,7 @@ html, body { overflow-x: hidden; }
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 18px 50px rgba(0,0,0,0.55);
 
-  overflow: hidden; /* evita desbordes raros */
+  overflow: hidden;
 }
 
 .header-container{
@@ -61,7 +52,6 @@ html, body { overflow-x: hidden; }
 .header-nav{ grid-area: nav; min-width: 0; }
 .header-search{ grid-area: search; width: 100%; }
 
-/* Logo */
 .logo{
   display: inline-flex;
   align-items: center;
@@ -82,7 +72,6 @@ html, body { overflow-x: hidden; }
   white-space: nowrap;
 }
 
-/* Nav */
 .main-nav{
   display: flex;
   justify-content: center;
@@ -117,7 +106,6 @@ html, body { overflow-x: hidden; }
   border-color: rgba(245,158,11,0.30);
 }
 
-/* Favs icon */
 .nav-icon-link{
   color: rgba(255,255,255,0.85);
   display: grid;
@@ -136,7 +124,6 @@ html, body { overflow-x: hidden; }
   transform: translateY(-1px);
 }
 
-/* Auth */
 .auth-buttons{ display: flex; align-items: center; }
 .user-profile{
   display: flex;
@@ -154,7 +141,6 @@ html, body { overflow-x: hidden; }
   text-overflow: ellipsis;
 }
 
-/* CTA del header (tu class header-cta) */
 .header-cta{
   padding: .65rem .95rem;
   font-size: .9rem;
@@ -162,7 +148,6 @@ html, body { overflow-x: hidden; }
   white-space: nowrap;
 }
 
-/* Search */
 .search-form{ margin: 0; width: 100%; }
 .search-input{
   width: 100%;
@@ -182,10 +167,9 @@ html, body { overflow-x: hidden; }
   box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
-/* =========================================================
+/* =========================
    HERO
-   ========================================================= */
-
+========================= */
 .hero-section{ margin: 2.5rem 0; }
 
 #backgroundImageContainer{
@@ -271,10 +255,9 @@ html, body { overflow-x: hidden; }
   color: #fff;
 }
 
-/* =========================================================
+/* =========================
    SECTION HEADER
-   ========================================================= */
-
+========================= */
 .section-header{
   display: flex;
   justify-content: space-between;
@@ -290,10 +273,144 @@ html, body { overflow-x: hidden; }
   letter-spacing: -1px;
 }
 
-/* =========================================================
-   VEHICLE GRID
-   ========================================================= */
+/* =========================
+   FILTERS (RESPONSIVE REAL)
+========================= */
+.dx-filters{
+  margin: 1rem 0 2rem;
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+  display: grid;
+  gap: 1rem;
+  backdrop-filter: blur(14px);
+}
 
+.dx-filters .auth-field{
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.dx-filters label{
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dx-filters input,
+.dx-filters select{
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+  min-width: 0;
+}
+
+.dx-filters input:focus,
+.dx-filters select:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+}
+
+.dx-filters small{
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.dx-filters .btn-premium{
+  padding: 0.6rem 1.2rem;
+}
+
+.dx-filters-grid{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dx-span-2{ grid-column: span 2; }
+
+.dx-filter-actions{
+  display: flex;
+  gap: .75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   ADMIN ADD FORM (RESPONSIVE)
+========================= */
+.dx-admin-form{
+  margin: 1.5rem 0 2.5rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+}
+
+.dx-admin-summary{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  user-select: none;
+  list-style: none;
+}
+
+.dx-admin-summaryText{
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.dx-admin-title{
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.dx-admin-subtitle{
+  color: var(--text-muted);
+  font-size: .95rem;
+}
+
+.dx-admin-sep{
+  height: 1px;
+  background: rgba(255,255,255,.06);
+  margin: 1.25rem 0;
+}
+
+.dx-add-form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.dx-add-col{
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.dx-two{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* =========================
+   VEHICLE GRID
+========================= */
 .vehicle-grid{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -311,7 +428,6 @@ html, body { overflow-x: hidden; }
   transition: var(--transition-base);
 }
 
-/* link sin subrayado */
 .vehicle-link{
   display: block;
   color: inherit;
@@ -378,10 +494,9 @@ html, body { overflow-x: hidden; }
   padding: 2.5rem 0;
 }
 
-/* =========================================================
-   FAVORITES BUTTON
-   ========================================================= */
-
+/* =========================
+   FAV BUTTON
+========================= */
 .fav-btn{
   position: absolute;
   top: 14px;
@@ -426,10 +541,9 @@ html, body { overflow-x: hidden; }
   color: rgba(245,158,11,0.95);
 }
 
-/* =========================================================
+/* =========================
    PAGINATION
-   ========================================================= */
-
+========================= */
 .pagination{
   display: flex;
   justify-content: center;
@@ -476,10 +590,9 @@ html, body { overflow-x: hidden; }
   user-select: none;
 }
 
-/* =========================================================
-   OVERLAY / LOGIN MODAL
-   ========================================================= */
-
+/* =========================
+   OVERLAY + CONTACT MODAL
+========================= */
 #overlay{
   background: rgba(0,0,0,0.85);
   backdrop-filter: blur(12px);
@@ -551,15 +664,15 @@ html, body { overflow-x: hidden; }
   margin-bottom: 0.25rem;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
+/* =========================
+   RESPONSIVE BREAKPOINTS
+========================= */
 @media (max-width: 1024px){
   .hero-overlay h1{ font-size: 3.5rem; }
+  .dx-filters-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dx-span-2{ grid-column: span 3; }
 }
 
-/* MÓVIL/TABLET: 3 filas en header + search grande + nav chips */
 @media (max-width: 900px){
 
   .home-wrapper{ padding: 0 12px; }
@@ -603,7 +716,6 @@ html, body { overflow-x: hidden; }
 
   .user-name{ max-width: 120px; }
 
-  /* Search tipo normal (grande) */
   .search-input{
     height: 50px;
     padding: 0 16px;
@@ -624,7 +736,6 @@ html, body { overflow-x: hidden; }
     box-shadow: 0 0 0 3px rgba(59,130,246,0.18), 0 10px 22px rgba(0,0,0,0.35);
   }
 
-  /* Nav chips scrolleable */
   .main-nav{
     justify-content: flex-start;
     flex-wrap: nowrap;
@@ -643,7 +754,6 @@ html, body { overflow-x: hidden; }
     font-size: .78rem;
   }
 
-  /* Hero compact */
   #backgroundImageContainer{ height: 320px; border-radius: 18px; }
   .hero-overlay{
     padding: 1.25rem;
@@ -669,7 +779,6 @@ html, body { overflow-x: hidden; }
     border-radius: 14px;
   }
 
-  /* Section header compact */
   .section-header{
     margin: 2rem 0 1.1rem;
     padding-bottom: .9rem;
@@ -679,7 +788,12 @@ html, body { overflow-x: hidden; }
     letter-spacing: -0.5px;
   }
 
-  /* ✅ 2 cards per row */
+  /* Forms responsive */
+  .dx-filters-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dx-span-2{ grid-column: span 2; }
+
+  .dx-add-form{ grid-template-columns: 1fr; }
+
   .vehicle-grid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
@@ -703,7 +817,6 @@ html, body { overflow-x: hidden; }
 
   .vehicle-info p{ font-size: .68rem; line-height: 1.15; }
 
-  /* Badge mini */
   .offer-badge{
     top: 10px;
     left: -52px;
@@ -711,7 +824,6 @@ html, body { overflow-x: hidden; }
     font-size: .55rem;
   }
 
-  /* Fav mini */
   .fav-btn{
     width: 28px;
     height: 28px;
@@ -720,16 +832,26 @@ html, body { overflow-x: hidden; }
   }
   .fav-icon{ width: 14px; height: 14px; }
 
-  /* Pagination compact */
   .pagination{ margin: 3rem 0 3.5rem; gap: .7rem; }
   .page-link, .current-page{ width: 42px; height: 42px; }
 
-  /* Modal compact */
   #contactMessage{
     width: calc(100% - 24px);
     padding: 2rem 1.4rem;
   }
   #contactMessage h2{ font-size: 1.7rem; }
+}
+
+@media (max-width: 720px){
+  .dx-filters-grid{ grid-template-columns: 1fr; }
+  .dx-span-2{ grid-column: span 1; }
+
+  .dx-filter-actions a,
+  .dx-filter-actions button{
+    width: 100%;
+  }
+
+  .dx-two{ grid-template-columns: 1fr; }
 }
 
 @media (max-width: 420px){
@@ -738,65 +860,16 @@ html, body { overflow-x: hidden; }
   .user-name{ max-width: 100px; }
 }
 
-.dx-filters {
-  backdrop-filter: blur(14px);
+
+/* Filters collapsible like Add form */
+.dx-filters-collapsible {
+  margin: 1rem 0 2rem;
 }
 
-.dx-filters .auth-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
+.dx-filters-collapsible > summary::-webkit-details-marker { display: none; }
+.dx-filters-collapsible > summary::marker { content: ""; }
 
-.dx-filters label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.dx-filters input,
-.dx-filters select {
-  padding: 0.6rem 0.8rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
-  background: rgba(255,255,255,0.05);
-  color: white;
-  font-size: 0.9rem;
-  transition: 0.2s ease;
-}
-
-.dx-filters input:focus,
-.dx-filters select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
-}
-
-.dx-filters small {
-  font-size: 0.7rem;
-  opacity: 0.7;
-}
-
-.dx-filters .btn-premium {
-  padding: 0.6rem 1.2rem;
-}
-
-@media (max-width: 1200px) {
-  .dx-filters > div {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .dx-filters > div {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-
-@media (max-width: 500px) {
-  .dx-filters > div {
-    grid-template-columns: 1fr !important;
-  }
+.dx-filters-collapsible[open] .dx-admin-open {
+  content: "";
+  opacity: .85;
 }

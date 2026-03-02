@@ -9,7 +9,6 @@
   padding: 1.25rem 0 2.5rem;
 }
 
-/* HERO */
 .users-hero{
   display: flex;
   align-items: center;
@@ -36,7 +35,6 @@
   align-items: center;
 }
 
-/* ALERT */
 .alert{
   margin-top: 1rem;
   padding: 1rem 1rem;
@@ -60,7 +58,6 @@
   cursor: pointer;
 }
 
-/* PANEL */
 .users-panel{
   margin-top: 1.25rem;
   padding: 1.25rem;
@@ -115,7 +112,6 @@
   gap: 1rem;
 }
 
-/* USER CARD */
 .user-card{
   border-radius: var(--radius-xl);
   border: 1px solid rgba(255,255,255,.08);
@@ -225,7 +221,6 @@
   cursor: not-allowed;
 }
 
-/* EMPTY */
 .empty-state{
   grid-column: 1 / -1;
   text-align: center;
@@ -240,7 +235,6 @@
   margin: 0 0 1rem 0;
 }
 
-/* MODAL */
 .modal-overlay{
   position: fixed;
   inset: 0;
@@ -330,7 +324,6 @@
   margin-top: .75rem;
 }
 
-/* OPEN STATE */
 .modal-overlay.open{
   opacity: 1;
   pointer-events: auto;
@@ -342,7 +335,6 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* RESPONSIVE */
 @media (max-width: 980px){
   .users-grid{
     grid-template-columns: repeat(2, 1fr);

@@ -14,7 +14,6 @@
 <body class="home-body">
   <div class="home-wrapper">
 
-    <!-- HEADER GLOBAL -->
     <%- include("partials/header", { 
       user, 
       activePage: "home", 
@@ -32,8 +31,8 @@
             <h1>Find Your Dream Vehicle</h1>
             <p>Explore our premium collection of cars, bikes, and more.</p>
             <nav class="hero-nav">
-              <a href="/?vehicleType=Sedan,Suv,Hatchback,Off-road / 4x4,Van,MPV,Pickup,Sport Car,Hyper Car" class="active">Cars</a>
-              <a href="/?vehicleType=Sport Bike,Custom,Naked,Enduro,Trial,MotoCross,Trail,Touring" class="active">Bikes</a>
+              <a href="/?vehicleType=Sedan,Suv,Hatchback,Off-road%20%2F%204x4,Van,MPV%20%2F%20Minivan,Pickup,Sport%20Car,Hyper%20car" class="active">Cars</a>
+              <a href="/?vehicleType=Sport%20Bike,Custom,Naked,Enduro,Trial,MotoCross,Trail,Touring" class="active">Bikes</a>
               <a href="/?vehicleType=Truck" class="active">Trucks</a>
               <a href="/offers" class="offers">Offers</a>
             </nav>
@@ -50,254 +49,212 @@
           <% } %>
         </h2>
       </div>
+
+      <% 
+        const exSel = new Set([].concat(filters?.extras || []).map(String));
+        const currentFilters = filters || {};
+      %>
+
+      <details class="glass-panel dx-admin-form dx-filters-collapsible" <%= (baseQuery && baseQuery.trim() !== "") ? "open" : "" %>>
+        <summary class="dx-admin-summary">
+          <div class="dx-admin-summaryText">
+            <span class="dx-admin-title">Filters</span>
+            <span class="dx-admin-subtitle">Refine your search</span>
+          </div>
+          <span class="btn-premium primary dx-admin-open" style="pointer-events:none;">Open</span>
+        </summary>
       
-      <form id="dxFilters" class="dx-filters glass-panel" method="get" action="/" style="
-  margin: 1rem 0 2rem;
-  padding: 1rem;
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.02);
-  display: grid;
-  gap: 1rem;
-">
-  <input type="hidden" name="search" value="<%= search || '' %>">
-
-  <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;">
-    <div class="auth-field">
-      <label>Brand</label>
-      <select name="brand">
-        <option value="">Any</option>
-        <option value="Abarth" <%= filters?.brand === "Abarth" ? "selected" : "" %>>Abarth</option>
-        <option value="Alfa Romeo" <%= filters?.brand === "Alfa Romeo" ? "selected" : "" %>>Alfa Romeo</option>
-        <option value="Aprilia" <%= filters?.brand === "Aprilia" ? "selected" : "" %>>Aprilia</option>
-        <option value="Aston Martin" <%= filters?.brand === "Aston Martin" ? "selected" : "" %>>Aston Martin</option>
-        <option value="Audi" <%= filters?.brand === "Audi" ? "selected" : "" %>>Audi</option>
-        <option value="Bentley" <%= filters?.brand === "Bentley" ? "selected" : "" %>>Bentley</option>
-        <option value="BMW" <%= filters?.brand === "BMW" ? "selected" : "" %>>BMW</option>
-        <option value="Bugatti" <%= filters?.brand === "Bugatti" ? "selected" : "" %>>Bugatti</option>
-        <option value="Cadillac" <%= filters?.brand === "Cadillac" ? "selected" : "" %>>Cadillac</option>
-        <option value="Chevrolet" <%= filters?.brand === "Chevrolet" ? "selected" : "" %>>Chevrolet</option>
-        <option value="Citroen" <%= filters?.brand === "Citroen" ? "selected" : "" %>>Citroen</option>
-        <option value="Cupra" <%= filters?.brand === "Cupra" ? "selected" : "" %>>Cupra</option>
-        <option value="Dacia" <%= filters?.brand === "Dacia" ? "selected" : "" %>>Dacia</option>
-        <option value="Dodge" <%= filters?.brand === "Dodge" ? "selected" : "" %>>Dodge</option>
-        <option value="Ducati" <%= filters?.brand === "Ducati" ? "selected" : "" %>>Ducati</option>
-        <option value="Ferrari" <%= filters?.brand === "Ferrari" ? "selected" : "" %>>Ferrari</option>
-        <option value="Fiat" <%= filters?.brand === "Fiat" ? "selected" : "" %>>Fiat</option>
-        <option value="Ford" <%= filters?.brand === "Ford" ? "selected" : "" %>>Ford</option>
-        <option value="Honda" <%= filters?.brand === "Honda" ? "selected" : "" %>>Honda</option>
-        <option value="Hyundai" <%= filters?.brand === "Hyundai" ? "selected" : "" %>>Hyundai</option>
-        <option value="Jaguar" <%= filters?.brand === "Jaguar" ? "selected" : "" %>>Jaguar</option>
-        <option value="Jeep" <%= filters?.brand === "Jeep" ? "selected" : "" %>>Jeep</option>
-        <option value="Kawasaki" <%= filters?.brand === "Kawasaki" ? "selected" : "" %>>Kawasaki</option>
-        <option value="Kia" <%= filters?.brand === "Kia" ? "selected" : "" %>>Kia</option>
-        <option value="KTM" <%= filters?.brand === "KTM" ? "selected" : "" %>>KTM</option>
-        <option value="Lamborghini" <%= filters?.brand === "Lamborghini" ? "selected" : "" %>>Lamborghini</option>
-        <option value="Land Rover" <%= filters?.brand === "Land Rover" ? "selected" : "" %>>Land Rover</option>
-        <option value="Lexus" <%= filters?.brand === "Lexus" ? "selected" : "" %>>Lexus</option>
-        <option value="Maserati" <%= filters?.brand === "Maserati" ? "selected" : "" %>>Maserati</option>
-        <option value="Mazda" <%= filters?.brand === "Mazda" ? "selected" : "" %>>Mazda</option>
-        <option value="McLaren" <%= filters?.brand === "McLaren" ? "selected" : "" %>>McLaren</option>
-        <option value="Mercedes-Benz" <%= filters?.brand === "Mercedes-Benz" ? "selected" : "" %>>Mercedes-Benz</option>
-        <option value="Mini" <%= filters?.brand === "Mini" ? "selected" : "" %>>Mini</option>
-        <option value="Mitsubishi" <%= filters?.brand === "Mitsubishi" ? "selected" : "" %>>Mitsubishi</option>
-        <option value="Nissan" <%= filters?.brand === "Nissan" ? "selected" : "" %>>Nissan</option>
-        <option value="Opel" <%= filters?.brand === "Opel" ? "selected" : "" %>>Opel</option>
-        <option value="Peugeot" <%= filters?.brand === "Peugeot" ? "selected" : "" %>>Peugeot</option>
-        <option value="Porsche" <%= filters?.brand === "Porsche" ? "selected" : "" %>>Porsche</option>
-        <option value="Renault" <%= filters?.brand === "Renault" ? "selected" : "" %>>Renault</option>
-        <option value="Seat" <%= filters?.brand === "Seat" ? "selected" : "" %>>Seat</option>
-        <option value="Skoda" <%= filters?.brand === "Skoda" ? "selected" : "" %>>Skoda</option>
-        <option value="Subaru" <%= filters?.brand === "Subaru" ? "selected" : "" %>>Subaru</option>
-        <option value="Suzuki" <%= filters?.brand === "Suzuki" ? "selected" : "" %>>Suzuki</option>
-        <option value="Tesla" <%= filters?.brand === "Tesla" ? "selected" : "" %>>Tesla</option>
-        <option value="Toyota" <%= filters?.brand === "Toyota" ? "selected" : "" %>>Toyota</option>
-        <option value="Triumph" <%= filters?.brand === "Triumph" ? "selected" : "" %>>Triumph</option>
-        <option value="Volkswagen" <%= filters?.brand === "Volkswagen" ? "selected" : "" %>>Volkswagen</option>
-        <option value="Volvo" <%= filters?.brand === "Volvo" ? "selected" : "" %>>Volvo</option>
-        <option value="Yamaha" <%= filters?.brand === "Yamaha" ? "selected" : "" %>>Yamaha</option>
-      </select>
-    </div>
-
-    <div class="auth-field">
-      <label>Type</label>
-      <select name="vehicleType">
-        <option value="">Any</option>
-        <optgroup label="Cars">
-          <option value="Sedan" <%= filters?.vehicleType === "Sedan" ? "selected" : "" %>>Sedan</option>
-          <option value="Suv" <%= filters?.vehicleType === "Suv" ? "selected" : "" %>>Suv</option>
-          <option value="Hatchback" <%= filters?.vehicleType === "Hatchback" ? "selected" : "" %>>Hatchback</option>
-          <option value="Off-road / 4x4" <%= filters?.vehicleType === "Off-road / 4x4" ? "selected" : "" %>>Off-road / 4x4</option>
-          <option value="Van" <%= filters?.vehicleType === "Van" ? "selected" : "" %>>Van</option>
-          <option value="MPV / Minivan" <%= filters?.vehicleType === "MPV / Minivan" ? "selected" : "" %>>MPV / Minivan</option>
-          <option value="Pickup" <%= filters?.vehicleType === "Pickup" ? "selected" : "" %>>Pickup</option>
-          <option value="Sport Car" <%= filters?.vehicleType === "Sport Car" ? "selected" : "" %>>Sport Car</option>
-          <option value="Hyper car" <%= filters?.vehicleType === "Hyper car" ? "selected" : "" %>>Hyper car</option>
-        </optgroup>
-        <optgroup label="Bikes">
-          <option value="Sport Bike" <%= filters?.vehicleType === "Sport Bike" ? "selected" : "" %>>Sport Bike</option>
-          <option value="Custom" <%= filters?.vehicleType === "Custom" ? "selected" : "" %>>Custom</option>
-          <option value="Naked" <%= filters?.vehicleType === "Naked" ? "selected" : "" %>>Naked</option>
-          <option value="Enduro" <%= filters?.vehicleType === "Enduro" ? "selected" : "" %>>Enduro</option>
-          <option value="Trial" <%= filters?.vehicleType === "Trial" ? "selected" : "" %>>Trial</option>
-          <option value="MotoCross" <%= filters?.vehicleType === "MotoCross" ? "selected" : "" %>>MotoCross</option>
-          <option value="Trail" <%= filters?.vehicleType === "Trail" ? "selected" : "" %>>Trail</option>
-          <option value="Touring" <%= filters?.vehicleType === "Touring" ? "selected" : "" %>>Touring</option>
-        </optgroup>
-        <optgroup label="Trucks">
-          <option value="Truck" <%= filters?.vehicleType === "Truck" ? "selected" : "" %>>Truck</option>
-        </optgroup>
-      </select>
-    </div>
-
-    <div class="auth-field">
-      <label>Fuel</label>
-      <select name="fuelType">
-        <option value="">Any</option>
-        <option value="Gasoline" <%= filters?.fuelType === "Gasoline" ? "selected" : "" %>>Gasoline</option>
-        <option value="Diesel" <%= filters?.fuelType === "Diesel" ? "selected" : "" %>>Diesel</option>
-        <option value="Electric" <%= filters?.fuelType === "Electric" ? "selected" : "" %>>Electric</option>
-        <option value="Hybrid" <%= filters?.fuelType === "Hybrid" ? "selected" : "" %>>Hybrid</option>
-        <option value="Plug-in Hybrid" <%= filters?.fuelType === "Plug-in Hybrid" ? "selected" : "" %>>Plug-in Hybrid</option>
-        <option value="Other" <%= filters?.fuelType === "Other" ? "selected" : "" %>>Other</option>
-      </select>
-    </div>
-
-    <div class="auth-field">
-      <label>Min Year</label>
-      <input type="number" name="minYear" min="1900" max="2026" value="<%= filters?.minYear || '' %>">
-    </div>
-
-    <div class="auth-field">
-      <label>Max Year</label>
-      <input type="number" name="maxYear" min="1900" max="2026" value="<%= filters?.maxYear || '' %>">
-    </div>
-
-    <div class="auth-field">
-      <label>Offers</label>
-      <select name="offers">
-        <option value="">All</option>
-        <option value="Yes" <%= filters?.offers === "Yes" ? "selected" : "" %>>Only offers</option>
-      </select>
-    </div>
-  </div>
-
-  <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;">
-    <div class="auth-field">
-      <label>Min Price (€)</label>
-      <input type="number" name="minPrice" min="0" value="<%= filters?.minPrice || '' %>">
-    </div>
-
-    <div class="auth-field">
-      <label>Max Price (€)</label>
-      <input type="number" name="maxPrice" min="0" value="<%= filters?.maxPrice || '' %>">
-    </div>
-
-    <div class="auth-field">
-      <label>Max Mileage</label>
-      <input type="number" name="maxMileage" min="0" value="<%= filters?.maxMileage || '' %>">
-    </div>
-
-    <div class="auth-field" style="grid-column: span 2;">
-      <label>Extras</label>
-      <select name="extras" multiple size="4">
-        <% const exSel = new Set([].concat(filters?.extras || []).map(String)); %>
-        <option value="ABS" <%= exSel.has("ABS") ? "selected" : "" %>>ABS</option>
-        <option value="Airbags" <%= exSel.has("Airbags") ? "selected" : "" %>>Airbags</option>
-        <option value="Automatic Climate Control" <%= exSel.has("Automatic Climate Control") ? "selected" : "" %>>Automatic Climate Control</option>
-        <option value="Bluetooth" <%= exSel.has("Bluetooth") ? "selected" : "" %>>Bluetooth</option>
-        <option value="Cruise Control" <%= exSel.has("Cruise Control") ? "selected" : "" %>>Cruise Control</option>
-        <option value="Navigation System" <%= exSel.has("Navigation System") ? "selected" : "" %>>Navigation System</option>
-        <option value="Parking Sensors" <%= exSel.has("Parking Sensors") ? "selected" : "" %>>Parking Sensors</option>
-        <option value="Rear Camera" <%= exSel.has("Rear Camera") ? "selected" : "" %>>Rear Camera</option>
-        <option value="360 Camera" <%= exSel.has("360 Camera") ? "selected" : "" %>>360 Camera</option>
-        <option value="Sunroof" <%= exSel.has("Sunroof") ? "selected" : "" %>>Sunroof</option>
-        <option value="Panoramic Roof" <%= exSel.has("Panoramic Roof") ? "selected" : "" %>>Panoramic Roof</option>
-        <option value="Leather Seats" <%= exSel.has("Leather Seats") ? "selected" : "" %>>Leather Seats</option>
-        <option value="Heated Seats" <%= exSel.has("Heated Seats") ? "selected" : "" %>>Heated Seats</option>
-        <option value="Ventilated Seats" <%= exSel.has("Ventilated Seats") ? "selected" : "" %>>Ventilated Seats</option>
-        <option value="Sport Seats" <%= exSel.has("Sport Seats") ? "selected" : "" %>>Sport Seats</option>
-        <option value="Electric Seats" <%= exSel.has("Electric Seats") ? "selected" : "" %>>Electric Seats</option>
-        <option value="Keyless Entry" <%= exSel.has("Keyless Entry") ? "selected" : "" %>>Keyless Entry</option>
-        <option value="Keyless Start" <%= exSel.has("Keyless Start") ? "selected" : "" %>>Keyless Start</option>
-        <option value="LED Headlights" <%= exSel.has("LED Headlights") ? "selected" : "" %>>LED Headlights</option>
-        <option value="Xenon Headlights" <%= exSel.has("Xenon Headlights") ? "selected" : "" %>>Xenon Headlights</option>
-        <option value="Fog Lights" <%= exSel.has("Fog Lights") ? "selected" : "" %>>Fog Lights</option>
-        <option value="Alloy Wheels" <%= exSel.has("Alloy Wheels") ? "selected" : "" %>>Alloy Wheels</option>
-        <option value="Sport Exhaust" <%= exSel.has("Sport Exhaust") ? "selected" : "" %>>Sport Exhaust</option>
-        <option value="Adaptive Cruise Control" <%= exSel.has("Adaptive Cruise Control") ? "selected" : "" %>>Adaptive Cruise Control</option>
-        <option value="Lane Assist" <%= exSel.has("Lane Assist") ? "selected" : "" %>>Lane Assist</option>
-        <option value="Blind Spot Assist" <%= exSel.has("Blind Spot Assist") ? "selected" : "" %>>Blind Spot Assist</option>
-        <option value="Traffic Sign Recognition" <%= exSel.has("Traffic Sign Recognition") ? "selected" : "" %>>Traffic Sign Recognition</option>
-        <option value="Automatic Emergency Braking" <%= exSel.has("Automatic Emergency Braking") ? "selected" : "" %>>Automatic Emergency Braking</option>
-        <option value="Android Auto" <%= exSel.has("Android Auto") ? "selected" : "" %>>Android Auto</option>
-        <option value="Apple CarPlay" <%= exSel.has("Apple CarPlay") ? "selected" : "" %>>Apple CarPlay</option>
-        <option value="Premium Sound System" <%= exSel.has("Premium Sound System") ? "selected" : "" %>>Premium Sound System</option>
-        <option value="Wireless Charger" <%= exSel.has("Wireless Charger") ? "selected" : "" %>>Wireless Charger</option>
-        <option value="Tow Hitch" <%= exSel.has("Tow Hitch") ? "selected" : "" %>>Tow Hitch</option>
-        <option value="Roof Rack" <%= exSel.has("Roof Rack") ? "selected" : "" %>>Roof Rack</option>
-        <option value="Tinted Windows" <%= exSel.has("Tinted Windows") ? "selected" : "" %>>Tinted Windows</option>
-        <option value="Air Suspension" <%= exSel.has("Air Suspension") ? "selected" : "" %>>Air Suspension</option>
-        <option value="Sport Suspension" <%= exSel.has("Sport Suspension") ? "selected" : "" %>>Sport Suspension</option>
-      </select>
-      <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
-    </div>
-
-    <div class="auth-field">
-      <label>Sort</label>
-      <select name="sort">
-        <option value="">Newest</option>
-        <option value="priceAsc" <%= filters?.sort === "priceAsc" ? "selected" : "" %>>Price ↑</option>
-        <option value="priceDesc" <%= filters?.sort === "priceDesc" ? "selected" : "" %>>Price ↓</option>
-        <option value="yearDesc" <%= filters?.sort === "yearDesc" ? "selected" : "" %>>Year ↓</option>
-        <option value="mileageAsc" <%= filters?.sort === "mileageAsc" ? "selected" : "" %>>Mileage ↑</option>
-      </select>
-    </div>
-  </div>
-
-  <div style="display:flex; gap:.75rem; justify-content:flex-end; flex-wrap:wrap;">
-    <a class="btn-premium" href="/" style="text-decoration:none;">Clear</a>
-    <button type="submit" class="btn-premium primary">Apply filters</button>
-  </div>
-</form>
+        <div class="dx-admin-sep"></div>
+      
+        <form id="dxFilters" class="dx-filters" method="get" action="/">
+          <input type="hidden" name="search" value="<%= search || '' %>">
+      
+          <div class="dx-filters-grid">
+            <div class="auth-field">
+              <label>Brand</label>
+              <select name="brand">
+                <option value="">Any</option>
+                <option value="Abarth" <%= currentFilters.brand === "Abarth" ? "selected" : "" %>>Abarth</option>
+                <option value="Alfa Romeo" <%= currentFilters.brand === "Alfa Romeo" ? "selected" : "" %>>Alfa Romeo</option>
+                <option value="Aprilia" <%= currentFilters.brand === "Aprilia" ? "selected" : "" %>>Aprilia</option>
+                <option value="Aston Martin" <%= currentFilters.brand === "Aston Martin" ? "selected" : "" %>>Aston Martin</option>
+                <option value="Audi" <%= currentFilters.brand === "Audi" ? "selected" : "" %>>Audi</option>
+                <option value="Bentley" <%= currentFilters.brand === "Bentley" ? "selected" : "" %>>Bentley</option>
+                <option value="BMW" <%= currentFilters.brand === "BMW" ? "selected" : "" %>>BMW</option>
+                <option value="Bugatti" <%= currentFilters.brand === "Bugatti" ? "selected" : "" %>>Bugatti</option>
+                <option value="Cadillac" <%= currentFilters.brand === "Cadillac" ? "selected" : "" %>>Cadillac</option>
+                <option value="Chevrolet" <%= currentFilters.brand === "Chevrolet" ? "selected" : "" %>>Chevrolet</option>
+                <option value="Citroen" <%= currentFilters.brand === "Citroen" ? "selected" : "" %>>Citroen</option>
+                <option value="Cupra" <%= currentFilters.brand === "Cupra" ? "selected" : "" %>>Cupra</option>
+                <option value="Dacia" <%= currentFilters.brand === "Dacia" ? "selected" : "" %>>Dacia</option>
+                <option value="Dodge" <%= currentFilters.brand === "Dodge" ? "selected" : "" %>>Dodge</option>
+                <option value="Ducati" <%= currentFilters.brand === "Ducati" ? "selected" : "" %>>Ducati</option>
+                <option value="Ferrari" <%= currentFilters.brand === "Ferrari" ? "selected" : "" %>>Ferrari</option>
+                <option value="Fiat" <%= currentFilters.brand === "Fiat" ? "selected" : "" %>>Fiat</option>
+                <option value="Ford" <%= currentFilters.brand === "Ford" ? "selected" : "" %>>Ford</option>
+                <option value="Honda" <%= currentFilters.brand === "Honda" ? "selected" : "" %>>Honda</option>
+                <option value="Hyundai" <%= currentFilters.brand === "Hyundai" ? "selected" : "" %>>Hyundai</option>
+                <option value="Jaguar" <%= currentFilters.brand === "Jaguar" ? "selected" : "" %>>Jaguar</option>
+                <option value="Jeep" <%= currentFilters.brand === "Jeep" ? "selected" : "" %>>Jeep</option>
+                <option value="Kawasaki" <%= currentFilters.brand === "Kawasaki" ? "selected" : "" %>>Kawasaki</option>
+                <option value="Kia" <%= currentFilters.brand === "Kia" ? "selected" : "" %>>Kia</option>
+                <option value="KTM" <%= currentFilters.brand === "KTM" ? "selected" : "" %>>KTM</option>
+                <option value="Lamborghini" <%= currentFilters.brand === "Lamborghini" ? "selected" : "" %>>Lamborghini</option>
+                <option value="Land Rover" <%= currentFilters.brand === "Land Rover" ? "selected" : "" %>>Land Rover</option>
+                <option value="Lexus" <%= currentFilters.brand === "Lexus" ? "selected" : "" %>>Lexus</option>
+                <option value="Maserati" <%= currentFilters.brand === "Maserati" ? "selected" : "" %>>Maserati</option>
+                <option value="Mazda" <%= currentFilters.brand === "Mazda" ? "selected" : "" %>>Mazda</option>
+                <option value="McLaren" <%= currentFilters.brand === "McLaren" ? "selected" : "" %>>McLaren</option>
+                <option value="Mercedes-Benz" <%= currentFilters.brand === "Mercedes-Benz" ? "selected" : "" %>>Mercedes-Benz</option>
+                <option value="Mini" <%= currentFilters.brand === "Mini" ? "selected" : "" %>>Mini</option>
+                <option value="Mitsubishi" <%= currentFilters.brand === "Mitsubishi" ? "selected" : "" %>>Mitsubishi</option>
+                <option value="Nissan" <%= currentFilters.brand === "Nissan" ? "selected" : "" %>>Nissan</option>
+                <option value="Opel" <%= currentFilters.brand === "Opel" ? "selected" : "" %>>Opel</option>
+                <option value="Peugeot" <%= currentFilters.brand === "Peugeot" ? "selected" : "" %>>Peugeot</option>
+                <option value="Porsche" <%= currentFilters.brand === "Porsche" ? "selected" : "" %>>Porsche</option>
+                <option value="Renault" <%= currentFilters.brand === "Renault" ? "selected" : "" %>>Renault</option>
+                <option value="Seat" <%= currentFilters.brand === "Seat" ? "selected" : "" %>>Seat</option>
+                <option value="Skoda" <%= currentFilters.brand === "Skoda" ? "selected" : "" %>>Skoda</option>
+                <option value="Subaru" <%= currentFilters.brand === "Subaru" ? "selected" : "" %>>Subaru</option>
+                <option value="Suzuki" <%= currentFilters.brand === "Suzuki" ? "selected" : "" %>>Suzuki</option>
+                <option value="Tesla" <%= currentFilters.brand === "Tesla" ? "selected" : "" %>>Tesla</option>
+                <option value="Toyota" <%= currentFilters.brand === "Toyota" ? "selected" : "" %>>Toyota</option>
+                <option value="Triumph" <%= currentFilters.brand === "Triumph" ? "selected" : "" %>>Triumph</option>
+                <option value="Volkswagen" <%= currentFilters.brand === "Volkswagen" ? "selected" : "" %>>Volkswagen</option>
+                <option value="Volvo" <%= currentFilters.brand === "Volvo" ? "selected" : "" %>>Volvo</option>
+                <option value="Yamaha" <%= currentFilters.brand === "Yamaha" ? "selected" : "" %>>Yamaha</option>
+              </select>
+            </div>
+      
+            <div class="auth-field">
+              <label>Type</label>
+              <select name="vehicleType">
+                <option value="">Any</option>
+                <optgroup label="Cars">
+                  <option value="Sedan" <%= currentFilters.vehicleType === "Sedan" ? "selected" : "" %>>Sedan</option>
+                  <option value="Suv" <%= currentFilters.vehicleType === "Suv" ? "selected" : "" %>>Suv</option>
+                  <option value="Hatchback" <%= currentFilters.vehicleType === "Hatchback" ? "selected" : "" %>>Hatchback</option>
+                  <option value="Off-road / 4x4" <%= currentFilters.vehicleType === "Off-road / 4x4" ? "selected" : "" %>>Off-road / 4x4</option>
+                  <option value="Van" <%= currentFilters.vehicleType === "Van" ? "selected" : "" %>>Van</option>
+                  <option value="MPV / Minivan" <%= currentFilters.vehicleType === "MPV / Minivan" ? "selected" : "" %>>MPV / Minivan</option>
+                  <option value="Pickup" <%= currentFilters.vehicleType === "Pickup" ? "selected" : "" %>>Pickup</option>
+                  <option value="Sport Car" <%= currentFilters.vehicleType === "Sport Car" ? "selected" : "" %>>Sport Car</option>
+                  <option value="Hyper car" <%= currentFilters.vehicleType === "Hyper car" ? "selected" : "" %>>Hyper car</option>
+                </optgroup>
+                <optgroup label="Bikes">
+                  <option value="Sport Bike" <%= currentFilters.vehicleType === "Sport Bike" ? "selected" : "" %>>Sport Bike</option>
+                  <option value="Custom" <%= currentFilters.vehicleType === "Custom" ? "selected" : "" %>>Custom</option>
+                  <option value="Naked" <%= currentFilters.vehicleType === "Naked" ? "selected" : "" %>>Naked</option>
+                  <option value="Enduro" <%= currentFilters.vehicleType === "Enduro" ? "selected" : "" %>>Enduro</option>
+                  <option value="Trial" <%= currentFilters.vehicleType === "Trial" ? "selected" : "" %>>Trial</option>
+                  <option value="MotoCross" <%= currentFilters.vehicleType === "MotoCross" ? "selected" : "" %>>MotoCross</option>
+                  <option value="Trail" <%= currentFilters.vehicleType === "Trail" ? "selected" : "" %>>Trail</option>
+                  <option value="Touring" <%= currentFilters.vehicleType === "Touring" ? "selected" : "" %>>Touring</option>
+                </optgroup>
+                <optgroup label="Trucks">
+                  <option value="Truck" <%= currentFilters.vehicleType === "Truck" ? "selected" : "" %>>Truck</option>
+                </optgroup>
+              </select>
+            </div>
+      
+            <div class="auth-field">
+              <label>Fuel</label>
+              <select name="fuelType">
+                <option value="">Any</option>
+                <option value="Gasoline" <%= currentFilters.fuelType === "Gasoline" ? "selected" : "" %>>Gasoline</option>
+                <option value="Diesel" <%= currentFilters.fuelType === "Diesel" ? "selected" : "" %>>Diesel</option>
+                <option value="Electric" <%= currentFilters.fuelType === "Electric" ? "selected" : "" %>>Electric</option>
+                <option value="Hybrid" <%= currentFilters.fuelType === "Hybrid" ? "selected" : "" %>>Hybrid</option>
+                <option value="Plug-in Hybrid" <%= currentFilters.fuelType === "Plug-in Hybrid" ? "selected" : "" %>>Plug-in Hybrid</option>
+                <option value="Other" <%= currentFilters.fuelType === "Other" ? "selected" : "" %>>Other</option>
+              </select>
+            </div>
+      
+            <div class="auth-field">
+              <label>Min Year</label>
+              <input type="number" name="minYear" min="1900" max="2026" value="<%= currentFilters.minYear || '' %>">
+            </div>
+      
+            <div class="auth-field">
+              <label>Max Year</label>
+              <input type="number" name="maxYear" min="1900" max="2026" value="<%= currentFilters.maxYear || '' %>">
+            </div>
+      
+            <div class="auth-field">
+              <label>Offers</label>
+              <select name="offers">
+                <option value="">All</option>
+                <option value="Yes" <%= currentFilters.offers === "Yes" ? "selected" : "" %>>Only offers</option>
+              </select>
+            </div>
+      
+            <div class="auth-field">
+              <label>Min Price (€)</label>
+              <input type="number" name="minPrice" min="0" value="<%= currentFilters.minPrice || '' %>">
+            </div>
+      
+            <div class="auth-field">
+              <label>Max Price (€)</label>
+              <input type="number" name="maxPrice" min="0" value="<%= currentFilters.maxPrice || '' %>">
+            </div>
+      
+            <div class="auth-field">
+              <label>Max Mileage</label>
+              <input type="number" name="maxMileage" min="0" value="<%= currentFilters.maxMileage || '' %>">
+            </div>
+      
+            <div class="auth-field dx-span-2">
+              <label>Extras</label>
+              <select name="extras" multiple size="4">
+                <option value="ABS" <%= exSel.has("ABS") ? "selected" : "" %>>ABS</option>
+                <option value="Airbags" <%= exSel.has("Airbags") ? "selected" : "" %>>Airbags</option>
+                <option value="Bluetooth" <%= exSel.has("Bluetooth") ? "selected" : "" %>>Bluetooth</option>
+                <option value="Cruise Control" <%= exSel.has("Cruise Control") ? "selected" : "" %>>Cruise Control</option>
+                <option value="Navigation System" <%= exSel.has("Navigation System") ? "selected" : "" %>>Navigation System</option>
+                <option value="Parking Sensors" <%= exSel.has("Parking Sensors") ? "selected" : "" %>>Parking Sensors</option>
+                <option value="Rear Camera" <%= exSel.has("Rear Camera") ? "selected" : "" %>>Rear Camera</option>
+                <option value="Sunroof" <%= exSel.has("Sunroof") ? "selected" : "" %>>Sunroof</option>
+                <option value="Leather Seats" <%= exSel.has("Leather Seats") ? "selected" : "" %>>Leather Seats</option>
+                <option value="Android Auto" <%= exSel.has("Android Auto") ? "selected" : "" %>>Android Auto</option>
+                <option value="Apple CarPlay" <%= exSel.has("Apple CarPlay") ? "selected" : "" %>>Apple CarPlay</option>
+                <option value="Premium Sound System" <%= exSel.has("Premium Sound System") ? "selected" : "" %>>Premium Sound System</option>
+              </select>
+              <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
+            </div>
+      
+            <div class="auth-field">
+              <label>Sort</label>
+              <select name="sort">
+                <option value="">Newest</option>
+                <option value="priceAsc" <%= currentFilters.sort === "priceAsc" ? "selected" : "" %>>Price ↑</option>
+                <option value="priceDesc" <%= currentFilters.sort === "priceDesc" ? "selected" : "" %>>Price ↓</option>
+                <option value="yearDesc" <%= currentFilters.sort === "yearDesc" ? "selected" : "" %>>Year ↓</option>
+                <option value="mileageAsc" <%= currentFilters.sort === "mileageAsc" ? "selected" : "" %>>Mileage ↑</option>
+              </select>
+            </div>
+          </div>
+      
+          <div class="dx-filter-actions">
+            <a class="btn-premium" href="/" style="text-decoration:none;">Clear</a>
+            <button type="submit" class="btn-premium primary">Apply filters</button>
+          </div>
+        </form>
+      </details>
 
       <% if (user && user.role === "Admin") { %>
-        <details class="glass-panel" style="
-          margin: 1.5rem 0 2.5rem;
-          padding: 1.25rem 1.25rem;
-          border-radius: var(--radius-xl);
-          border: 1px solid rgba(255,255,255,.08);
-          background: rgba(255,255,255,.02);
-        ">
-          <summary style="
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            user-select: none;
-            list-style: none;
-          ">
-            <div style="display:flex; flex-direction:column; gap:.25rem;">
-              <span style="font-weight: 900; letter-spacing: .02em; text-transform: uppercase;">
-                Add New Vehicle
-              </span>
-              <span style="color: var(--text-muted); font-size: .95rem;">
-                Only visible for Admins
-              </span>
+        <details class="glass-panel dx-admin-form">
+          <summary class="dx-admin-summary">
+            <div class="dx-admin-summaryText">
+              <span class="dx-admin-title">Add New Vehicle</span>
+              <span class="dx-admin-subtitle">Only visible for Admins</span>
             </div>
-
-            <span class="btn-premium primary" style="pointer-events:none;">
-              Open
-            </span>
+            <span class="btn-premium primary dx-admin-open" style="pointer-events:none;">Open</span>
           </summary>
 
-          <div style="height:1px; background:rgba(255,255,255,.06); margin: 1.25rem 0;"></div>
+          <div class="dx-admin-sep"></div>
 
-          <form method="post" action="/addVehicle" enctype="multipart/form-data"
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-
-            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <form method="post" action="/addVehicle" enctype="multipart/form-data" class="dx-add-form">
+            <div class="dx-add-col">
               <div class="auth-field">
                 <label for="brand">Brand</label>
                 <select id="brand" name="brand" required>
@@ -341,7 +298,7 @@
                 </select>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="dx-two">
                 <div class="auth-field">
                   <label for="year">Year</label>
                   <input type="number" id="year" name="year" min="1900" max="2026" placeholder="2024" required>
@@ -364,8 +321,8 @@
               </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="dx-add-col">
+              <div class="dx-two">
                 <div class="auth-field">
                   <label for="mileage">Mileage (miles)</label>
                   <input type="number" id="mileage" name="mileage" min="0" placeholder="0" required>
@@ -376,7 +333,7 @@
                 </div>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="dx-two">
                 <div class="auth-field">
                   <label for="hp">Horsepower (HP)</label>
                   <input type="number" id="hp" name="hp" min="1" placeholder="150" required>
@@ -395,7 +352,7 @@
                 </div>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="dx-two">
                 <div class="auth-field">
                   <label for="autonomy">Range (miles)</label>
                   <input type="number" id="autonomy" name="autonomy" min="1" placeholder="400" required>
@@ -450,9 +407,7 @@
                 <small style="color: var(--text-muted);">Hold Ctrl (Win) or Cmd (Mac) to select multiple.</small>
               </div>
 
-              <button type="submit" class="btn-premium primary" style="width: 100%;">
-                Publish Vehicle
-              </button>
+              <button type="submit" class="btn-premium primary" style="width: 100%;">Publish Vehicle</button>
             </div>
           </form>
         </details>
@@ -460,12 +415,12 @@
 
       <section class="vehicle-grid" id="vehicle-grid">
         <% if (Array.isArray(vehicles) && vehicles.length > 0) { %>
-
           <% vehicles.forEach(v => { %>
             <article class="vehicle-card">
               <% if (v.offers === "Yes") { %>
                 <div class="offer-badge">OFFER</div>
               <% } %>
+
               <% if (user) { %>
                 <button
                   class="fav-btn <%= (Array.isArray(favoriteIds) && favoriteIds.map(String).includes(String(v.id))) ? 'active' : '' %>"
@@ -509,33 +464,31 @@
               </a>
             </article>
           <% }) %>
-
         <% } else { %>
           <p class="empty-message">
             <%= (typeof isFavouritesPage !== 'undefined' && isFavouritesPage)
-                ? 'No tienes vehículos en favoritos.'
-                : 'No hay vehículos disponibles.' %>
+              ? 'No tienes vehículos en favoritos.'
+              : 'No hay vehículos disponibles.' %>
           </p>
         <% } %>
       </section>
 
       <div class="pagination">
         <% if (currentPage > 1) { %>
-          <a class="arrow page-link"
-            href="/?page=<%= currentPage - 1 %><%= baseQuery ? '&' + baseQuery : '' %>">←</a>
+          <a class="arrow page-link" href="/?page=<%= currentPage - 1 %><%= baseQuery ? '&' + baseQuery : '' %>">←</a>
         <% } else { %>
           <span class="arrow disabled">←</span>
         <% } %>
-      
+
         <span class="current-page"><%= currentPage %></span>
-      
+
         <% if (currentPage < totalPages) { %>
-          <a class="arrow page-link"
-            href="/?page=<%= currentPage + 1 %><%= baseQuery ? '&' + baseQuery : '' %>">→</a>
+          <a class="arrow page-link" href="/?page=<%= currentPage + 1 %><%= baseQuery ? '&' + baseQuery : '' %>">→</a>
         <% } else { %>
           <span class="arrow disabled">→</span>
         <% } %>
       </div>
+
     </main>
 
     <footer class="home-footer">
