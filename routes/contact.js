@@ -9,15 +9,15 @@ function requireAuth(req, res, next) {
   next();
 }
 
-router.get("/", requireAuth, (req, res) => {
+router.get("/contact", requireAuth, (req, res) => {
   res.render("contact", {
     user: req.session.user || null,
     success: null,
-    error: null,
+    error: null
   });
 });
 
-router.post("/", requireAuth, async (req, res) => {
+router.post("/contact", requireAuth, async (req, res) => {
   const { name, email, reason, body } = req.body;
 
   try {
@@ -25,8 +25,8 @@ router.post("/", requireAuth, async (req, res) => {
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+        pass: process.env.EMAIL_PASS
+      }
     });
 
     await transporter.sendMail({
@@ -34,26 +34,20 @@ router.post("/", requireAuth, async (req, res) => {
       to: process.env.EMAIL_USER,
       subject: `Nuevo mensaje de contacto: ${reason}`,
       replyTo: email,
-      text:
-`Nombre: ${name}
-Email: ${email}
-Motivo: ${reason}
-Mensaje:
-${body}`,
+      text: `Nombre: ${name}\nEmail: ${email}\nMotivo: ${reason}\n\nMensaje:\n${body}`
     });
 
     return res.render("contact", {
       user: req.session.user || null,
       success: "✔ Tu mensaje se ha enviado correctamente.",
-      error: null,
+      error: null
     });
   } catch (err) {
     console.error("Error enviando correo:", err);
-
     return res.render("contact", {
       user: req.session.user || null,
-      error: "Hubo un problema enviando tu mensaje. Inténtalo más tarde.",
       success: null,
+      error: "Hubo un problema enviando tu mensaje. Inténtalo más tarde."
     });
   }
 });
