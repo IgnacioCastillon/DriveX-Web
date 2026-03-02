@@ -1,6 +1,3 @@
-// public/js/add.js
-
-// Usa la BACKEND_URL que te ha inyectado el servidor en la vista
 const BACKEND_URL =
   window.BACKEND_URL || "https://drivex-backend-lpl0.onrender.com/api";
 

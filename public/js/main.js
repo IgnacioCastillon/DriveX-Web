@@ -13,29 +13,14 @@
     </svg>
   `;
 
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
   function getMainImage(v) {
     const images = Array.isArray(v.images) ? v.images : [];
     const main = images.find(img => img && img.isMain) || images[0];
     return main?.imageUrl || "https://darkorchid-chicken-425842.hostingersite.com/images/vehicles/defecto.png";
   }
 
-  function isLoggedInByDom() {
-    return !!document.querySelector(".user-profile");
-  }
-
   function ensureGlobals() {
     if (!Array.isArray(window.__FAV_IDS__)) window.__FAV_IDS__ = [];
-    if (!window.__USER__ && isLoggedInByDom()) window.__USER__ = { id: true };
-    if (!isLoggedInByDom()) window.__USER__ = null;
   }
 
   function setFavUI(btn, isFav) {
@@ -62,12 +47,6 @@
   }
 
   async function handleFavClick(btn) {
-    ensureGlobals();
-
-    if (!window.__USER__) {
-      window.location.href = "/login";
-      return;
-    }
 
     if (btn.dataset.loading === "1") return;
     btn.dataset.loading = "1";
@@ -79,12 +58,22 @@
     !wasFav ? addFavId(vehicleId) : removeFavId(vehicleId);
 
     try {
-      const res = await fetch(`/favourites/${vehicleId}/toggle`, { method: "POST" });
+      const res = await fetch(`/favourites/${vehicleId}/toggle`, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        credentials: "same-origin"
+      });
 
       if (res.status === 401 || res.status === 403) {
-        window.location.href = "/login";
+        document.getElementById("overlay")?.classList.add("show");
+        document.getElementById("contactMessage")?.classList.add("show");
+
+        setFavUI(btn, wasFav);
+        wasFav ? addFavId(vehicleId) : removeFavId(vehicleId);
         return;
       }
+
+      if (!res.ok) throw new Error("Toggle failed");
 
       const data = await res.json();
       const nowFav = !!data.favorite;
@@ -94,6 +83,7 @@
 
     } catch (err) {
       setFavUI(btn, wasFav);
+      wasFav ? addFavId(vehicleId) : removeFavId(vehicleId);
     } finally {
       btn.dataset.loading = "0";
     }
@@ -112,7 +102,8 @@
       const res = await fetch(form.action, {
         method: "POST",
         body: formData,
-        headers: { Accept: "application/json" }
+        headers: { Accept: "application/json" },
+        credentials: "same-origin"
       });
 
       if (!res.ok) throw new Error("Error publishing vehicle");
@@ -173,7 +164,7 @@
     });
   }
 
-  document.addEventListener("click", async e => {
+  document.addEventListener("click", e => {
     const btn = e.target.closest(".fav-btn");
     if (btn) {
       e.preventDefault();
