@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const nodemailer = require("nodemailer"); 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api";
+const nodemailer = require("nodemailer");
 
 function requireAuth(req, res, next) {
-  if (!req.session.user) {
-    return res.redirect("/?loginRequired=1");
+  if (!req.session.user || !req.session.user.id) {
+    return res.redirect("/login");
   }
   next();
 }
 
-router.get("/contact", requireAuth, (req, res) => {
+router.get("/", requireAuth, (req, res) => {
   res.render("contact", {
+    user: req.session.user || null,
     success: null,
     error: null,
   });
@@ -29,29 +29,29 @@ router.post("/", requireAuth, async (req, res) => {
       },
     });
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"DriveX Contact" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: `Nuevo mensaje de contacto: ${reason}`,
       replyTo: email,
-      text: `
-Nombre: ${name}
+      text:
+`Nombre: ${name}
 Email: ${email}
 Motivo: ${reason}
 Mensaje:
-${body}
-      `,
-    };
+${body}`,
+    });
 
-    await transporter.sendMail(mailOptions);
-
-    res.render("contact", {
+    return res.render("contact", {
+      user: req.session.user || null,
       success: "✔ Tu mensaje se ha enviado correctamente.",
       error: null,
     });
   } catch (err) {
     console.error("Error enviando correo:", err);
-    res.render("contact", {
+
+    return res.render("contact", {
+      user: req.session.user || null,
       error: "Hubo un problema enviando tu mensaje. Inténtalo más tarde.",
       success: null,
     });

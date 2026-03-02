@@ -14,7 +14,6 @@
 <body class="home-body">
   <div class="home-wrapper">
 
-    <!-- HEADER GLOBAL -->
     <%- include("partials/header", { 
       user, 
       activePage: "home", 
@@ -50,6 +49,102 @@
           <% } %>
         </h2>
       </div>
+
+      <form class="dx-filters glass-panel" method="get" action="/" style="
+        margin: 1rem 0 2rem;
+        padding: 1rem;
+        border-radius: var(--radius-xl);
+        border: 1px solid rgba(255,255,255,.08);
+        background: rgba(255,255,255,.02);
+        display: grid;
+        gap: 1rem;
+      ">
+        <input type="hidden" name="search" value="<%= search || '' %>">
+
+        <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;">
+          <div class="auth-field">
+            <label>Brand</label>
+            <input name="brand" placeholder="e.g. BMW" value="<%= filters?.brand || '' %>">
+          </div>
+
+          <div class="auth-field">
+            <label>Type</label>
+            <select name="vehicleType">
+              <option value="">Any</option>
+              <% (availableTypes || []).forEach(t => { %>
+                <option value="<%= t %>" <%= (filters?.vehicleType === t ? 'selected' : '') %>><%= t %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="auth-field">
+            <label>Fuel</label>
+            <select name="fuelType">
+              <option value="">Any</option>
+              <% (availableFuels || []).forEach(f => { %>
+                <option value="<%= f %>" <%= (filters?.fuelType === f ? 'selected' : '') %>><%= f %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="auth-field">
+            <label>Min Year</label>
+            <input type="number" name="minYear" min="1900" max="2026" value="<%= filters?.minYear || '' %>">
+          </div>
+
+          <div class="auth-field">
+            <label>Max Year</label>
+            <input type="number" name="maxYear" min="1900" max="2026" value="<%= filters?.maxYear || '' %>">
+          </div>
+
+          <div class="auth-field">
+            <label>Offers</label>
+            <select name="offers">
+              <option value="">All</option>
+              <option value="Yes" <%= (filters?.offers === 'Yes' ? 'selected' : '') %>>Only offers</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;">
+          <div class="auth-field">
+            <label>Min Price (€)</label>
+            <input type="number" name="minPrice" min="0" value="<%= filters?.minPrice || '' %>">
+          </div>
+
+          <div class="auth-field">
+            <label>Max Price (€)</label>
+            <input type="number" name="maxPrice" min="0" value="<%= filters?.maxPrice || '' %>">
+          </div>
+
+          <div class="auth-field">
+            <label>Max Mileage</label>
+            <input type="number" name="maxMileage" min="0" value="<%= filters?.maxMileage || '' %>">
+          </div>
+
+          <div class="auth-field" style="grid-column: span 2;">
+            <label>Extras (contains)</label>
+            <input name="extras" placeholder="e.g. ABS, Sunroof" value="<%= filters?.extras || '' %>">
+            <small style="color:var(--text-muted);">Comma separated</small>
+          </div>
+
+          <div class="auth-field">
+            <label>Sort</label>
+            <select name="sort">
+              <option value="">Newest</option>
+              <option value="priceAsc" <%= (filters?.sort === 'priceAsc' ? 'selected' : '') %>>Price ↑</option>
+              <option value="priceDesc" <%= (filters?.sort === 'priceDesc' ? 'selected' : '') %>>Price ↓</option>
+              <option value="yearDesc" <%= (filters?.sort === 'yearDesc' ? 'selected' : '') %>>Year ↓</option>
+              <option value="mileageAsc" <%= (filters?.sort === 'mileageAsc' ? 'selected' : '') %>>Mileage ↑</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:.75rem; justify-content:flex-end; flex-wrap:wrap;">
+          <a class="btn-premium" href="/" style="text-decoration:none;">Clear</a>
+          <button type="submit" class="btn-premium primary">Apply filters</button>
+        </div>
+      </form>
 
       <% if (user && user.role === "Admin") { %>
         <details class="glass-panel" style="
@@ -312,7 +407,7 @@
       <div class="pagination">
         <% if (currentPage > 1) { %>
           <a class="arrow page-link"
-            href="/?page=<%= currentPage - 1 %>&search=<%= encodeURIComponent(search) %>">←</a>
+            href="/?page=<%= currentPage - 1 %><%= baseQuery ? '&' + baseQuery : '' %>">←</a>
         <% } else { %>
           <span class="arrow disabled">←</span>
         <% } %>
@@ -321,7 +416,7 @@
 
         <% if (currentPage < totalPages) { %>
           <a class="arrow page-link"
-            href="/?page=<%= currentPage + 1 %>&search=<%= encodeURIComponent(search) %>">→</a>
+            href="/?page=<%= currentPage + 1 %><%= baseQuery ? '&' + baseQuery : '' %>">→</a>
         <% } else { %>
           <span class="arrow disabled">→</span>
         <% } %>

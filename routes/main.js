@@ -83,6 +83,15 @@ async function saveImagesToBackend(vehicleId, imageUrls) {
   }
 }
 
+// Helpers para filtros
+function norm(s) {
+  return String(s || "").toLowerCase().trim();
+}
+function num(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
 router.get("/", async (req, res) => {
   const search = req.query.search || "";
   const vehicleType = req.query.vehicleType || "";
@@ -90,9 +99,25 @@ router.get("/", async (req, res) => {
   const perPage = 14;
   const partial = req.query.partial === "1";
 
+  // NUEVO: filtros tipo concesionario (GET)
+  const filters = {
+    brand: (req.query.brand || "").trim(),
+    vehicleType: (req.query.vehicleType || "").trim(), // compat con lo que ya usas
+    fuelType: (req.query.fuelType || "").trim(),
+    minYear: req.query.minYear ? Number(req.query.minYear) : null,
+    maxYear: req.query.maxYear ? Number(req.query.maxYear) : null,
+    minPrice: req.query.minPrice ? Number(req.query.minPrice) : null,
+    maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null,
+    maxMileage: req.query.maxMileage ? Number(req.query.maxMileage) : null,
+    offers: (req.query.offers || "").trim(), // "Yes" o ""
+    extras: (req.query.extras || "").trim(), // "ABS, Sunroof"
+    sort: (req.query.sort || "").trim()
+  };
+
   try {
     let apiUrl = `${BACKEND_URL}/vehicles`;
 
+    // Mantienes tu lógica actual (si quieres, luego podemos pasar todo a filtros locales)
     if (vehicleType.trim() !== "") {
       apiUrl = `${BACKEND_URL}/vehicles/vehicleType?q=${encodeURIComponent(vehicleType)}`;
     }
@@ -113,6 +138,87 @@ router.get("/", async (req, res) => {
       allVehicles = [];
     }
 
+    // NUEVO: listas para selects (antes de filtrar para que no desaparezcan opciones)
+    const availableTypes = Array.from(
+      new Set(allVehicles.map(v => v.vehicleType).filter(Boolean))
+    ).sort();
+
+    const availableFuels = Array.from(
+      new Set(allVehicles.map(v => (v.fuelType || v.fuel_type)).filter(Boolean))
+    ).sort();
+
+    // NUEVO: aplicar filtros en Node antes de paginar
+    let filtered = allVehicles;
+
+    if (filters.brand) {
+      const b = norm(filters.brand);
+      filtered = filtered.filter(v => norm(v.brand).includes(b));
+    }
+
+    if (filters.vehicleType) {
+      const t = norm(filters.vehicleType);
+      filtered = filtered.filter(v => norm(v.vehicleType).includes(t));
+    }
+
+    if (filters.fuelType) {
+      const f = norm(filters.fuelType);
+      filtered = filtered.filter(v => norm(v.fuelType || v.fuel_type).includes(f));
+    }
+
+    if (filters.minYear !== null) {
+      filtered = filtered.filter(v => (num(v.year) ?? 0) >= filters.minYear);
+    }
+    if (filters.maxYear !== null) {
+      filtered = filtered.filter(v => (num(v.year) ?? 9999) <= filters.maxYear);
+    }
+
+    if (filters.minPrice !== null) {
+      filtered = filtered.filter(v => (num(v.price) ?? 0) >= filters.minPrice);
+    }
+    if (filters.maxPrice !== null) {
+      filtered = filtered.filter(v => (num(v.price) ?? Number.MAX_SAFE_INTEGER) <= filters.maxPrice);
+    }
+
+    if (filters.maxMileage !== null) {
+      filtered = filtered.filter(v => (num(v.mileage) ?? 0) <= filters.maxMileage);
+    }
+
+    if (filters.offers === "Yes") {
+      filtered = filtered.filter(v => String(v.offers) === "Yes");
+    }
+
+    if (filters.extras) {
+      const wanted = filters.extras
+        .split(",")
+        .map(x => norm(x))
+        .filter(Boolean);
+
+      filtered = filtered.filter(v => {
+        const hay = norm(v.extras);
+        return wanted.every(w => hay.includes(w));
+      });
+    }
+
+    switch (filters.sort) {
+      case "priceAsc":
+        filtered.sort((a, b) => (num(a.price) ?? 0) - (num(b.price) ?? 0));
+        break;
+      case "priceDesc":
+        filtered.sort((a, b) => (num(b.price) ?? 0) - (num(a.price) ?? 0));
+        break;
+      case "yearDesc":
+        filtered.sort((a, b) => (num(b.year) ?? 0) - (num(a.year) ?? 0));
+        break;
+      case "mileageAsc":
+        filtered.sort((a, b) => (num(a.mileage) ?? 0) - (num(b.mileage) ?? 0));
+        break;
+      default:
+        break;
+    }
+
+    allVehicles = filtered;
+
+    // Favoritos
     let favoriteIds = [];
     if (req.session.user && req.session.user.id) {
       try {
@@ -130,6 +236,12 @@ router.get("/", async (req, res) => {
       }
     }
 
+    // NUEVO: query base para paginación (mantener filtros)
+    const qsObj = { ...req.query };
+    delete qsObj.page;
+    const baseQuery = new URLSearchParams(qsObj).toString();
+
+    // paginación normal
     const totalVehicles = allVehicles.length;
     const totalPages = Math.max(1, Math.ceil(totalVehicles / perPage));
     const currentPage = Math.min(Math.max(page, 1), totalPages);
@@ -146,6 +258,10 @@ router.get("/", async (req, res) => {
         totalPages,
         totalVehicles,
         favoriteIds,
+        filters,
+        baseQuery,
+        availableTypes,
+        availableFuels
       });
     }
 
@@ -158,6 +274,12 @@ router.get("/", async (req, res) => {
       user: req.session.user || null,
       favoriteIds,
       isFavouritesPage: false,
+
+      // NUEVO para el EJS del filtro:
+      filters,
+      baseQuery,
+      availableTypes,
+      availableFuels
     });
   } catch (error) {
     console.warn("Backend down, showing mock data for UI preview...");
@@ -198,6 +320,14 @@ router.get("/", async (req, res) => {
       }
     ];
 
+    // Para mock también pasamos filtros para que el EJS no pete
+    const qsObj = { ...req.query };
+    delete qsObj.page;
+    const baseQuery = new URLSearchParams(qsObj).toString();
+
+    const availableTypes = Array.from(new Set(mockVehicles.map(v => v.vehicleType).filter(Boolean))).sort();
+    const availableFuels = Array.from(new Set(mockVehicles.map(v => v.fuelType).filter(Boolean))).sort();
+
     return res.render("main", {
       vehicles: mockVehicles,
       search: "",
@@ -207,6 +337,23 @@ router.get("/", async (req, res) => {
       user: req.session.user || null,
       favoriteIds: [],
       isFavouritesPage: false,
+
+      filters: {
+        brand: (req.query.brand || "").trim(),
+        vehicleType: (req.query.vehicleType || "").trim(),
+        fuelType: (req.query.fuelType || "").trim(),
+        minYear: req.query.minYear ? Number(req.query.minYear) : null,
+        maxYear: req.query.maxYear ? Number(req.query.maxYear) : null,
+        minPrice: req.query.minPrice ? Number(req.query.minPrice) : null,
+        maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null,
+        maxMileage: req.query.maxMileage ? Number(req.query.maxMileage) : null,
+        offers: (req.query.offers || "").trim(),
+        extras: (req.query.extras || "").trim(),
+        sort: (req.query.sort || "").trim()
+      },
+      baseQuery,
+      availableTypes,
+      availableFuels
     });
   }
 });

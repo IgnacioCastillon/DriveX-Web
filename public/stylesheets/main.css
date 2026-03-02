@@ -737,3 +737,66 @@ html, body { overflow-x: hidden; }
   .search-input{ height: 48px; font-size: .98rem; }
   .user-name{ max-width: 100px; }
 }
+
+.dx-filters {
+  backdrop-filter: blur(14px);
+}
+
+.dx-filters .auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dx-filters label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dx-filters input,
+.dx-filters select {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.dx-filters input:focus,
+.dx-filters select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+}
+
+.dx-filters small {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.dx-filters .btn-premium {
+  padding: 0.6rem 1.2rem;
+}
+
+@media (max-width: 1200px) {
+  .dx-filters > div {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dx-filters > div {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .dx-filters > div {
+    grid-template-columns: 1fr !important;
+  }
+}
